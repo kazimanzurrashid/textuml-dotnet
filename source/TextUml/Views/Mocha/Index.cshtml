@@ -1,0 +1,36 @@
+﻿@model IEnumerable<string>
+@{ Layout = null; }
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Mocha</title>
+  <link rel="stylesheet" href="~/Content/mocha.css" />
+  <script src="~/Scripts/jquery-1.9.1.js"></script>
+  <script src="~/Scripts/specs/bdd/mocha.js"></script>
+  <script src="~/Scripts/specs/bdd/chai.js"></script>
+  <script src="~/Scripts/specs/bdd/sinon.js"></script>
+  <script src="~/Scripts/specs/bdd/fixtures.js"></script>
+  <script>
+    fixtures.path = '@Url.Content("~/Scripts/specs/fixtures")';
+    mocha.setup('bdd');
+    expect = chai.expect;
+  </script>
+</head>
+<body>
+  <div id="mocha"></div>
+  @if (Model.Any()) {
+    <script src="~/Scripts/require.js"></script>
+    <script>
+      require(['./scripts/config'], function () {
+        require([@Html.Raw(string.Join(",", Model))], function () {
+          mocha.run();
+        });
+      });
+    </script>
+  } else {
+    <p style="font-size: x-large;color: #f00">Did not find any spec</p>
+  }
+</body>
+</html>
