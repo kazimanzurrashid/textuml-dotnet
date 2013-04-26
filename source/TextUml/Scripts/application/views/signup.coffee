@@ -1,29 +1,19 @@
 define (require) ->
-  Backbone    = require 'backbone'
-  User        = require '../models/user'
-  Helpers     = require './helpers'
-  events      = require '../events'
-  require 'form'
+  MembershipFormmView   = require './membershipform'
+  User                  = require '../models/user'
+  Helpers               = require './helpers'
 
-  class SignUpView extends Backbone.View
+  class SignUpView extends MembershipFormmView
     el: '#sign-up-form'
 
-    events:
-      'submit': 'submit'
+    handleError: (jqxhr) ->
+      if Helpers.hasModelErrors jqxhr
+        modelErrors = Helpers.getModelErrors jqxhr
+        return @$el.showFieldErrors errors: modelErrors if modelErrors
+      @$el.showSummaryError message: 'An unexpected error has ' +
+        'occurred while signing up.'
 
-    submit: (e) ->
-      e.preventDefault()
-      @$el.hideSummaryError()
-        .hideFieldErrors()
+  SignUpView::modelType     = User
+  SignUpView::successEvent  = 'signedUp'
 
-      user = new User
-      Helpers.subscribeModelInvalidEvent user, @$el
-
-      user.save @$el.serializeFields(),
-        success: -> events.trigger 'signedUp'
-        error: (model, jqxhr) =>
-          if Helpers.hasModelErrors jqxhr
-            modelErrors = Helpers.getModelErrors jqxhr
-            return @$el.showFieldErrors errors: modelErrors if modelErrors
-          @$el.showSummaryError message: 'An unexpected error has ' +
-            'occurred while signing up.'
+  SignUpView

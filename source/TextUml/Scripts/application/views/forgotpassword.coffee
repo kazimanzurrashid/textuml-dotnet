@@ -1,27 +1,16 @@
 define (require) ->
-  Backbone          = require 'backbone'
-  ForgotPassword    = require '../models/forgotpassword'
-  Helpers           = require './helpers'
-  events            = require '../events'
-  require 'form'
+  MembershipFormmView   = require './membershipform'
+  ForgotPassword        = require '../models/forgotpassword'
 
-  class ForgotPasswordView extends Backbone.View
+  class ForgotPasswordView extends MembershipFormmView
     el: '#forgot-password-form'
 
-    events:
-      'submit': 'submit'
+    handleError: ->
+      message = 'An unexpected error has occurred while sending '+
+        'forgot password request.'
+        @$el.showSummaryError { message }
 
-    submit: (e) ->
-      e.preventDefault()
-      @$el.hideSummaryError()
-        .hideFieldErrors()
+  ForgotPasswordView::modelType     = ForgotPassword
+  ForgotPasswordView::successEvent  = 'passwordResetTokenRequested'
 
-      forgotPassword = new ForgotPassword
-      Helpers.subscribeModelInvalidEvent forgotPassword, @$el
-
-      forgotPassword.save @$el.serializeFields(),
-        success: -> events.trigger 'passwordResetTokenRequested'
-        error: =>
-          message = 'An unexpected error has occurred while sending '+
-            'forgot password request.'
-            @$el.showSummaryError { message }
+  ForgotPasswordView
