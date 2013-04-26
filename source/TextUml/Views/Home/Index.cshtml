@@ -28,6 +28,8 @@
         documents: @Html.Raw(Model.ToJson())
       };
     });
-    require(['@Url.Content("~/Scripts/main.js")']);
+    require(['@Url.Content("~/Scripts/config.js")'], function() {
+      require(['@Url.Content("~/Scripts/main.js")']); 
+    });
   </script>
 }

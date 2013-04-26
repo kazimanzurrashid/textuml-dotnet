@@ -1,7 +1,7 @@
 ﻿
 define(function(require) {
   var Context, Documents;
-  Documents = require('models/documents');
+  Documents = require('./models/documents');
   return Context = (function() {
 
     function Context(options) {

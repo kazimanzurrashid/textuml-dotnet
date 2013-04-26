@@ -1,5 +1,5 @@
 ﻿define (require) ->
-  Documents = require 'models/documents'
+  Documents = require './models/documents'
 
   class Context
     constructor: (options = {}) ->
