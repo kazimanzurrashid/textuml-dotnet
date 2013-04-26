@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TextUml.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultAdminUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">kazimanzurrashid@gmail.com</Value>
+    </Setting>
+    <Setting Name="DefaultAdminUserPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">P@s$w0rd</Value>
+    </Setting>
+    <Setting Name="SupportEmailAddress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">kazimanzurrashid@gmail.com</Value>
+    </Setting>
+    <Setting Name="DefaultDemoUserName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">demo@example.com</Value>
+    </Setting>
+    <Setting Name="DefaultDemoUserPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">trydemo</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

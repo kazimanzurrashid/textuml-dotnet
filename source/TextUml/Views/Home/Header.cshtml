@@ -1,0 +1,42 @@
+﻿@using TextUml.Extensions
+<header id="header" class="navbar">
+  <div class="navbar-inner">
+    <a href="@Url.Content("~/")" class="brand">Text Uml</a>
+    <nav id="navigation">
+      <ul class="nav">
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="@Url.ClientUrl("documents", "new")" data-command="newDocument">
+            <i class="icon-file"></i> New
+          </a>
+        </li>
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="@Url.ClientUrl("documents")" data-command="openDocuments">
+            <i class="icon-folder-open-alt"></i> Open
+          </a>
+        </li>
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="javascript:;" data-command="saveDocument">
+            <i class="icon-ok"></i> Save
+          </a>
+        </li>
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="javascript:;" data-command="exportDocument">
+            <i class="icon-picture"></i> Export
+          </a>
+        </li>
+      </ul>
+      <ul class="nav pull-right">
+        <li class="divider-vertical"></li>
+        <li>
+          <a href="javascript:;" data-command="myAccount">
+            <i class="icon-user"></i> My Account
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

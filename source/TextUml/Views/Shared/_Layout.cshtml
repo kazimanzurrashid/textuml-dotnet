@@ -1,0 +1,37 @@
+﻿@using TextUml.Extensions
+@using StackExchange.Profiling
+@functions {
+  string PageTitle() {
+    
+    var title = ViewBag.Title ?? string.Empty;
+
+    if (!string.IsNullOrWhiteSpace(title)) {
+      title += " - ";
+    }
+
+    title += "Text Uml";
+
+    return title;
+  }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  @if (Context.CanProfile()) {
+    this.InitClientTimings();
+  }
+  @Html.Partial("Head")
+  @RenderSection("Scripts", false)
+  <title>@Html.Raw(PageTitle())</title>
+</head>
+<body>
+  @Html.Partial("LegacyIE")
+  @Html.Partial("Flashbar")
+  @RenderSection("Header", false)
+  @RenderBody()
+  @Html.Partial("Footer")
+  @if (Context.CanProfile()) {
+    @MiniProfiler.RenderIncludes(RenderPosition.Right)
+  }
+</body>
+</html>

@@ -1,0 +1,275 @@
+@import 'less/variables.less';
+@import 'less/mixins.less';
+@import 'less/reset.less';
+@import 'less/scaffolding.less';
+@import 'less/type.less';
+@import 'less/forms.less';
+@import 'less/font-awesome.less';
+@import 'less/component-animations.less';
+@import 'less/close.less';
+@import 'less/buttons.less';
+@import 'less/button-groups.less';
+@import 'less/alerts.less';
+@import 'less/navs.less';
+@import 'less/navbar.less';
+@import 'less/modals.less';
+@import 'less/utilities.less';
+
+@import 'jquery.splitter.less';
+@import 'codemirror.less';
+
+.box-sizing(@size: border-box) {
+  -moz-box-sizing: @size;
+  -webkit-box-sizing: @size;
+  box-sizing: @size;
+}
+
+.section-content {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 27px;
+}
+
+.selectable-list-item {
+  color: @white;
+  text-shadow: 0 -1px 0rgba(0, 0, 0, .2);
+  background-color: @linkColor;
+}
+
+html, body {
+  overflow: hidden;
+}
+
+.flash-bar {
+  margin-bottom: 0;
+}
+
+#header {
+  margin-bottom: 0;
+}
+
+#content {
+  position: relative;
+  min-width: 500px;
+  min-height: 300px;
+}
+
+.title-bar {
+  @gradient-start: #fff;
+  @gradient-middle-first: #f4f4f4;
+  @gradient-middle-last: #ececec;
+  @gradient-end:  #ededed;
+  .box-shadow(inset 0 -1px  @gradient-middle-first);
+  background: @grayLighter;
+  background: -moz-linear-gradient(top, @gradient-start 0%, @gradient-start 23%, @gradient-middle-first 54%,  @gradient-middle-last 62%,  @gradient-end 100%);
+  background: -webkit-linear-gradient(top,  @gradient-start 0%, @gradient-start 23%, @gradient-middle-first 54%, @gradient-middle-last 62%,  @gradient-end 100%);
+  background: -o-linear-gradient(top, @gradient-start 0%, @gradient-start 23%, @gradient-middle-first 54%, @gradient-middle-last 62%,  @gradient-end 100%);
+  background: linear-gradient(to bottom, @gradient-start 0%, @gradient-start 23%, @gradient-middle-first 54%, @gradient-middle-last 62%,  @gradient-end 100%);
+  border-top: 1px solid #a8a8a8;
+  border-bottom: 1px solid #b6b6b6;
+  font-size: @baseFontSize;
+  line-height: @baseLineHeight;
+  font-weight: normal;
+  margin: 0;
+  padding: 2px;
+}
+
+#example-list {
+  li {
+    cursor: pointer;
+    padding: 5px;
+    &:hover {
+      .selectable-list-item
+    }
+  }
+}
+
+#main {
+  overflow: hidden;
+}
+
+#editor-container {
+  height: 100%;
+  position: relative;
+
+  > div {
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+
+  .editor-text-wrapper {
+    .section-content;
+  }
+
+  textarea {
+    .box-shadow(none);
+    .square(100%);
+    .box-sizing;
+    -webkit-appearance: caret;
+    border: none;
+    font-family: @monoFontFamily; 
+    line-height: 1em;
+    margin: 0;
+    overflow-y: auto;
+    padding: 2px;
+    resize: none;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .CodeMirror {
+    font-family: @monoFontFamily;
+    height: 100%;
+  }
+  .CodeMirror-activeline-background {
+    background: #e8f2ff !important;
+  }
+}
+
+#code-section {
+  bottom: 15%;
+  top: 0;
+}
+
+#output-section {
+  bottom: 0;
+  top: 85%;
+}
+
+#output-text-area {
+  background-color: @inputBackground;
+  color: @grayLight;
+  cursor: text;
+  font-size: .85em;
+}
+
+#canvas-section {
+  .section-content;
+  overflow: auto;
+}
+
+#canvas-holder {
+  .square(100%);
+}
+
+#canvas-wrapper {
+  .size(800px, 1200px);
+  background: @white;
+}
+
+#canvas {
+  .square(100%);
+}
+
+.modal-section + .modal-section {
+  border-top: 1px solid @grayLighter;
+  margin-top: 9px;
+  padding-top: 15px;
+}
+
+#document-browser-dialog {
+  .modal-body {
+    padding: 0;
+  }
+}
+
+#document-list {
+  .btn-toolbar {
+    margin: 10px 0;
+    padding-right: 12px;
+    text-align: right;
+
+    > span {
+      cursor: default;
+      font-size: @fontSizeMini;
+      padding: 0 7px;
+      vertical-align: middle;
+    }
+  }
+
+  .list-container {
+    max-height: 340px;
+    outline: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    ul {
+      margin: 0;
+
+      .active {
+        .selectable-list-item
+      }
+    }
+  }
+
+  li {
+    cursor: default;
+    margin: 2px 0;
+    overflow: hidden;
+    padding: 5px;
+
+    > * {
+      line-height: 20px;
+    }
+
+    .display, .edit {
+      float: left;
+    }
+
+    .display {
+      cursor: pointer;
+      padding: 5px 7px;
+      width: 90%;
+
+      span {
+        display: inline-block;
+        float: left;
+      }
+
+      small {
+        display: inline-block;
+        font-style: italic;
+        float: right;
+      }
+    }
+
+    .edit {
+      display: none;
+
+      input[type="text"] {
+        margin-bottom: 0;
+      }
+    }
+
+    i.icon-trash {
+      display: inline-block;
+      float: right;
+    }
+
+    [data-command="delete"] {
+      cursor: pointer;
+      float: right;
+      padding: 5px 7px;
+    }
+  }
+
+  li + li {
+    border-top: 1px solid @grayLighter;
+  }
+}
+
+
+#exported-document-dialog {
+  .modal-body {
+    .image-holder {
+      .center-block;
+      img {
+        .center-block;
+      }
+    }
+  }
+}

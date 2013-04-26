@@ -1,0 +1,33 @@
+﻿@using TextUml.Extensions
+@using TextUml.Models
+@model PagedQueryResult<DocumentRead>
+@section Header {
+  @Html.Partial("Header")
+}
+<div id="content">
+  <div id="sidebar" class="splitter-pane">
+    @Html.Partial("Examples")
+  </div>
+  <div id="main" class="splitter-pane" role="main">
+    <div class="splitter-pane">
+      @Html.Partial("Editor")
+    </div>
+    <div class="splitter-pane">
+      @Html.Partial("Canvas")
+    </div>
+  </div>
+</div>
+@{ Html.IncludeClientViews(); }
+@section Scripts {
+  <script src="~/Scripts/jquery-1.9.1.js"></script>
+  <script src="~/Scripts/require.js"></script>
+  <script>
+    define('preloaded-data', function() {
+      return {
+        userSignedIn: @Request.IsAuthenticated.ToString().ToLowerInvariant(),
+        documents: @Html.Raw(Model.ToJson())
+      };
+    });
+    require(['@Url.Content("~/Scripts/main.js")']);
+  </script>
+}
