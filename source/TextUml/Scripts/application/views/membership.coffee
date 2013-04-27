@@ -1,4 +1,5 @@
 define (require) ->
+  _                   = require 'underscore'
   Backbone            = require 'backbone'
   SignInView          = require './signin'
   ForgotPasswordView  = require './forgotpassword'
@@ -34,8 +35,8 @@ define (require) ->
             @ok()
 
       events.on 'showMembership', (e) =>
-        @ok = e?.ok
-        @cancel = e?.cancel
+        @ok = if e and _(e.ok).isFunction() then e.ok else undefined
+        @cancel = if e and _(e.cancel).isFunction() then e.cancel else undefined
         tabHeaders.first().trigger 'click'
         @$el.modal 'show'
 

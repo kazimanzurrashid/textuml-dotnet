@@ -28,7 +28,7 @@ define(function(require) {
       }).on('hide', function() {
         return box.hide();
       });
-      return events.on('exported', function(e) {
+      return events.on('documentExported', function(e) {
         image.prop('src', e.data);
         return _this.$el.modal('show');
       });

@@ -11,6 +11,8 @@
     events:
       'submit': 'submit'
 
+    handleError: (jqxhr) -> throw new Error 'Not implemented'
+
     submit: (e) ->
       e.preventDefault()
       @$el.hideSummaryError()
@@ -21,5 +23,4 @@
 
       model.save @$el.serializeFields(),
         success: => events.trigger @successEvent
-        error: (_, jqxhr) =>
-          @handleError jqxhr
+        error: (_, jqxhr) => @handleError jqxhr

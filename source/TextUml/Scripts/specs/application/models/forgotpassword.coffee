@@ -8,7 +8,8 @@
 
     describe '#defaults', ->
 
-      it 'has #email', -> expect(forgotPassword.defaults()).to.have.property 'email'
+      it 'has #email', ->
+        expect(forgotPassword.defaults()).to.have.property 'email'
 
     describe '#url', ->
       it 'is set', -> expect(forgotPassword.url).to.exist

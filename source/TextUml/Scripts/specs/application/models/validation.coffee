@@ -22,12 +22,12 @@ define (require) ->
 
       describe 'invalid', ->
 
-        describe 'less than six character', ->
+        describe 'less than six characters', ->
           it 'returns false', ->
             expect(Validation.isValidPasswordLength(repeatString 5))
               .not.to.be.ok
 
-        describe 'more than sixty four character', ->
+        describe 'more than sixty four characters', ->
           it 'returns false', ->
             expect(Validation.isValidPasswordLength(repeatString 65))
               .not.to.be.ok

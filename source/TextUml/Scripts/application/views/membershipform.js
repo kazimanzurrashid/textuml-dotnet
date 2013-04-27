@@ -23,6 +23,10 @@ define(function(require) {
       'submit': 'submit'
     };
 
+    MembershipFormView.prototype.handleError = function(jqxhr) {
+      throw new Error('Not implemented');
+    };
+
     MembershipFormView.prototype.submit = function(e) {
       var model,
         _this = this;

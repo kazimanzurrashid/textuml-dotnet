@@ -651,11 +651,32 @@
     <Content Include="Scripts\specs\application\models\changepassword.js">
       <DependentUpon>changepassword.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\models\document.js">
+      <DependentUpon>document.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\models\documents.js">
+      <DependentUpon>documents.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\models\example.js">
+      <DependentUpon>example.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\models\examples.js">
+      <DependentUpon>examples.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\models\forgotpassword.js">
       <DependentUpon>forgotpassword.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\models\session.js">
+      <DependentUpon>session.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\models\user.js">
+      <DependentUpon>user.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\models\validation.js">
       <DependentUpon>validation.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\membershipform.js">
+      <DependentUpon>membershipform.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\specs\bdd\chai.js" />
     <Content Include="Scripts\specs\bdd\fixtures.js" />
@@ -701,6 +722,13 @@
     <Content Include="Scripts\specs\application\models\changepassword.coffee" />
     <Content Include="Scripts\specs\application\models\validation.coffee" />
     <Content Include="Scripts\specs\application\models\forgotpassword.coffee" />
+    <Content Include="Scripts\specs\application\views\membershipform.coffee" />
+    <Content Include="Scripts\specs\application\models\example.coffee" />
+    <Content Include="Scripts\specs\application\models\examples.coffee" />
+    <Content Include="Scripts\specs\application\models\session.coffee" />
+    <Content Include="Scripts\specs\application\models\document.coffee" />
+    <Content Include="Scripts\specs\application\models\user.coffee" />
+    <Content Include="Scripts\specs\application\models\documents.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

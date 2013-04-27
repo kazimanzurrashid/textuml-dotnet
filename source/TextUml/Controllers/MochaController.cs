@@ -32,11 +32,13 @@ namespace TextUml.Controllers
             return View(replacedFilePaths);
         }
 
-        private static IEnumerable<string> ReplaceFilePaths(IEnumerable<string> oldPaths)
+        private static IEnumerable<string> ReplaceFilePaths(
+            IEnumerable<string> oldPaths)
         {
             var newPaths = oldPaths
                 .Select(file => "." + file.Substring("/Scripts".Length) + "'")
-                .Select(file => file.Substring(0, file.Length - (".js".Length + 1)))
+                .Select(file =>
+                    file.Substring(0, file.Length - (".js".Length + 1)))
                 .Select(file => "'" + file + "'")
                 .ToList();
 

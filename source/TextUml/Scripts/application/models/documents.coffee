@@ -38,8 +38,8 @@ define (require) ->
       super options
 
     fetchOne: (id) ->
-      document = @get id
       dfd = $.Deferred()
+      document = @get id
 
       if document
         _(-> dfd.resolve document).defer()

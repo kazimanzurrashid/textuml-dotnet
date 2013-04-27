@@ -24,6 +24,6 @@ define (require) ->
       events.on 'exportDocument', =>
         try
           data = @renderer.serialize()
-          events.trigger 'exported', { data }
+          events.trigger 'documentExported', { data }
         catch exception
           $.showErrorbar exception.message

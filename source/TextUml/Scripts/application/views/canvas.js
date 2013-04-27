@@ -39,7 +39,7 @@ define(function(require) {
         var data;
         try {
           data = _this.renderer.serialize();
-          return events.trigger('exported', {
+          return events.trigger('documentExported', {
             data: data
           });
         } catch (exception) {

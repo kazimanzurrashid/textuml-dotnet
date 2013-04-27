@@ -23,12 +23,12 @@ define(function(require) {
         });
       });
       return describe('invalid', function() {
-        describe('less than six character', function() {
+        describe('less than six characters', function() {
           return it('returns false', function() {
             return expect(Validation.isValidPasswordLength(repeatString(5))).not.to.be.ok;
           });
         });
-        return describe('more than sixty four character', function() {
+        return describe('more than sixty four characters', function() {
           return it('returns false', function() {
             return expect(Validation.isValidPasswordLength(repeatString(65))).not.to.be.ok;
           });

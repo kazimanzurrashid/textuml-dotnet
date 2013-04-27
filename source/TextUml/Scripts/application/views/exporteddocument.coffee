@@ -16,6 +16,6 @@ define (require) ->
         .on 'hide', ->
           box.hide()
 
-      events.on 'exported', (e) =>
+      events.on 'documentExported', (e) =>
         image.prop 'src', e.data
         @$el.modal 'show'

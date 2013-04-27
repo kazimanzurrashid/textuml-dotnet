@@ -63,8 +63,8 @@ define(function(require) {
     Documents.prototype.fetchOne = function(id) {
       var dfd, document,
         _this = this;
-      document = this.get(id);
       dfd = $.Deferred();
+      document = this.get(id);
       if (document) {
         _(function() {
           return dfd.resolve(document);
