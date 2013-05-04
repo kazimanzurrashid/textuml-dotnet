@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var Condition, Context, Diagram, Group, Message, Participant, Title, _;
+
   _ = require('underscore');
   Title = require('../../models/sequence/title');
   Participant = require('../../models/sequence/participant');
@@ -9,7 +9,6 @@ define(function(require) {
   Condition = require('../../models/sequence/condition');
   Diagram = require('../../models/sequence/diagram');
   return Context = (function() {
-
     function Context(payload) {
       this.payload = payload;
       this.participants = [];
@@ -31,6 +30,7 @@ define(function(require) {
 
     Context.prototype.addParticipant = function(name, alias) {
       var participant;
+
       participant = new Participant(name, alias);
       this.participants.push(participant);
       return participant;
@@ -48,6 +48,7 @@ define(function(require) {
 
     Context.prototype.addMessage = function(sender, receiver, name, async, callReturn) {
       var message;
+
       message = new Message(sender, receiver, name, async, callReturn, this.parentCommand);
       if (!this.parentCommand) {
         this.commands.push(message);
@@ -57,6 +58,7 @@ define(function(require) {
 
     Context.prototype.addGroup = function(type, label) {
       var group;
+
       group = new Group(this.parentCommand, label, type);
       if (!this.parentCommand) {
         this.commands.push(group);
@@ -67,6 +69,7 @@ define(function(require) {
 
     Context.prototype.addIf = function(label) {
       var condition, group;
+
       condition = new Condition(this.parentCommand);
       group = condition.createIfGroup(label);
       if (!this.parentCommand) {
@@ -78,6 +81,7 @@ define(function(require) {
 
     Context.prototype.addElse = function(label) {
       var errorMessage, group, _ref, _ref1;
+
       if (!((_ref = this.parentCommand) != null ? (_ref1 = _ref.parent) != null ? _ref1.getIfGroup() : void 0 : void 0)) {
         errorMessage = ("Error on line " + (this.getLineNumber()) + ", cannot ") + 'use \"else\"" without an \"alt\".';
         throw new Error(errorMessage);
@@ -89,6 +93,7 @@ define(function(require) {
 
     Context.prototype.closeParent = function() {
       var errorMessage;
+
       if (!this.parentCommand) {
         errorMessage = ("Error on line " + (this.getLineNumber()) + ", cannot end ") + 'without a group start.';
         throw new Error(errorMessage);
@@ -101,6 +106,7 @@ define(function(require) {
 
     Context.prototype.done = function() {
       var errorMessage;
+
       if (!this.parentCommand) {
         return;
       }

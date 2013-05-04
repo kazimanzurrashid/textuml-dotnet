@@ -1,10 +1,11 @@
-﻿
 define(function(require) {
   var $, animationDuration, timeout, _;
+
   _ = require('underscore');
   $ = require('jquery');
   $.fn.serializeFields = function() {
     var fields;
+
     fields = {};
     this.each(function() {
       return $.each($(this).serializeArray(), function() {
@@ -16,6 +17,7 @@ define(function(require) {
   $.fn.deserializeFields = function(attributes) {
     return this.each(function() {
       var _this = this;
+
       return _(attributes).chain().keys().each(function(key) {
         return $(_this).find(":input[name='" + key + "']").val(attributes[key]);
       });
@@ -24,6 +26,7 @@ define(function(require) {
   $.fn.resetFields = function() {
     return this.each(function() {
       var container;
+
       container = $(this);
       if (container.is('form')) {
         return container.get(0).reset();
@@ -45,6 +48,7 @@ define(function(require) {
   $.fn.showFieldErrors = function(options) {
     var cssClass, errors, firstInput,
       _this = this;
+
     options = $.extend({
       inline: false,
       errors: {}
@@ -55,6 +59,7 @@ define(function(require) {
     this.each(function() {
       return $(this).find(':input').each(function() {
         var input, inputName, lowerCasedInputName;
+
         input = $(this);
         inputName = input.attr('name');
         if (!inputName) {
@@ -67,6 +72,7 @@ define(function(require) {
           return key.toLowerCase() === lowerCasedInputName;
         }).each(function(key) {
           var container;
+
           if (!firstInput) {
             firstInput = input;
           }
@@ -92,6 +98,7 @@ define(function(require) {
   $.fn.hideSummaryError = function() {
     return this.each(function() {
       var container;
+
       container = $(this);
       if (!container.is('form')) {
         container = container.find('form');
@@ -103,14 +110,17 @@ define(function(require) {
   };
   (function() {
     var template;
+
     template = _("<div class=\"alert alert-error fade in\">\n  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" title=\"close\">&times;</button>\n  <i class=\"icon-warning-sign\"></i> \n  <span>{{message}}</span>\n</div>").template();
     return $.fn.showSummaryError = function(options) {
       var _this = this;
+
       options = $.extend({
         message: 'An unexpected error has occurred while performing your last operation.'
       }, options);
       this.each(function() {
         var container;
+
         container = $(this);
         if (!container.is('form')) {
           container = container.find('form');
@@ -126,6 +136,7 @@ define(function(require) {
   })();
   $.fn.putFocus = function() {
     var _this = this;
+
     _(function() {
       return _this.find(':input').not(':button').not(':disabled').first().focus();
     }).delay(100);

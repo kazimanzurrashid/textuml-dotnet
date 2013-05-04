@@ -1,81 +1,118 @@
 ﻿define (require) ->
-  $               = require 'jquery'
-  Backbone        = require 'backbone'
-  MembershipForm  = require '../../../application/views/membershipform'
-  events          = require '../../../application/events'
+  $                 = require 'jquery'
+  Backbone          = require 'backbone'
+  MembershipForm    = require '../../../application/views/membershipform'
+  Helpers           = require '../../../application/views/helpers'
+  events            = require '../../../application/events'
 
   describe 'views/membershipform', ->
-    view            = null
-    model           = null
-    stubbedModel    = null
-    successEvent    = 'dummy-event'
+    view = null
 
     before ->
       fixtures.set '<form id="form"></form>'
-
-      model = 
-        once: ->
-        save: ->
-      stubbedModel = sinon.stub(Backbone, 'Model').returns model
-
       view = new MembershipForm
         el: $(fixtures.window().document.body).find '#form'
-      view.modelType = Backbone.Model
-      view.successEvent = successEvent
 
-    describe 'form submit', ->
-      spiedOnce = null
-      spiedSave = null
+    describe '#onSubmit', ->
+      model                                 = null
+      stubbedModel                          = null
+      stubbedHideSummaryError               = null
+      stubbedHideFieldErrors                = null
+      stubbedSubscribeModelInvalidEvent     = null
+      stubbedSerializeFields                = null
 
       before ->
-        spiedOnce = sinon.spy model, 'once'
-        spiedSave = sinon.spy model, 'save'
-        view.$el.trigger 'submit'
+        model = save: ->
+        stubbedModel = sinon.stub(Backbone, 'Model').returns model
+        view.modelType = Backbone.Model
 
-      it 'creates model', ->
-        expect(stubbedModel.calledOnce).to.be.ok
+        stubbedSubscribeModelInvalidEvent = sinon.stub Helpers,
+          'subscribeModelInvalidEvent',
+          ->
 
-      it 'subscribes to model invalid event', ->
-         expect(spiedOnce.calledWithExactly 'invalid', sinon.match.func)
-          .to.be.ok
+        stubbedHideSummaryError = sinon.stub view.$el,
+          'hideSummaryError',
+          -> view.$el
 
-      it 'saves model', ->
-         expect(spiedSave.calledOnce).to.be.ok
+        stubbedHideFieldErrors = sinon.stub view.$el,
+          'hideFieldErrors',
+          -> view.$el
+
+        stubbedSerializeFields = sinon.stub view.$el,
+          'serializeFields',
+          -> {}
+
+      describe 'form submit', ->
+        spiedSave = null
+
+        before ->
+          spiedSave = sinon.spy model, 'save'
+          view.onSubmit preventDefault: ->
+
+        it 'hides form errors', ->
+          expect(stubbedHideSummaryError).to.have.been.called
+
+        it 'hides field errors', ->
+          expect(stubbedHideFieldErrors).to.have.been.called
+
+        it 'creates model', -> expect(stubbedModel).to.have.been.called
+
+        it 'subscribes to model invalid event once', ->
+           expect(stubbedSubscribeModelInvalidEvent)
+            .to.have.been.calledWith model, view.$el
+
+        it 'serializes form fields', ->
+          expect(stubbedSerializeFields).to.have.been.called
+
+        it 'saves model', -> expect(spiedSave).to.have.been.CalledOnce
+
+        after -> spiedSave.restore()
+
+      describe 'persistence', ->
+
+        describe 'success', ->
+          successEvent            = 'dummy-event'
+          stubbedSave             = null
+          stubbedEventsTrigger    = null
+
+          before ->
+            stubbedSave           = sinon.stub(model, 'save').yieldsTo 'success'
+            stubbedEventsTrigger  = sinon.stub events, 'trigger', ->
+
+            view.successEvent     = successEvent
+            view.onSubmit preventDefault: ->
+
+          it 'triggers application event', ->
+            expect(stubbedEventsTrigger).to.have.been.calledWith successEvent
+
+          after ->
+            stubbedSave.restore()
+            stubbedEventsTrigger.restore()
+
+        describe 'error', ->
+          stubbedSave             = null
+          stubbedHandleError      = null
+
+          before ->
+            stubbedSave          = sinon.stub(model, 'save').yieldsTo 'error'
+            stubbedHandleError   = sinon.stub view, 'handleError', ->
+            view.onSubmit preventDefault: ->
+
+          it 'handles error', ->
+            expect(stubbedHandleError).to.have.been.CalledOnce
+
+          after ->
+            stubbedSave.restore()
+            stubbedHandleError.restore()
 
       after ->
-        spiedOnce.restore()
-        spiedSave.restore()
-
-    describe 'persistence', ->
-      stubbedSave = null
-
-      describe 'success', ->
-        successEventTriggered = null
-
-        beforeEach (done) ->
-          successEventTriggered = false
-          stubbedSave = sinon.stub(model, 'save').yieldsTo 'success'
-          events.on successEvent, ->
-            successEventTriggered = true
-            done()
-          view.$el.trigger 'submit'
-
-        it 'triggers application event', -> expect(successEventTriggered).to.be.true
-
-      describe 'failure', ->
-        stubbedHandleError = null
-
-        beforeEach ->
-          stubbedSave          = sinon.stub(model, 'save').yieldsTo 'error'
-          stubbedHandleError   = sinon.stub view, 'handleError', ->
-          view.$el.trigger 'submit'
-
-        it 'handles error', -> expect(stubbedHandleError.calledOnce).to.be.ok
-
-        afterEach -> stubbedHandleError.restore()
-
-      afterEach -> stubbedSave.restore()
+        stubbedSubscribeModelInvalidEvent.restore()
+        stubbedHideSummaryError.restore()
+        stubbedHideFieldErrors.restore()
+        stubbedSerializeFields.restore()
+        stubbedModel.restore()
 
     after ->
-      stubbedModel.restore()
+      view.undelegateEvents()
+      view.stopListening()
       fixtures.cleanUp()

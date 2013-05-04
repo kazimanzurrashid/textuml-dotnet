@@ -1,4 +1,3 @@
-﻿
 define(function() {
   return {
     left: 0,

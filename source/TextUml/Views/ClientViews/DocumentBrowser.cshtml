@@ -12,10 +12,10 @@
           <button type="button" class="btn btn-mini active" data-sort-attribute="updatedAt">Last updated</button>		
         </div>
         <div class="btn-group" data-toggle="buttons-radio">
-          <button type="button" class="btn btn-mini" data-sort-order="0">
+          <button type="button" class="btn btn-mini" data-sort-order="0" title="Ascending">
             <i class="icon-sort-up"></i>
           </button>
-          <button type="button" class="btn btn-mini active" data-sort-order="1">
+          <button type="button" class="btn btn-mini active" data-sort-order="1" title="Descending">
             <i class="icon-sort-down"></i>
           </button>
         </div>
@@ -23,20 +23,20 @@
       <div class="list-container" tabindex="-1">
         <ul class="unstyled"></ul>
       </div>
+      <script id="document-item-template" type="text/html">
+        <div class="display">
+          <span title="Double click to edit">{{title}}</span> 
+          <small title="{{lastUpdatedInHumanizeTime()}}">last updated {{lastUpdatedInRelativeTime()}}</small>
+        </div>
+        <div class="edit">
+          <input type="text" value="{{title}}" title="Type your title and hit enter" />
+        </div>
+        <i class="icon-trash" title="Delete" data-command="delete"></i>
+      </script>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary">Open</button>
     <a href="javascript:;" class="btn" data-dismiss="modal">Cancel</a>
   </div>
-  <script id="document-item-template" type="text/html">
-    <div class="display">
-      <span title="Double click to edit">{{title}}</span> 
-      <small title="{{lastUpdatedInHumanizeTime()}}">last updated {{lastUpdatedInRelativeTime()}}</small>
-    </div>
-    <div class="edit">
-      <input type="text" value="{{title}}" title="Type your title and hit enter" />
-    </div>
-    <i class="icon-trash" title="Delete" data-command="delete"></i>
-  </script>
 </div>

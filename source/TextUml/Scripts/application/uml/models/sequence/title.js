@@ -1,8 +1,7 @@
-﻿
 define(function() {
   var Title;
-  return Title = (function() {
 
+  return Title = (function() {
     function Title(text) {
       this.text = text;
     }

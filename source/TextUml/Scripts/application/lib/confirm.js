@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var $, defaults, template, _;
+
   _ = require('underscore');
   $ = require('jquery');
   require('bootstrap');
@@ -13,6 +13,7 @@ define(function(require) {
   };
   $.confirm = function(options) {
     var data, dialog;
+
     options = $.extend(defaults, options);
     data = {
       title: options.title,

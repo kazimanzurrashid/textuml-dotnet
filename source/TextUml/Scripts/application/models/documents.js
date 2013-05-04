@@ -1,14 +1,14 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var $, Document, Documents, SortOrder, _;
+
   $ = require('jquery');
   _ = require('underscore');
   SortOrder = require('./sortorder');
   Document = require('./document');
   return Documents = (function(_super) {
-
     __extends(Documents, _super);
 
     Documents.prototype.defaultSortAttribute = 'updatedAt';
@@ -20,6 +20,8 @@ define(function(require) {
     Documents.prototype.resultAttribute = 'data';
 
     Documents.prototype.defaultPageSize = 25;
+
+    Documents.prototype.filter = null;
 
     Documents.prototype.url = '/api/documents';
 
@@ -38,6 +40,7 @@ define(function(require) {
 
     Documents.prototype.fetch = function(options) {
       var orderBy, query;
+
       if (options == null) {
         options = {};
       }
@@ -56,6 +59,9 @@ define(function(require) {
         }
         query.orderBy = orderBy;
       }
+      if (this.filter) {
+        query.filter = this.filter;
+      }
       options.url = (_(this).result('url')) + '?' + $.param(query);
       return Documents.__super__.fetch.call(this, options);
     };
@@ -63,6 +69,7 @@ define(function(require) {
     Documents.prototype.fetchOne = function(id) {
       var dfd, document,
         _this = this;
+
       dfd = $.Deferred();
       document = this.get(id);
       if (document) {

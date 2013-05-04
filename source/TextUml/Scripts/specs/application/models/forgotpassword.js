@@ -1,9 +1,10 @@
-﻿
 define(function(require) {
   var ForgotPassword;
+
   ForgotPassword = require('../../../application/models/forgotpassword');
   return describe('models/forgotpassword', function() {
     var forgotPassword;
+
     forgotPassword = null;
     beforeEach(function() {
       return forgotPassword = new ForgotPassword;

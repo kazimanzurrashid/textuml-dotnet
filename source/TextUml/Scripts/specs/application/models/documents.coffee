@@ -97,6 +97,7 @@
           documents.pageSize          = 10
           documents.sortAttribute     = 'title'
           documents.sortOrder         = SortOrder.descending
+          documents.filter            = 'test'
           documents.url               = '/documents'
 
           options = { url: '' };
@@ -110,5 +111,8 @@
 
       it 'has orderBy in url', ->
           expect(options.url).to.contain 'orderBy=title+desc'
+
+      it 'has filter in url', ->
+          expect(options.url).to.contain 'filter=test'
 
       after -> stubbedFetch.restore()

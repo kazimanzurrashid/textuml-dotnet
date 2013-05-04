@@ -19,7 +19,16 @@
 </div>
 @{ Html.IncludeClientViews(); }
 @section Scripts {
-  <script src="~/Scripts/jquery-1.9.1.js"></script>
+  @if (Context.IsDebuggingEnabled) {
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+  } else {
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      if (!window.jQuery) {
+        document.write('<script src="/Scripts/jquery-1.9.1.min.js"><\/script>');
+      }
+    </script>
+  }
   <script src="~/Scripts/require.js"></script>
   <script>
     define('preloaded-data', function() {

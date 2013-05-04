@@ -1,8 +1,9 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var ArrowDirection, ArrowStyle, Composite, Config, LineStyle, Message, SelfInvokingLineHeight, SelfInvokingTextMargin, getGap, textAttributes;
+
   Config = require('./config');
   Composite = require('./composite');
   ArrowDirection = require('../arrowdirection');
@@ -19,7 +20,6 @@ define(function(require) {
     fill: Config.foreColor
   };
   return Message = (function(_super) {
-
     __extends(Message, _super);
 
     function Message(model) {
@@ -29,6 +29,7 @@ define(function(require) {
 
     Message.prototype.draw = function(context) {
       var arrowDirection, arrowStyle, gap, lineStyle, receiverShape, senderShape, x, x1, x2, y;
+
       arrowStyle = this.model.async ? ArrowStyle.open : ArrowStyle.close;
       lineStyle = this.model.callReturn ? LineStyle.dash : LineStyle.line;
       y = context.getNextShapeStartY();
@@ -63,6 +64,7 @@ define(function(require) {
 
     Message.prototype.drawRegular = function(context, arrowDirection, arrowStyle, lineStyle, x1, x2, y) {
       var arrow, arrowAttributes, line, text, textSize, textX, width, x;
+
       textSize = context.shapeFactory.textSize(context.surface, this.model.name, textAttributes);
       width = x2 - x1;
       textX = x1 + (width - textSize.width) / 2;
@@ -84,6 +86,7 @@ define(function(require) {
 
     Message.prototype.drawSelfInvoking = function(context, arrowDirection, arrowStyle, lineStyle, x, y) {
       var arrow, arrowAttributes, line1, line2, line3, lineWidth, text, textSize, textX;
+
       textSize = context.shapeFactory.textSize(context.surface, this.model.name, textAttributes);
       textX = x + SelfInvokingTextMargin / 2;
       lineWidth = textSize.width + SelfInvokingTextMargin;

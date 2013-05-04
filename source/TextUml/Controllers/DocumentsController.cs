@@ -17,7 +17,7 @@
             this.service = service;
         }
 
-        public HttpResponseMessage Get([FromUri]DocumentsQuery command)
+        public HttpResponseMessage Get([FromUri]DocumentsQuery model)
         {
             if (!ModelState.IsValid)
             {
@@ -26,7 +26,7 @@
                     ModelState);
             }
 
-            var result = service.Query(command);
+            var result = service.Query(model);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }

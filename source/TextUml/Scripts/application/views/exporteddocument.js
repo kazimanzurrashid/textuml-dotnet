@@ -16,22 +16,31 @@ define(function(require) {
 
     ExportedDocumentView.prototype.el = '#exported-document-dialog';
 
+    ExportedDocumentView.prototype.events = {
+      'shown': 'onDialogShown',
+      'hide': 'onDialogHide'
+    };
+
     ExportedDocumentView.prototype.initialize = function() {
-      var box, image,
-        _this = this;
-      box = this.$('.alert');
-      image = this.$('img');
+      this.messageBox = this.$('.alert');
+      this.image = this.$('img');
       this.$el.modal({
         show: false
-      }).on('shown', function() {
-        return box.fadeIn(400);
-      }).on('hide', function() {
-        return box.hide();
       });
-      return events.on('documentExported', function(e) {
-        image.prop('src', e.data);
-        return _this.$el.modal('show');
-      });
+      return this.listenTo(events, 'documentExported', this.onDocumentExported);
+    };
+
+    ExportedDocumentView.prototype.onDocumentExported = function(e) {
+      this.image.prop('src', e.data);
+      return this.$el.modal('show');
+    };
+
+    ExportedDocumentView.prototype.onDialogShown = function() {
+      return this.messageBox.fadeIn(400);
+    };
+
+    ExportedDocumentView.prototype.onDialogHide = function() {
+      return this.messageBox.hide();
     };
 
     return ExportedDocumentView;

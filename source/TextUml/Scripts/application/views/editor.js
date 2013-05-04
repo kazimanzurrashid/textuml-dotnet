@@ -18,14 +18,19 @@ define(function(require) {
 
     EditorView.prototype.el = '#editor-container';
 
+    EditorView.prototype.codeEditorViewType = CodeEditorView;
+
+    EditorView.prototype.outputGeneratorViewType = OutputGeneratorView;
+
+    EditorView.prototype.parserType = Parser;
+
     EditorView.prototype.initialize = function(options) {
-      var callbacks, context,
-        _this = this;
+      var callbacks, context;
       context = options.context;
-      this.code = new CodeEditorView({
+      this.code = new this.codeEditorViewType({
         context: context
       });
-      this.output = new OutputGeneratorView;
+      this.output = new this.outputGeneratorViewType;
       callbacks = {
         onStart: function() {
           return events.trigger('parseStarted');
@@ -46,12 +51,14 @@ define(function(require) {
           });
         }
       };
-      this.parser = new Parser({
+      this.parser = new this.parserType({
         callbacks: callbacks
       });
-      return events.on('codeChanged', function(e) {
-        return _this.parser.parse(e.code);
-      });
+      return this.listenTo(events, 'codeChanged', this.onCodeChanged);
+    };
+
+    EditorView.prototype.onCodeChanged = function(e) {
+      return this.parser.parse(e.code);
     };
 
     return EditorView;

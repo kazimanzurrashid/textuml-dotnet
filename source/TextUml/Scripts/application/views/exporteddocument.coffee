@@ -6,16 +6,22 @@ define (require) ->
   class ExportedDocumentView extends Backbone.View
     el: '#exported-document-dialog'
 
+    events:
+      'shown'   : 'onDialogShown'
+      'hide'    : 'onDialogHide'
+
     initialize: ->
-      box = @$ '.alert'
-      image = @$ 'img'
+      @messageBox = @$ '.alert'
+      @image      = @$ 'img'
 
-      @$el.modal(show: false)
-        .on 'shown', ->
-          box.fadeIn 400
-        .on 'hide', ->
-          box.hide()
+      @$el.modal show: false
 
-      events.on 'documentExported', (e) =>
-        image.prop 'src', e.data
-        @$el.modal 'show'
+      @listenTo events, 'documentExported', @onDocumentExported
+
+    onDocumentExported: (e)->
+      @image.prop 'src', e.data
+      @$el.modal 'show'
+
+    onDialogShown: -> @messageBox.fadeIn 400
+
+    onDialogHide: -> @messageBox.hide()

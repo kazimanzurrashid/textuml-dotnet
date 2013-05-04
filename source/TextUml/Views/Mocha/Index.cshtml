@@ -12,9 +12,14 @@
   <script src="~/Scripts/specs/bdd/chai.js"></script>
   <script src="~/Scripts/specs/bdd/sinon.js"></script>
   <script src="~/Scripts/specs/bdd/fixtures.js"></script>
+  <script src="~/Scripts/specs/bdd/sinon-chai.js"></script>
+  <script src="~/Scripts/specs/bdd/chai-jquery.js"></script>
   <script>
     fixtures.path = '@Url.Content("~/Scripts/specs/fixtures")';
-    mocha.setup('bdd');
+    mocha.setup({
+      ui: 'bdd',
+      globals: ['app'],
+    });
     expect = chai.expect;
   </script>
 </head>
@@ -24,7 +29,8 @@
     <script src="~/Scripts/require.js"></script>
     <script>
       require(['./scripts/config'], function () {
-        require([@Html.Raw(string.Join(",", Model))], function () {
+        require([@Html.Raw(string.Join(",\n", Model))], function () {
+          mocha.checkLeaks();
           mocha.run();
         });
       });

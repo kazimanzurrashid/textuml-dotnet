@@ -30,7 +30,7 @@ define(function(require) {
       this.shapeFactory = new Factory;
     }
 
-    Renderer.prototype.clear = function() {
+    Renderer.prototype.reset = function() {
       this.currentSize = {
         width: this.originalSize.width,
         height: this.originalSize.height
@@ -48,7 +48,7 @@ define(function(require) {
 
     Renderer.prototype.render = function(diagram) {
       var context, currentNestingLevel, layer;
-      this.clear();
+      this.reset();
       if (!diagram || !diagram.participants.length) {
         return false;
       }

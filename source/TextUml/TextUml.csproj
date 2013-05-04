@@ -229,8 +229,14 @@
     <Content Include="Content\images\jquery.splitter\vdockbar-trans.gif" />
     <Content Include="Content\images\jquery.splitter\vgrabber.gif" />
     <Content Include="Content\images\spacer.gif" />
-    <Content Include="Content\codemirror.less" />
-    <None Include="Content\jquery.splitter.less" />
+    <Content Include="Content\codemirror.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <None Include="Content\jquery.splitter.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </None>
     <Content Include="Content\mocha.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\application\application.js">
@@ -419,20 +425,17 @@
     <Content Include="Scripts\application\views\documentbrowser.js">
       <DependentUpon>documentbrowser.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\application\views\documentitem.js">
-      <DependentUpon>documentitem.coffee</DependentUpon>
-    </Content>
     <Content Include="Scripts\application\views\documentlist.js">
       <DependentUpon>documentlist.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\application\views\documentlistitem.js">
+      <DependentUpon>documentlistitem.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\application\views\documenttitle.js">
       <DependentUpon>documenttitle.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\application\views\editor.js">
       <DependentUpon>editor.coffee</DependentUpon>
-    </Content>
-    <Content Include="Scripts\application\views\exampleitem.js">
-      <DependentUpon>exampleitem.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\application\views\examplelist.js">
       <DependentUpon>examplelist.coffee</DependentUpon>
@@ -467,7 +470,12 @@
     <Content Include="Scripts\application\views\signup.js">
       <DependentUpon>signup.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\config.coffee" />
+    <Content Include="Scripts\config.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <Content Include="Scripts\config.js">
       <DependentUpon>config.coffee</DependentUpon>
     </Content>
@@ -498,130 +506,640 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <Content Include="Content\less\wells.less" />
-    <Content Include="Content\less\utilities.less" />
-    <Content Include="Content\less\type.less" />
-    <Content Include="Content\less\tooltip.less" />
-    <Content Include="Content\less\thumbnails.less" />
-    <Content Include="Content\less\tables.less" />
-    <Content Include="Content\less\sprites.less" />
-    <Content Include="Content\less\scaffolding.less" />
-    <Content Include="Content\less\responsive-utilities.less" />
-    <Content Include="Content\less\responsive-navbar.less" />
-    <Content Include="Content\less\responsive-768px-979px.less" />
-    <Content Include="Content\less\responsive-767px-max.less" />
-    <Content Include="Content\less\responsive-1200px-min.less" />
-    <Content Include="Content\less\responsive.less" />
-    <Content Include="Content\less\reset.less" />
-    <Content Include="Content\less\progress-bars.less" />
-    <Content Include="Content\less\popovers.less" />
-    <Content Include="Content\less\pagination.less" />
-    <Content Include="Content\less\pager.less" />
-    <Content Include="Content\less\navs.less" />
-    <Content Include="Content\less\navbar.less" />
-    <Content Include="Content\less\modals.less" />
-    <Content Include="Content\less\mixins.less" />
-    <Content Include="Content\less\media.less" />
-    <Content Include="Content\less\layouts.less" />
-    <Content Include="Content\less\labels-badges.less" />
-    <Content Include="Content\less\hero-unit.less" />
-    <Content Include="Content\less\grid.less" />
-    <Content Include="Content\less\forms.less" />
-    <Content Include="Content\less\dropdowns.less" />
-    <Content Include="Content\less\component-animations.less" />
-    <Content Include="Content\less\code.less" />
-    <Content Include="Content\less\close.less" />
-    <Content Include="Content\less\carousel.less" />
-    <Content Include="Content\less\buttons.less" />
-    <Content Include="Content\less\button-groups.less" />
-    <Content Include="Content\less\breadcrumbs.less" />
-    <Content Include="Content\less\bootstrap.less" />
-    <Content Include="Content\less\alerts.less" />
-    <Content Include="Content\less\accordion.less" />
-    <Content Include="Content\less\font-awesome-ie7.less" />
-    <Content Include="Content\less\font-awesome.less" />
+    <Content Include="Content\less\wells.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\type.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tooltip.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\thumbnails.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\sprites.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\scaffolding.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-768px-979px.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-767px-max.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-1200px-min.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\reset.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\progress-bars.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\popovers.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pagination.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pager.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\modals.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\mixins.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\media.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\layouts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\labels-badges.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\hero-unit.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\grid.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\forms.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\dropdowns.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\component-animations.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\code.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\close.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\carousel.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\buttons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\button-groups.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\breadcrumbs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\bootstrap.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\alerts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\accordion.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\font-awesome-ie7.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\font-awesome.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\FontAwesome.otf" />
-    <Content Include="Scripts\application\layout.coffee" />
-    <Content Include="Scripts\application\events.coffee" />
-    <Content Include="Scripts\application\application.coffee" />
-    <Content Include="Scripts\application\context.coffee" />
-    <Content Include="Scripts\application\lib\confirm.coffee" />
-    <Content Include="Scripts\application\lib\flashbar.coffee" />
-    <Content Include="Scripts\application\lib\form.coffee" />
-    <Content Include="Scripts\application\models\validation.coffee" />
-    <Content Include="Scripts\application\models\changepassword.coffee" />
-    <Content Include="Scripts\application\models\forgotpassword.coffee" />
-    <Content Include="Scripts\application\models\session.coffee" />
-    <Content Include="Scripts\application\models\user.coffee" />
-    <Content Include="Scripts\application\models\example.coffee" />
-    <Content Include="Scripts\application\models\examples.coffee" />
-    <Content Include="Scripts\application\models\sortorder.coffee" />
-    <Content Include="Scripts\application\models\document.coffee" />
-    <Content Include="Scripts\application\models\documents.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\base.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\composite.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\title.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\participant.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\grouptype.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\message.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\group.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\diagram.coffee" />
-    <Content Include="Scripts\application\uml\models\sequence\condition.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\comment.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\helpers.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\condition.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\end.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\title.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\participant.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\group.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\message.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\parser.coffee" />
-    <Content Include="Scripts\application\uml\language\sequence\context.coffee" />
-    <Content Include="Scripts\application\uml\drawing\arrowdirection.coffee" />
-    <Content Include="Scripts\application\uml\drawing\arrowstyle.coffee" />
-    <Content Include="Scripts\application\uml\drawing\linestyle.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\base.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\text.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\line.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\rectangle.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\horizontalline.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\verticalline.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\arrow.coffee" />
-    <Content Include="Scripts\application\uml\drawing\canvas\factory.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\composite.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\title.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\config.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\lifeline.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\participant.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\groupheader.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\message.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\group.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\condition.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\context.coffee" />
-    <Content Include="Scripts\application\uml\drawing\sequence\renderer.coffee" />
-    <Content Include="Scripts\application\views\helpers.coffee" />
-    <Content Include="Scripts\application\views\signup.coffee" />
-    <Content Include="Scripts\application\views\signin.coffee" />
-    <Content Include="Scripts\application\views\forgotpassword.coffee" />
-    <Content Include="Scripts\application\views\navigation.coffee" />
-    <Content Include="Scripts\application\views\outputgenerator.coffee" />
-    <Content Include="Scripts\application\views\membership.coffee" />
-    <Content Include="Scripts\application\views\profile.coffee" />
-    <Content Include="Scripts\application\views\exporteddocument.coffee" />
-    <Content Include="Scripts\application\views\exampleitem.coffee" />
-    <Content Include="Scripts\application\views\editor.coffee" />
-    <Content Include="Scripts\application\views\examplelist.coffee" />
-    <Content Include="Scripts\application\views\documenttitle.coffee" />
-    <Content Include="Scripts\application\views\documentlist.coffee" />
-    <Content Include="Scripts\application\views\documentitem.coffee" />
-    <Content Include="Scripts\application\views\documentbrowser.coffee" />
-    <Content Include="Scripts\application\views\codeeditor.coffee" />
-    <Content Include="Scripts\application\views\canvas.coffee" />
-    <Content Include="Scripts\application\router.coffee" />
-    <Content Include="Scripts\application\views\membershipform.coffee" />
+    <Content Include="Scripts\application\layout.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\events.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\application.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\context.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\lib\confirm.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\lib\flashbar.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\lib\form.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\validation.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\changepassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\forgotpassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\session.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\user.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\example.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\examples.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\sortorder.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\document.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\documents.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\base.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\composite.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\title.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\participant.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\grouptype.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\message.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\group.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\diagram.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\models\sequence\condition.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\comment.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\helpers.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\condition.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\end.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\title.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\participant.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\group.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\message.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\parser.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\language\sequence\context.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\arrowdirection.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\arrowstyle.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\linestyle.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\base.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\text.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\line.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\rectangle.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\horizontalline.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\verticalline.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\arrow.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\canvas\factory.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\composite.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\title.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\config.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\lifeline.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\participant.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\groupheader.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\message.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\group.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\condition.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\context.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\uml\drawing\sequence\renderer.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\helpers.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\signup.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\signin.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\forgotpassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\navigation.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\outputgenerator.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\membership.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\profile.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\exporteddocument.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\editor.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\examplelist.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\documenttitle.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\documentlist.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\documentlistitem.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\documentbrowser.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\codeeditor.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\canvas.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\router.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\views\membershipform.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js">
       <DependentUpon>jquery-1.9.1.js</DependentUpon>
     </None>
@@ -675,12 +1193,62 @@
     <Content Include="Scripts\specs\application\models\validation.js">
       <DependentUpon>validation.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\views\canvas.js">
+      <DependentUpon>canvas.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\codeeditor.js">
+      <DependentUpon>codeeditor.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentbrowser.js">
+      <DependentUpon>documentbrowser.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentlist.js">
+      <DependentUpon>documentlist.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentlistitem.js">
+      <DependentUpon>documentlistitem.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documenttitle.js">
+      <DependentUpon>documenttitle.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\editor.js">
+      <DependentUpon>editor.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\examplelist.js">
+      <DependentUpon>examplelist.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\exporteddocument.js">
+      <DependentUpon>exporteddocument.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\forgotpassword.js">
+      <DependentUpon>forgotpassword.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\membership.js">
+      <DependentUpon>membership.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\views\membershipform.js">
       <DependentUpon>membershipform.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\views\navigation.js">
+      <DependentUpon>navigation.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\outputgenerator.js">
+      <DependentUpon>outputgenerator.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\profile.js">
+      <DependentUpon>profile.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\signin.js">
+      <DependentUpon>signin.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\views\signup.js">
+      <DependentUpon>signup.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\bdd\chai-jquery.js" />
     <Content Include="Scripts\specs\bdd\chai.js" />
     <Content Include="Scripts\specs\bdd\fixtures.js" />
     <Content Include="Scripts\specs\bdd\mocha.js" />
+    <Content Include="Scripts\specs\bdd\sinon-chai.js" />
     <Content Include="Scripts\specs\bdd\sinon.js" />
     <Content Include="Scripts\specs\fixtures\readme.txt" />
     <Content Include="Scripts\specs\helpers.js">
@@ -717,18 +1285,139 @@
       <DependentUpon>jquery-1.9.1.js</DependentUpon>
     </Content>
     <Content Include="Views\Mocha\Index.cshtml" />
-    <Content Include="Scripts\main.coffee" />
-    <Content Include="Scripts\specs\helpers.coffee" />
-    <Content Include="Scripts\specs\application\models\changepassword.coffee" />
-    <Content Include="Scripts\specs\application\models\validation.coffee" />
-    <Content Include="Scripts\specs\application\models\forgotpassword.coffee" />
-    <Content Include="Scripts\specs\application\views\membershipform.coffee" />
-    <Content Include="Scripts\specs\application\models\example.coffee" />
-    <Content Include="Scripts\specs\application\models\examples.coffee" />
-    <Content Include="Scripts\specs\application\models\session.coffee" />
-    <Content Include="Scripts\specs\application\models\document.coffee" />
-    <Content Include="Scripts\specs\application\models\user.coffee" />
-    <Content Include="Scripts\specs\application\models\documents.coffee" />
+    <Content Include="Scripts\main.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\helpers.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\changepassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\validation.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\forgotpassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\membershipform.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\example.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\examples.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\session.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\document.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\user.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\models\documents.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\navigation.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\membership.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\profile.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\outputgenerator.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\exporteddocument.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\examplelist.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\editor.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documenttitle.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentlist.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\codeeditor.coffee" />
+    <Content Include="Scripts\specs\application\views\canvas.coffee" />
+    <Content Include="Scripts\specs\application\views\documentbrowser.coffee" />
+    <Content Include="Scripts\specs\application\views\signin.coffee" />
+    <Content Include="Scripts\specs\application\views\signup.coffee" />
+    <Content Include="Scripts\specs\application\views\forgotpassword.coffee" />
+    <Content Include="Scripts\specs\application\views\documentlistitem.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -747,7 +1436,7 @@
   <ItemGroup>
     <Content Include="Content\application.less">
       <Compile>True</Compile>
-      <Minify>False</Minify>
+      <Minify>True</Minify>
     </Content>
   </ItemGroup>
   <ItemGroup>

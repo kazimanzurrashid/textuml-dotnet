@@ -10,6 +10,7 @@ define (require) ->
     countAttribute        : 'count'
     resultAttribute       : 'data'
     defaultPageSize       : 25
+    filter                : null
     url                   : '/api/documents'
     model                 : Document
 
@@ -34,6 +35,7 @@ define (require) ->
           orderBy += ' desc'
         query.orderBy = orderBy
 
+      query.filter = @filter if @filter
       options.url = (_(@).result 'url') + '?' + $.param query
       super options
 

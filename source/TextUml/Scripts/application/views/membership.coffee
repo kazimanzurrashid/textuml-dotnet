@@ -9,37 +9,58 @@ define (require) ->
   require 'form'
 
   class MembershipView extends Backbone.View
-    el: '#membership-dialog'
+    el                        : '#membership-dialog'
+    signInViewType            : SignInView
+    forgotPasswordViewType    : ForgotPasswordView
+    signUpViewType            : SignUpView
+
+    events:
+      'shown a[data-toggle="tab"]'  : 'onTabHeaderShown'
+      'show'                        : 'onDialogShow'
+      'shown'                       : 'onDialogShown'
+      'hidden'                      : 'onDialogHidden'
 
     initialize: ->
-      @signIn = new SignInView
-      @forgotPassword = new ForgotPasswordView
-      @signUp = new SignUpView
+      @signIn             = new @signInViewType
+      @forgotPassword     = new @forgotPasswordViewType
+      @signUp             = new @signUpViewType
 
-      tabHeaders = @$el.find('a[data-toggle="tab"]')
-        .on 'shown', (e) =>
-          @$el.find(e.target.hash).putFocus() if e.target?.hash?
+      @firstTabHead = @$('a[data-toggle="tab"]').first()
 
-      @$el.modal(show: false)
-        .on 'show', =>
-          @canceled = true
-          @$el.resetFields()
-            .hideSummaryError()
-            .hideFieldErrors()
-        .on 'shown', =>
-          @$el.putFocus()
-        .on 'hidden', =>
-          if @canceled and @cancel?
-            @cancel()
-          else if @ok?
-            @ok()
+      @$el.modal show: false
 
-      events.on 'showMembership', (e) =>
-        @ok = if e and _(e.ok).isFunction() then e.ok else undefined
-        @cancel = if e and _(e.cancel).isFunction() then e.cancel else undefined
-        tabHeaders.first().trigger 'click'
-        @$el.modal 'show'
+      @listenTo events, 'showMembership', @onShowMembership
+      @listenTo events,
+        'signedIn passwordResetTokenRequested signedUp',
+        @onSignedInOrPasswordResetTokenRequestedOrSignedUp
 
-      events.on 'signedIn passwordResetTokenRequested signedUp', =>
-        @canceled = false
-        @$el.modal 'hide'
+    onShowMembership: (e) ->
+      @ok     = if e and _(e.ok).isFunction() then e.ok else undefined
+      @cancel = if e and _(e.cancel).isFunction() then e.cancel else undefined
+
+      @firstTabHead.trigger 'click'
+      @$el.modal 'show'
+
+    onSignedInOrPasswordResetTokenRequestedOrSignedUp: ->
+      @canceled = false
+      @$el.modal 'hide'
+
+    onTabHeaderShown: (e) ->
+      return false unless e.target?.hash?
+      @$(e.target.hash).putFocus()
+
+    onDialogShow: ->
+      @canceled = true
+      @$el.resetFields()
+        .hideSummaryError()
+        .hideFieldErrors()
+
+    onDialogShown: -> @$el.putFocus()
+
+    onDialogHidden: ->
+      if @canceled and @cancel?
+        @cancel()
+      else if @ok?
+        @ok()
+      else
+        false

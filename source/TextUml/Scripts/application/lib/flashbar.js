@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var $, animationDuration, showFlashbar, template, timeout, _;
+
   _ = require('underscore');
   $ = require('jquery');
   require('bootstrap');
@@ -9,6 +9,7 @@ define(function(require) {
   template = _("<div class=\"alert alert-{{type}} fade.in flash-bar hide\">\n  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" title=\"close\">&times;</button>\n  <i class=\"{{icon}}\"></i>\n  <span>{{message}}</span>\n</div>").template();
   showFlashbar = function(type, message) {
     var flashbar, icon;
+
     icon = (function() {
       switch (type) {
         case 'success':

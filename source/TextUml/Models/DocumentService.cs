@@ -54,6 +54,11 @@
                 .Select(MapExpression)
                 .OrderBy(model.GetOrderByClause());
 
+            if (!string.IsNullOrWhiteSpace(model.Filter))
+            {
+                query = query.Where(d => d.Title.Contains(model.Filter));
+            }
+
             if (model.Skip > 0)
             {
                 query = query.Skip(model.Skip);
@@ -62,8 +67,10 @@
             var data = query.Take(model.Top)
                 .ToList();
 
-            var count = dataContext.Documents
-                .LongCount(d => d.UserId == userId);
+            var count = string.IsNullOrWhiteSpace(model.Filter) ?
+                dataContext.Documents.LongCount(d => d.UserId == userId) :
+                dataContext.Documents.LongCount(d =>
+                    d.UserId == userId && d.Title.Contains(model.Filter));
 
             return new PagedQueryResult<DocumentRead>(data, count);
         }

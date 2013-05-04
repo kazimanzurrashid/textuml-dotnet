@@ -17,43 +17,55 @@ define(function(require) {
 
     DocumentBrowserView.prototype.el = '#document-browser-dialog';
 
+    DocumentBrowserView.prototype.listViewType = DocumentListView;
+
     DocumentBrowserView.prototype.events = {
-      'click .btn-primary': 'submit'
+      'show': 'onDiaglogShow',
+      'hidden': 'onDiaglogHidden',
+      'click .btn-primary': 'onSubmit'
     };
 
     DocumentBrowserView.prototype.initialize = function(options) {
-      var context,
-        _this = this;
-      context = options.context;
-      this.list = new DocumentListView({
-        collection: context.documents
-      });
-      this.listenTo(this.list, 'selected', function() {
-        return _this.submitButton.prop('disabled', false);
-      });
-      this.listenTo(this.list, 'opened', function() {
-        return _this.submitButton.trigger('click');
+      this.list = new this.listViewType({
+        collection: options.context.documents
       });
       this.submitButton = this.$('.btn-primary');
       this.$el.modal({
         show: false
-      }).on('show', function() {
-        _this.canceled = true;
-        _this.list.scrollToTop();
-        _this.list.resetSelection();
-        return _this.submitButton.prop('disabled', true);
-      }).on('hidden', function() {
-        if (_this.canceled) {
-          return _this.cancel();
-        }
       });
-      return events.on('showDocuments', function(e) {
-        _this.cancel = e.cancel;
-        return _this.$el.modal('show');
-      });
+      this.listenTo(events, 'showDocuments', this.onShowDocuments);
+      this.listenTo(this.list, 'selected', this.onDocumentSelected);
+      return this.listenTo(this.list, 'opened', this.onDocumentOpened);
     };
 
-    DocumentBrowserView.prototype.submit = function(e) {
+    DocumentBrowserView.prototype.onShowDocuments = function(e) {
+      this.cancel = e.cancel;
+      return this.$el.modal('show');
+    };
+
+    DocumentBrowserView.prototype.onDiaglogShow = function() {
+      this.canceled = true;
+      this.list.scrollToTop();
+      this.list.resetSelection();
+      return this.submitButton.prop('disabled', true);
+    };
+
+    DocumentBrowserView.prototype.onDialogHidden = function() {
+      if (!this.canceled) {
+        return false;
+      }
+      return typeof this.cancel === "function" ? this.cancel() : void 0;
+    };
+
+    DocumentBrowserView.prototype.onDocumentSelected = function() {
+      return this.submitButton.prop('disabled', false);
+    };
+
+    DocumentBrowserView.prototype.onDocumentOpened = function() {
+      return this.submitButton.trigger('click');
+    };
+
+    DocumentBrowserView.prototype.onSubmit = function(e) {
       e.preventDefault();
       this.canceled = false;
       this.$el.modal('hide');

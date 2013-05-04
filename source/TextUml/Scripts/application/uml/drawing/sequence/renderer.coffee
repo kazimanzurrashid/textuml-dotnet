@@ -24,7 +24,7 @@ define (require) ->
         height: element.height()
       @shapeFactory = new Factory
 
-    clear: ->
+    reset: ->
       @currentSize =
         width: @originalSize.width
         height: @originalSize.height
@@ -37,7 +37,7 @@ define (require) ->
       @resetSize()
 
     render: (diagram) ->
-      @clear()
+      @reset()
       return false if not diagram or not diagram.participants.length
 
       layer = new Kinetic.Layer

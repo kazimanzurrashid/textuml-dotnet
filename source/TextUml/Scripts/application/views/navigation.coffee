@@ -11,4 +11,5 @@ define (require) ->
 
     handleCommand: (e) ->
       command = $(e.currentTarget).attr 'data-command'
-      events.trigger command if command
+      return false unless command
+      events.trigger command

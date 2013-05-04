@@ -19,8 +19,8 @@ define (require) ->
   
   getModelErrors: (jqxhr) ->
     try
-      response = $.parseJSON(jqxhr.responseText);
-    catch exception
+      response = $.parseJSON jqxhr.responseText
+    catch e
       response = null
 
     if response

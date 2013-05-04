@@ -1,5 +1,4 @@
 define (require) ->
-  _                 = require 'underscore'
   Backbone          = require 'backbone'
   CodeMirror        = require 'codemirror'
   events            = require '../events'
@@ -31,36 +30,37 @@ define (require) ->
     el: '#code-text-area'
 
     initialize: (options) ->
-      context = options.context
+      @context = options.context
 
       @editor = CodeMirror.fromTextArea @$el.get(0),
-        mode: 'uml'
-        tabSize: 2
-        indentWithTabs: true
-        lineNumbers: true
-        dragDrop: false
-        styleActiveLine: true
+        mode              : 'uml'
+        tabSize           : 2
+        indentWithTabs    : true
+        lineNumbers       : true
+        dragDrop          : false
+        styleActiveLine   : true
 
-      oldCode = @editor.getValue()
-      triggerCodeChange = =>
-        newCode = @editor.getValue()
-        return false if newCode is oldCode
-        context.setCurrentDocumentContent newCode
-        events.trigger 'codeChanged', { code: newCode }
-        oldCode = newCode
+      @oldCode = @editor.getValue()
+      @editor.on 'change',  => @onCodeChanged()
 
-      @editor.on 'change',  _(triggerCodeChange).debounce 1000 * 0.7
+      @listenTo events, 'exampleSelected', @onExampleSelected
+      @listenTo events, 'documentChanged', @onDocumentChanged
 
-      events.on 'exampleSelected', (e) =>
-        code = @editor.getValue()
-        code += '\n' if code
-        code += e.example.get 'snippet'
-        @editor.setValue code
-        triggerCodeChange()
-        @editor.focus()
+    onExampleSelected: (e) ->
+      code = @editor.getValue()
+      code += '\n' if code
+      code += e.example.get 'snippet'
+      @editor.setValue code
+      @editor.focus()
 
-      events.on 'documentChanged', =>
-        code = context.getCurrentDocumentContent()
-        @editor.setValue code
-        triggerCodeChange()
-        @editor.focus()
+    onDocumentChanged: ->
+      code = @context.getCurrentDocumentContent()
+      @editor.setValue code
+      @editor.focus()
+
+    onCodeChanged: ->
+      newCode = @editor.getValue()
+      return false if newCode is @oldCode
+      @context.setCurrentDocumentContent newCode
+      events.trigger 'codeChanged', { code: newCode }
+      @oldCode = newCode

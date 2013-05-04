@@ -1,8 +1,7 @@
-﻿
 define(function() {
   var End;
-  return End = (function() {
 
+  return End = (function() {
     function End() {}
 
     End.prototype.handles = function(context) {

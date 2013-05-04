@@ -1,11 +1,12 @@
-﻿
 define(function(require) {
   var User, repeatString, _;
+
   _ = require('underscore');
   User = require('../../../application/models/user');
   repeatString = require('../../helpers').repeatString;
   return describe('models/user', function() {
     var user;
+
     user = null;
     beforeEach(function() {
       return user = new User;

@@ -1,8 +1,9 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var Composite, CompositeModel, Condition, ConditionModel, Config, Group, GroupHeader, GroupModel, LineStyle, Message, MessageModel, _;
+
   _ = require('underscore');
   Config = require('./config');
   Composite = require('./composite');
@@ -15,7 +16,6 @@ define(function(require) {
   GroupModel = require('../../models/sequence/group');
   MessageModel = require('../../models/sequence/message');
   return Condition = (function(_super) {
-
     __extends(Condition, _super);
 
     function Condition(model, nestingLevel) {
@@ -27,6 +27,7 @@ define(function(require) {
     Condition.prototype.draw = function(context) {
       var box, elseGroups, height, ifGroup, ifHeader, nestingLevel, width, x, y,
         _this = this;
+
       ifGroup = this.model.getIfGroup();
       elseGroups = this.model.getElseGroups();
       nestingLevel = this.nestingLevel;
@@ -41,6 +42,7 @@ define(function(require) {
       this.iterate(nestingLevel, ifGroup, context);
       _(elseGroups).each(function(group) {
         var divider, elseHeader;
+
         divider = context.shapeFactory.horizontalLine(x, context.getNextShapeStartY(), width, LineStyle.dash, {
           stroke: Config.borderColor
         }).draw(context.surface);
@@ -63,8 +65,10 @@ define(function(require) {
 
     Condition.prototype.iterate = function(nestingLevel, group, context) {
       var _this = this;
+
       return _(group.children).each(function(c) {
         var shape;
+
         shape = null;
         if (c instanceof CompositeModel) {
           nestingLevel += 1;

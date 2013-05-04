@@ -2,26 +2,29 @@ define (require) ->
   $                       = require 'jquery'
   _                       = require 'underscore'
   Backbone                = require 'backbone'
-  DocumentListItemView    = require './documentitem'
+  DocumentListItemView    = require './documentlistitem'
 
   class DocumentListView extends Backbone.View
-    el: '#document-list'
+    el                  : '#document-list'
+    itemViewType        : DocumentListItemView
 
-    events: ->
-      'click .btn-toolbar .btn'       : 'sort'
-      'keydown .list-container'       : 'navigate'
-      'scroll .list-container'        : 'load'
-      'click .list-container li'      : 'select'
-      'dblclick .list-container li'   : 'open'
+    events:
+      'click .btn-toolbar .btn'       : 'onSort'
+      'keydown .list-container'       : 'onNavigate'
+      'scroll .list-container'        : 'onScroll'
+      'click .list-container li'      : 'onSelect'
+      'dblclick .list-container li'   : 'onOpen'
 
     initialize: ->
-      @listContainer = @$ '.list-container'
-      @list = @listContainer.find '> ul'
-      @children = []
-      @selectedId = undefined
-      @template = _($('#document-item-template').html()).template()
+      @listContainer      = @$ '.list-container'
+      @list               = @listContainer.find '> ul'
+      @children           = []
+      @selectedId         = undefined
+      @template           = _(@$('#document-item-template').html()).template()
+
       @listenTo @collection, 'reset sort', @render
       @listenTo @collection, 'add', @renderItem
+
       @render()
 
     getSelectedId: -> @selectedId
@@ -34,13 +37,13 @@ define (require) ->
 
     render: ->
       @removeChildren()
-      @collection.each (document) => @renderItem document, false
+      @collection.each (document) => @renderItem document
       @
 
-    renderItem: (document, animate = true) ->
-      child = new DocumentListItemView
-        model: document
-        template: @template
+    renderItem: (document) ->
+      child = new @itemViewType
+        model     : document
+        template  : @template
 
       @listenTo child, 'removing', =>
         index = _(@children).indexOf child
@@ -52,8 +55,8 @@ define (require) ->
         .data('id', document.id)
         .appendTo @list
 
-      child.$el.hide().fadeIn() if animate
       @children.push child
+      child
 
     remove: ->
       @removeChildren()
@@ -64,31 +67,32 @@ define (require) ->
         @stopListening child, 'removing'
         child.remove false
 
-    sort: (e) ->
-      button = $ e.currentTarget
-      sortAttribute = button.attr 'data-sort-attribute'
-      sortOrder = button.attr 'data-sort-order'
+    onSort: (e) ->
+      button          = $ e.currentTarget
+      sortAttribute   = button.attr 'data-sort-attribute'
+      sortOrder       = button.attr 'data-sort-order'
 
-      if sortAttribute?
+      if sortAttribute
         return false if sortAttribute is @collection.sortAttribute
         @collection.sortAttribute = sortAttribute
-      else if sortOrder?
+      else if sortOrder
         return false if parseInt(sortOrder, 10) is @collection.sortOrder
         @collection.sortOrder = parseInt sortOrder, 10
       @collection.pageIndex = 0
-      @collection.fetch().always => @scrollToTop()
+      @collection.fetch
+        reset   : true
+        success : => @scrollToTop()
 
-    load: ->
+    onScroll: ->
       return false if @collection.pageIndex >= @collection.pageCount
-      el = @listContainer.get 0
-      if el.scrollTop + el.clientHeight + 125 > el.scrollHeight
-        @collection.pageIndex += 1
-        @collection.fetch
-          update: true
-          add: true
-          remove: false
+      return false unless @isEndOfScrolling()
+      @collection.pageIndex += 1
+      @collection.fetch
+        update    : true
+        add       : true
+        remove    : false
 
-    navigate: (e) ->
+    onNavigate: (e) ->
       keyCode = e.which
       if keyCode is 38 or keyCode is 40 # up/down
         items = @list.children 'li'
@@ -99,14 +103,20 @@ define (require) ->
         else if keyCode is 40 # down
           return false if index >= items.length - 1
           index += 1
-        $(items.get(index)).trigger 'click'
-      else if keyCode is 13 or keyCode is 32 #enter/space
+        $(items.get index).trigger 'click'
+      else if keyCode is 32 #spacebar
         e.preventDefault()
         @list.find('li.active').trigger 'dblclick'
+      else
+        true
 
-    select: (e) -> @triggerEvent e, 'selected'
+    onSelect: (e) -> @triggerEvent e, 'selected'
 
-    open: (e) -> @triggerEvent e, 'opened'
+    onOpen: (e) -> @triggerEvent e, 'opened'
+
+    isEndOfScrolling: ->
+      el = @listContainer.get 0
+      el.scrollTop + el.clientHeight + 125 > el.scrollHeight
 
     triggerEvent: (e, eventName) ->
       e.preventDefault()

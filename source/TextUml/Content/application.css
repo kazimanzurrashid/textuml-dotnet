@@ -1,4 +1,4 @@
-﻿.clearfix {
+.clearfix {
   *zoom: 1;
 }
 .clearfix:before,
@@ -1422,7 +1422,7 @@ a [class*=" icon-"] {
 /* makes the font 33% larger relative to the icon container */
 .icon-large:before {
   vertical-align: -10%;
-  font-size: 1.3333333333333332em;
+  font-size: 1.3333333333333333em;
 }
 .btn [class^="icon-"],
 .nav [class^="icon-"],

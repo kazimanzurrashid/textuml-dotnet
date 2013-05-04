@@ -1,4 +1,3 @@
-﻿
 define(function() {
   return {
     open: 0,

@@ -5,7 +5,8 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
   <meta content="on" http-equiv="cleartype" />
 <![endif]-->
-<link href="~/Content/application.css" rel="stylesheet" />
+@{ var cssFile = "application" + (Context.IsDebuggingEnabled ? ".css" : ".min.css"); } 
+<link href="~/Content/@cssFile" rel="stylesheet" />
 <script src="~/Scripts/html5shiv.min.js"></script>
 <!--[if lt IE 8]>
   <script src="~/Scripts/json2.min.js"></script>

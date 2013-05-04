@@ -5,33 +5,43 @@ define (require) ->
   require 'bootstrap'
 
   class DocumentBrowserView extends Backbone.View
-    el: '#document-browser-dialog'
+    el              : '#document-browser-dialog'
+    listViewType    : DocumentListView
 
     events:
-      'click .btn-primary': 'submit'
+      'show'                : 'onDiaglogShow'
+      'hidden'              : 'onDiaglogHidden'
+      'click .btn-primary'  : 'onSubmit'
 
     initialize: (options) ->
-      context = options.context
+      @list           = new @listViewType collection: options.context.documents
+      @submitButton   = @$ '.btn-primary'
 
-      @list = new DocumentListView collection: context.documents
-      @listenTo @list, 'selected', => @submitButton.prop 'disabled', false
-      @listenTo @list, 'opened', => @submitButton.trigger 'click'
+      @$el.modal show: false
 
-      @submitButton = @$ '.btn-primary'
+      @listenTo events, 'showDocuments', @onShowDocuments
+      @listenTo @list, 'selected', @onDocumentSelected
+      @listenTo @list, 'opened', @onDocumentOpened
 
-      @$el.modal(show: false)
-        .on 'show', =>
-          @canceled = true
-          @list.scrollToTop()
-          @list.resetSelection()
-          @submitButton.prop 'disabled', true
-        .on 'hidden', => @cancel() if @canceled
+    onShowDocuments: (e) ->
+      @cancel = e.cancel
+      @$el.modal 'show'
 
-      events.on 'showDocuments', (e) =>
-        @cancel = e.cancel
-        @$el.modal 'show'
+    onDiaglogShow: ->
+      @canceled = true
+      @list.scrollToTop()
+      @list.resetSelection()
+      @submitButton.prop 'disabled', true
 
-    submit: (e) ->
+    onDialogHidden: ->
+      return false unless @canceled
+      @cancel?()
+     
+    onDocumentSelected: -> @submitButton.prop 'disabled', false
+
+    onDocumentOpened: -> @submitButton.trigger 'click'
+
+    onSubmit: (e) ->
       e.preventDefault()
       @canceled = false
       @$el.modal 'hide'

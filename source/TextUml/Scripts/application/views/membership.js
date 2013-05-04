@@ -21,42 +21,68 @@ define(function(require) {
 
     MembershipView.prototype.el = '#membership-dialog';
 
+    MembershipView.prototype.signInViewType = SignInView;
+
+    MembershipView.prototype.forgotPasswordViewType = ForgotPasswordView;
+
+    MembershipView.prototype.signUpViewType = SignUpView;
+
+    MembershipView.prototype.events = {
+      'shown a[data-toggle="tab"]': 'onTabHeaderShown',
+      'show': 'onDialogShow',
+      'shown': 'onDialogShown',
+      'hidden': 'onDialogHidden'
+    };
+
     MembershipView.prototype.initialize = function() {
-      var tabHeaders,
-        _this = this;
-      this.signIn = new SignInView;
-      this.forgotPassword = new ForgotPasswordView;
-      this.signUp = new SignUpView;
-      tabHeaders = this.$el.find('a[data-toggle="tab"]').on('shown', function(e) {
-        var _ref;
-        if (((_ref = e.target) != null ? _ref.hash : void 0) != null) {
-          return _this.$el.find(e.target.hash).putFocus();
-        }
-      });
+      this.signIn = new this.signInViewType;
+      this.forgotPassword = new this.forgotPasswordViewType;
+      this.signUp = new this.signUpViewType;
+      this.firstTabHead = this.$('a[data-toggle="tab"]').first();
       this.$el.modal({
         show: false
-      }).on('show', function() {
-        _this.canceled = true;
-        return _this.$el.resetFields().hideSummaryError().hideFieldErrors();
-      }).on('shown', function() {
-        return _this.$el.putFocus();
-      }).on('hidden', function() {
-        if (_this.canceled && (_this.cancel != null)) {
-          return _this.cancel();
-        } else if (_this.ok != null) {
-          return _this.ok();
-        }
       });
-      events.on('showMembership', function(e) {
-        _this.ok = e && _(e.ok).isFunction() ? e.ok : void 0;
-        _this.cancel = e && _(e.cancel).isFunction() ? e.cancel : void 0;
-        tabHeaders.first().trigger('click');
-        return _this.$el.modal('show');
-      });
-      return events.on('signedIn passwordResetTokenRequested signedUp', function() {
-        _this.canceled = false;
-        return _this.$el.modal('hide');
-      });
+      this.listenTo(events, 'showMembership', this.onShowMembership);
+      return this.listenTo(events, 'signedIn passwordResetTokenRequested signedUp', this.onSignedInOrPasswordResetTokenRequestedOrSignedUp);
+    };
+
+    MembershipView.prototype.onShowMembership = function(e) {
+      this.ok = e && _(e.ok).isFunction() ? e.ok : void 0;
+      this.cancel = e && _(e.cancel).isFunction() ? e.cancel : void 0;
+      this.firstTabHead.trigger('click');
+      return this.$el.modal('show');
+    };
+
+    MembershipView.prototype.onSignedInOrPasswordResetTokenRequestedOrSignedUp = function() {
+      this.canceled = false;
+      return this.$el.modal('hide');
+    };
+
+    MembershipView.prototype.onTabHeaderShown = function(e) {
+      var _ref;
+      if (((_ref = e.target) != null ? _ref.hash : void 0) == null) {
+        return false;
+      }
+      return this.$(e.target.hash).putFocus();
+    };
+
+    MembershipView.prototype.onDialogShow = function() {
+      this.canceled = true;
+      return this.$el.resetFields().hideSummaryError().hideFieldErrors();
+    };
+
+    MembershipView.prototype.onDialogShown = function() {
+      return this.$el.putFocus();
+    };
+
+    MembershipView.prototype.onDialogHidden = function() {
+      if (this.canceled && (this.cancel != null)) {
+        return this.cancel();
+      } else if (this.ok != null) {
+        return this.ok();
+      } else {
+        return false;
+      }
     };
 
     return MembershipView;

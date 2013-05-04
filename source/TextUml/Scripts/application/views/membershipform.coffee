@@ -5,18 +5,17 @@
   require 'form'
 
   class MembershipFormView extends Backbone.View
-    modelType: null
-    successEvent: null
+    modelType       : null
+    successEvent    : null
 
     events:
-      'submit': 'submit'
+      'submit': 'onSubmit'
 
     handleError: (jqxhr) -> throw new Error 'Not implemented'
 
-    submit: (e) ->
+    onSubmit: (e) ->
       e.preventDefault()
-      @$el.hideSummaryError()
-        .hideFieldErrors()
+      @$el.hideSummaryError().hideFieldErrors()
 
       model = new @modelType
       Helpers.subscribeModelInvalidEvent model, @$el

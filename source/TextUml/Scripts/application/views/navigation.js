@@ -23,9 +23,10 @@ define(function(require) {
     NavigationView.prototype.handleCommand = function(e) {
       var command;
       command = $(e.currentTarget).attr('data-command');
-      if (command) {
-        return events.trigger(command);
+      if (!command) {
+        return false;
       }
+      return events.trigger(command);
     };
 
     return NavigationView;

@@ -167,7 +167,8 @@
             Register<UrlSafeSecureDataSerializer>(builder)
                 .WithParameter("algorithm", settings["urlSafeSecureData.algorithm"])
                 .WithParameter("key", settings["urlSafeSecureData.key"])
-                .WithParameter("vector", settings["urlSafeSecureData.vector"]);
+                .WithParameter("vector", settings["urlSafeSecureData.vector"])
+                .SingleInstance();
         }
 
         private static IRegistrationBuilder<TService,

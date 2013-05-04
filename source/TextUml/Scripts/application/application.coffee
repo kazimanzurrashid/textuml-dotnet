@@ -32,8 +32,8 @@
 
   showInfobar = (message) -> _(() -> $.showInfobar message).delay 1000 * 0.7
 
-  context = null
-  router = null
+  context   = null
+  router    = null
 
   attachEventHandlers = ->
     events.on 'saveDocument', ->
@@ -83,15 +83,15 @@
 
   createViews = ->
     app.views =
-      navigation: new NavigationView
-      exampleList: new ExampleListView
-      editor: new EditorView { context }
-      canvas: new CanvasView { context }
-      membership: new MembershipView
-      profile: new ProfileView
-      documentTitle: new DocumentTitleView { context }
-      documentBrowser: new DocumentBrowserView { context }
-      exportedDocument: new ExportedDocumentView
+      navigation          : new NavigationView
+      exampleList         : new ExampleListView
+      editor              : new EditorView { context }
+      canvas              : new CanvasView { context }
+      membership          : new MembershipView
+      profile             : new ProfileView
+      documentTitle       : new DocumentTitleView { context }
+      documentBrowser     : new DocumentBrowserView { context }
+      exportedDocument    : new ExportedDocumentView
 
   app =
     clientUrl: clientUrl
@@ -115,4 +115,5 @@
       return true if hasClientUrl()
       router.navigate clientUrl('documents', 'new'), true
 
+  window.app = app
   app

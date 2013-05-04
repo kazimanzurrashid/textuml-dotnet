@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var AllArrows, AsyncArrows, DashArrows, LeftArrow, LeftArrows, LineArrows, Message, Regex, RightArrow, RightArrows, SyncArrows, trim, _;
+
   _ = require('underscore');
   trim = require('./helpers').trim;
   RightArrow = {
@@ -24,11 +24,11 @@ define(function(require) {
   AllArrows = _(RightArrows).union(LeftArrows);
   Regex = new RegExp("^[\\s|\\t]*(\\w.*)\\s+(" + (AllArrows.join('|')) + ")\\s+(\\w.*)\\s*:\\s*(\\w.*)", 'i');
   return Message = (function() {
-
     function Message() {}
 
     Message.prototype.handles = function(context) {
       var arrow, async, callReturn, errorMessage, match, name, receiver, sender;
+
       match = context.line.match(Regex);
       if (!match) {
         return false;

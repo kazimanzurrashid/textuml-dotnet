@@ -19,6 +19,8 @@
             Top = 25;
         }
 
+        public string Filter { get; set; }
+
         public int Top { get; set; }
 
         public int Skip { get; set; }

@@ -1,13 +1,13 @@
-﻿
 define(function(require) {
   var Title, trim;
+
   trim = require('./helpers').trim;
   return Title = (function() {
-
     function Title() {}
 
     Title.prototype.handles = function(context) {
       var errorMessage, match;
+
       match = context.line.match(/^title\s+(\w.*)/i);
       if (!match) {
         return false;

@@ -1,4 +1,3 @@
-﻿
 define(function() {
   return {
     ascending: 0,

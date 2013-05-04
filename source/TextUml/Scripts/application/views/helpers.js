@@ -31,7 +31,7 @@ define(function(require) {
       var modelStateProperty, response;
       try {
         response = $.parseJSON(jqxhr.responseText);
-      } catch (exception) {
+      } catch (e) {
         response = null;
       }
       if (response) {

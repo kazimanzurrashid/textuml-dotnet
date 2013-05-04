@@ -20,14 +20,14 @@ define(function(require) {
     MembershipFormView.prototype.successEvent = null;
 
     MembershipFormView.prototype.events = {
-      'submit': 'submit'
+      'submit': 'onSubmit'
     };
 
     MembershipFormView.prototype.handleError = function(jqxhr) {
       throw new Error('Not implemented');
     };
 
-    MembershipFormView.prototype.submit = function(e) {
+    MembershipFormView.prototype.onSubmit = function(e) {
       var model,
         _this = this;
       e.preventDefault();

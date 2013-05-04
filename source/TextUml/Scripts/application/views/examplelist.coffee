@@ -4,7 +4,6 @@ define (require) ->
   Backbone            = require 'backbone'
   Example             = require '../models/example'
   Examples            = require '../models/examples'
-  ExampleListItemView = require './exampleitem'
   events              = require '../events'
 
   generateData = ->
@@ -40,45 +39,15 @@ define (require) ->
       'click li': 'select'
 
     initialize: ->
-      @children = []
-      @template = _('{{display}}').template()
-      @collection = generateData()
-      @listenTo @collection, 'reset', @render
-      @listenTo @collection, 'add', @renderItem
+      @template     = _('<li>{{display}}</li>').template()
+      @collection   = generateData()
       @render()
 
     render: ->
-      @removeChildren()
-      @collection.each (example) => @renderItem example, false
+      @$el.empty()
+      @collection.each (example) =>
+        @$el.append $(@template example.toJSON()).data('id', example.cid)
       @
-
-    renderItem: (example, animate = true) ->
-      child = new ExampleListItemView
-        model: example
-        template: @template
-
-      @listenTo child, 'removing', =>
-        index = _(@children).indexOf child
-        @stopListening child, 'removing'
-        @children.splice index, 1
-
-      child.render()
-        .$el
-        .data('id', example.cid)
-        .appendTo @$el
-
-      child.$el.hide().fadeIn() if animate
-
-      @children.push child
-
-    remove: ->
-      @removeChildren()
-      super
-
-    removeChildren: ->
-      while child = @children.pop()
-        @stopListening child, 'removing'
-        child.remove false
 
     select: (e) ->
       cid = $(e.currentTarget).data 'id'

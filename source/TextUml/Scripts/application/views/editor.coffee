@@ -1,18 +1,20 @@
 define (require) ->
-  Backbone            = require 'backbone'
-  CodeEditorView      = require './codeeditor'
-  OutputGeneratorView = require './outputgenerator'
-  Parser              = require '../uml/language/sequence/parser'
-  events              = require '../events'
+  Backbone              = require 'backbone'
+  CodeEditorView        = require './codeeditor'
+  OutputGeneratorView   = require './outputgenerator'
+  Parser                = require '../uml/language/sequence/parser'
+  events                = require '../events'
 
   class EditorView extends Backbone.View
-    el: '#editor-container'
+    el                        : '#editor-container'
+    codeEditorViewType        : CodeEditorView
+    outputGeneratorViewType   : OutputGeneratorView
+    parserType                : Parser
 
     initialize: (options) ->
       context = options.context
-
-      @code = new CodeEditorView { context }
-      @output = new OutputGeneratorView
+      @code   = new @codeEditorViewType { context }
+      @output = new @outputGeneratorViewType
 
       callbacks =
         onStart: ->
@@ -24,6 +26,8 @@ define (require) ->
         onComplete: (diagram) ->
           events.trigger 'parseCompleted', { diagram }
 
-      @parser = new Parser { callbacks }
+      @parser = new @parserType { callbacks }
 
-      events.on 'codeChanged', (e) => @parser.parse e.code
+      @listenTo events, 'codeChanged', @onCodeChanged
+
+    onCodeChanged: (e) -> @parser.parse e.code

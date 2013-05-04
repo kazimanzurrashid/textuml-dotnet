@@ -1,13 +1,12 @@
-﻿
 define(function(require) {
   var Arrow, Factory, HorizontalLine, Rectangle, Text, VerticalLine;
+
   Rectangle = require('./rectangle');
   Text = require('./text');
   VerticalLine = require('./verticalline');
   HorizontalLine = require('./horizontalline');
   Arrow = require('./arrow');
   return Factory = (function() {
-
     function Factory() {}
 
     Factory.prototype.rectangle = function(x, y, width, height, attributes) {

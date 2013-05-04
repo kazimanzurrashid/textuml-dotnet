@@ -4,15 +4,29 @@
   events        = require '../../../application/events'
 
   describe 'views/membership', ->
-    view = null
+    originalSignInViewType            = null
+    originalForgotPasswordViewType    = null
+    originalSignUpViewType            = null
+    spiedListenTo                     = null
+    view                              = null
 
     before ->
+      originalSignInViewType                = Membership::signInViewType
+      originalForgotPasswordViewType        = Membership::forgotPasswordViewType
+      originalSignUpViewType                = Membership::signUpViewType
+      Membership::signInViewType            = sinon.stub().returns {}
+      Membership::forgotPasswordViewType    = sinon.stub().returns {}
+      Membership::signUpViewType            = sinon.stub().returns {}
+      spiedListenTo                         = sinon.spy Membership.prototype, 'listenTo'
+
       fixtures.set '<div id="membership-dialog"></div>'
 
       view = new Membership
         el: $(fixtures.window().document.body).find '#membership-dialog'
 
-    describe 'child views', ->
+    describe 'new', ->
+      it 'is a modal dialog', -> expect(view.$el.data 'modal').to.be.ok
+
       it 'creates sign-in view', -> expect(view.signIn).to.be.ok
 
       it 'creates forgot password view', ->
@@ -20,85 +34,179 @@
 
       it 'creates sign-up view', -> expect(view.signUp).to.be.ok
 
-    describe 'plug-in integrations', ->
-      it 'is a modal dialog', -> expect(view.$el.data 'modal').to.be.ok
+      it 'subscribes to showMembership application event', -> 
+        expect(spiedListenTo)
+          .to.be.have.been.calledWith events,
+            'showMembership',
+            view.onShowMembership
 
-    describe 'dialog closing without application events', ->
-      cancelCalled = null
+      it 'subscribes to signedIn passwordResetTokenRequested and signedUp application events', -> 
+        expect(spiedListenTo)
+          .to.be.have.been.calledWith events,
+            'signedIn passwordResetTokenRequested signedUp',
+            view.onSignedInOrPasswordResetTokenRequestedOrSignedUp
 
-      before (done) ->
-        view.$el.on 'hidden', -> done()
+    describe '#onShowMembership', ->
+      originalCancelCallback    = null
+      originalOkCallback        = null
+      okCallback                = null
+      cancelCallback            = null
+      stubbedFirstTabTrigger    = null
+      stubbedModal              = null
 
-        events.trigger 'showMembership', cancel: -> cancelCalled = true
-        view.$el.modal 'hide'
+      before ->
+        originalCancelCallback    = view.cancel
+        originalOkCallback        = view.ok
+        okCallback                = ->
+        cancelCallback            = ->
+        stubbedFirstTabTrigger    = sinon.stub view.firstTabHead, 'trigger', ->
+        stubbedModal              = sinon.stub view.$el, 'modal', ->
 
-      it 'executes #cancel callback', -> expect(cancelCalled).to.be.ok
+        view.onShowMembership
+          ok        : okCallback
+          cancel    : cancelCallback
 
-    describe 'application events', -> 
-    
-      describe 'showMembership triggered', ->
-        visible           = null
-        okCallback        = null
-        cancelCallback    = null
+      it 'sets #ok callback', -> expect(view.ok).to.deep.equal okCallback
 
-        before (done) ->
-          visible         = false
-          okCallback      = ->
-          cancelCallback  = ->
+      it 'sets #cancel callback', ->
+        expect(view.cancel).to.deep.equal cancelCallback
 
-          view.$el.on 'shown', ->
-            visible = true
-            done()
+      it 'switched to first tab', ->
+        expect(stubbedFirstTabTrigger).to.have.been.calledWith 'click'
 
-          events.trigger 'showMembership',
-            ok: okCallback
-            cancel: cancelCallback
+      it 'shows modal dialog', ->
+        expect(stubbedModal).to.have.been.calledWith 'show'
 
-        it 'becomes visible', -> expect(visible).to.be.ok
+      after ->
+       view.ok          = originalOkCallback
+       view.cancel      = originalCancelCallback
+       stubbedFirstTabTrigger.restore()
+       stubbedModal.restore()
 
-        it 'sets #ok callback', -> expect(view.ok).to.deep.equal okCallback
+    describe 'onSignedInOrPasswordResetTokenRequestedOrSignedUp', ->
+      originalCanceled  = null
+      stubbedModal      = null
 
-        it 'sets #cancel callback', ->
-          expect(view.cancel).to.deep.equal cancelCallback
+      before ->
+        originalCanceled  = view.canceled
+        stubbedModal      = sinon.stub view.$el, 'modal', ->
+        view.onSignedInOrPasswordResetTokenRequestedOrSignedUp()
 
-        it 'sets #canceled to false', -> expect(view.canceled).to.be.ok
+      it 'sets #canceled to false', -> expect(view.canceled).to.be.false
 
-        after -> view.$el.modal 'hide'
+      it 'hides modal dialog', ->
+        expect(stubbedModal).to.have.been.calledWith 'hide'
 
-      describe 'done events', ->
+      after ->
+        view.canceled = originalCanceled
+        stubbedModal.restore()
 
-        behavesLikeDone = =>
-          it 'becomes hidden', => expect(@hidden).to.be.true
+    describe '#onTabHeaderShown', ->
+      stubbedSelector   = null
+      spiedPutFocus     = null
 
-          it 'executes #ok callback', => expect(@okCalled).to.be.true
+      before -> 
+        match               = putFocus: ->
+        spiedPutFocus       = sinon.spy match, 'putFocus'
+        stubbedSelector     = sinon.stub view, '$', -> match
 
-          it 'sets #canceled to false', =>
-            expect(view.canceled).to.be.false
+        view.onTabHeaderShown target: { hash: '#tab1' }
 
-        before (done) =>
-          @hidden = false
-          @okCalled = false
+      it 'puts focus on the selected tab', ->
+        expect(spiedPutFocus).to.have.been.calledOnce
 
-          view.$el.on 'hidden', =>
-            @hidden = true
-            done()
+      after ->
+        spiedPutFocus.restore()
+        stubbedSelector.restore()
 
-          events.trigger 'showMembership', ok: => this.okCalled = true
-          events.trigger 'signedIn'
+    describe '#onDialogShow', ->
+      stubbedResetFields          = null
+      stubbedHideSummaryError     = null
+      stubbedHideFieldErrors      = null
+      originalCanceled            = null
 
-        describe 'signedIn triggered', ->
-          before -> events.trigger 'signedIn'
+      before ->
+        stubbedResetFields        = sinon.stub view.$el, 'resetFields', -> view.$el
+        stubbedHideSummaryError   = sinon.stub view.$el, 'hideSummaryError', -> view.$el
+        stubbedHideFieldErrors    = sinon.stub view.$el, 'hideFieldErrors', -> view.$el
 
-          behavesLikeDone()
+        originalCanceled = view.canceled
+        view.canceled = false
 
-        describe 'passwordResetRequested triggered', ->
-          before -> events.trigger 'passwordResetRequested'
+        view.onDialogShow()
 
-          behavesLikeDone()
+      it 'sets #canceled to true', -> expect(view.canceled).to.be.true
 
-        describe 'signedUp triggered', ->
-          before -> events.trigger 'signedUp'
+      it 'resets fields', -> expect(stubbedResetFields).to.have.been.calledOnce
 
-          behavesLikeDone()
+      it 'hides summary error', -> expect(stubbedHideSummaryError).to.have.been.calledOnce
 
-    after -> fixtures.cleanUp()
+      it 'hides field errors', -> expect(stubbedHideFieldErrors).to.have.been.calledOnce
+
+      after ->
+        view.canceled = originalCanceled
+        stubbedResetFields.reset()
+        stubbedHideSummaryError.reset()
+        stubbedHideFieldErrors.reset()
+
+    describe '#onDialogShown', ->
+      stubbedPutFocus     = null
+
+      before ->
+        stubbedPutFocus = sinon.stub view.$el, 'putFocus', ->
+        view.onDialogShown()
+
+      it 'puts focus', -> expect(stubbedPutFocus).to.have.been.calledOnce
+
+      after -> stubbedPutFocus.restore()
+
+    describe '#onDialogHidden', ->
+
+      describe 'cancel', ->
+        originalCanceled          = null
+        originalCancelCallback    = null
+        cancelCalled              = null
+
+        before ->
+          originalCanceled          = view.canceled
+          originalCancelCallback    = view.cancel
+          cancelCalled              = false
+          view.canceled             = true
+          view.cancel               = -> cancelCalled = true
+
+          view.onDialogHidden()
+
+        it 'executes #cancel callback', -> expect(cancelCalled).to.be.true
+
+        after ->
+         view.canceled    = originalCanceled
+         view.cancel      = originalCancelCallback
+
+      describe 'ok', ->
+        originalCanceled      = null
+        originalOkCallback    = null
+        okCalled              = null
+
+        before ->
+          originalCanceled      = view.canceled
+          originalOkCallback    = view.ok
+          okCalled              = false
+          view.canceled         = false
+          view.ok               = -> okCalled = true
+
+          view.onDialogHidden()
+
+        it 'executes #ok callback', -> expect(okCalled).to.be.true
+
+        after ->
+         view.canceled    = originalCanceled
+         view.ok          = originalOkCallback
+
+    after ->
+      view.undelegateEvents()
+      view.stopListening()
+      Membership::signInViewType            = originalSignInViewType
+      Membership::forgotPasswordViewType    = originalForgotPasswordViewType
+      Membership::signUpViewType            = originalSignUpViewType
+      spiedListenTo.restore()
+      fixtures.cleanUp()

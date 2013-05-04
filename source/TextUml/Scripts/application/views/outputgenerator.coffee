@@ -6,16 +6,21 @@ define (require) ->
     el: '#output-text-area'
 
     initialize: ->
-      events.on 'parseStarted', => @$el.val ''
-      events.on 'parseWarning parseError', (e) =>
-        value = @$el.val()
-        value += '\n' if value
-        value += e.message
-        @$el.val value
-      events.on 'parseCompleted', (e) =>
-        value = ''
-        if e.diagram
-          value = @$el.val()
-          value += '\n' if value
-          value += 'Diagram generated successfully.'
-        @$el.val value
+      @listenTo events, 'parseStarted', @onParseStarted
+      @listenTo events, 'parseWarning parseError', @onParseWarningOrError
+      @listenTo events, 'parseCompleted', @onParseCompleted
+
+    onParseStarted: -> @$el.val ''
+
+    onParseWarningOrError: (e) ->
+      value = @$el.val()
+      value += '\n' if value
+      value += e.message
+      @$el.val value
+
+    onParseCompleted: (e) ->
+      return false unless e?.diagram?
+      value = @$el.val()
+      value += '\n' if value
+      value += 'Diagram generated successfully.'
+      @$el.val value

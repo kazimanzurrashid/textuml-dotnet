@@ -8,22 +8,26 @@ define (require) ->
     el: '#document-title-dialog'
 
     events:
-      'click button': 'submit'
+      'show'                : 'onDialogShow'
+      'shown'               : 'onDiaglogShown'
+      'click button'        : 'onSubmit'
 
     initialize: (options) ->
-      @context = options.context
-      @input = @$ 'input[type="text"]'
-      @$el.modal(show: false)
-        .on 'show', =>
-          @$el.hideFieldErrors()
-        .on 'shown', =>
-          @input.select().focus()
+      @context    = options.context
+      @input      = @$ 'input[type="text"]'
 
-      events.on 'showNewDocumentTitle', =>
-        @input.val @context.getNewDocumentTitle()
-        @$el.modal 'show'
+      @$el.modal show: false
+      @listenTo events, 'showNewDocumentTitle', @onShowNewDocumentTitle
 
-    submit: (e) ->
+    onShowNewDocumentTitle: ->
+      @input.val @context.getNewDocumentTitle()
+      @$el.modal 'show'
+
+    onDialogShow: -> @$el.hideFieldErrors()
+
+    onDiaglogShown: -> @$el.putFocus()
+
+    onSubmit: (e) ->
       e.preventDefault()
       title = @input.val()
       unless title

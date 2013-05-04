@@ -1,13 +1,13 @@
-﻿
 define(function(require) {
   var Participant, trim;
+
   trim = require('./helpers').trim;
   return Participant = (function() {
-
     function Participant() {}
 
     Participant.prototype.handles = function(context) {
       var alias, errorMessage, match, name, text;
+
       match = context.line.match(/^participant\s+(.+)/i);
       if (!match) {
         return false;

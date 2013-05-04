@@ -90,7 +90,7 @@
 
         private ActionResult RedirectToHome()
         {
-            return RedirectToAction("index", "Home");
+            return RedirectToAction("index", "home");
         }
     }
 }

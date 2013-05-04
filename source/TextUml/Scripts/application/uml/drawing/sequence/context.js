@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var CompositeModel, ConditionModel, Config, Context, GroupModel, Lifeline, MessageMargin, MessageModel, PaperMargin, Participant, ShapeMargin, _;
+
   _ = require('underscore');
   Config = require('./config');
   Participant = require('./participant');
@@ -13,7 +13,6 @@ define(function(require) {
   ShapeMargin = 40;
   MessageMargin = 10;
   return Context = (function() {
-
     function Context(diagram, surface, shapeFactory) {
       this.diagram = diagram;
       this.surface = surface;
@@ -26,6 +25,7 @@ define(function(require) {
     Context.prototype.getStreamLinedMessages = function(commands) {
       var messages,
         _this = this;
+
       messages = [];
       _(commands).each(function(c) {
         if (c instanceof MessageModel) {
@@ -44,6 +44,7 @@ define(function(require) {
     Context.prototype.getNestingLevel = function(commands) {
       var level,
         _this = this;
+
       level = 0;
       if (!commands) {
         commands = this.diagram.commands;
@@ -52,6 +53,7 @@ define(function(require) {
         return c instanceof CompositeModel;
       }).each(function(c) {
         var result;
+
         result = 1;
         if (c instanceof ConditionModel) {
           result += _this.getNestingLevel(c.getIfGroup().children);
@@ -72,6 +74,7 @@ define(function(require) {
 
     Context.prototype.getXMargin = function(nestingLevel) {
       var x;
+
       x = PaperMargin;
       if (nestingLevel) {
         x += ShapeMargin * nestingLevel;
@@ -81,12 +84,14 @@ define(function(require) {
 
     Context.prototype.isLast = function(participant) {
       var result;
+
       result = _(this.diagram.participants).last() === participant;
       return result;
     };
 
     Context.prototype.getTitleShapeStartPoint = function(title, attrs) {
       var leftMostShapeX, point, rightMostShapeX, size, width, x;
+
       leftMostShapeX = _(this.shapes).chain().map(function(s) {
         return s.getX1();
       }).sortBy(function(v) {
@@ -109,6 +114,7 @@ define(function(require) {
 
     Context.prototype.getResizedSize = function() {
       var bottomMostShapeY, rightMostShapeX, size;
+
       rightMostShapeX = _(this.shapes).chain().map(function(s) {
         return s.getX2();
       }).sortBy(function(v) {
@@ -133,12 +139,14 @@ define(function(require) {
 
     Context.prototype.getLastDrawnShape = function() {
       var last;
+
       last = _(this.shapes).last();
       return last;
     };
 
     Context.prototype.getParticipantShape = function(name) {
       var shape;
+
       shape = _(this.shapes).chain().filter(function(s) {
         return s instanceof Participant;
       }).find(function(p) {
@@ -149,6 +157,7 @@ define(function(require) {
 
     Context.prototype.getParticipantShapeStartPoint = function(participant) {
       var lastParticipantShape, point, x;
+
       lastParticipantShape = this.getLastParticipantShape();
       if (lastParticipantShape) {
         x = lastParticipantShape.getX2() + this.getMessageWidth(participant, lastParticipantShape.model) + ShapeMargin;
@@ -164,12 +173,14 @@ define(function(require) {
 
     Context.prototype.getNextShapeStartY = function() {
       var y;
+
       y = this.getLastDrawnShape().getY2() + ShapeMargin;
       return y;
     };
 
     Context.prototype.getCompositeShapeWidth = function(x) {
       var diff, leftMostParticipantX, rightMostParticipantX, width;
+
       leftMostParticipantX = _(this.shapes).chain().filter(function(s) {
         return s instanceof Participant;
       }).map(function(p) {
@@ -191,12 +202,14 @@ define(function(require) {
 
     Context.prototype.getCompositeShapeHeight = function(y) {
       var height;
+
       height = this.getNextShapeStartY() - y;
       return height;
     };
 
     Context.prototype.getLifelinePosition = function(name) {
       var bottomMostOtherShapeY, height, participantShape, point, position;
+
       participantShape = this.getParticipantShape(name);
       point = participantShape.getLifelineStartPoint();
       bottomMostOtherShapeY = _(this.shapes).chain().filter(function(s) {
@@ -217,6 +230,7 @@ define(function(require) {
 
     Context.prototype.getLastParticipantShape = function() {
       var last;
+
       last = _(this.shapes).chain().filter(function(s) {
         return s instanceof Participant;
       }).sortBy(function(p) {
@@ -228,6 +242,7 @@ define(function(require) {
     Context.prototype.getMessageWidth = function(participant, previousParticipant) {
       var filteredMessages, width,
         _this = this;
+
       filteredMessages = _(this.streamlinedMessages).filter(function(m) {
         return (m.sender === previousParticipant && m.receiver === participant) || (m.sender === participant && m.receiver === previousParticipant) || (m.sender === participant && m.receiver === participant) || (m.sender === previousParticipant && m.receiver === previousParticipant);
       });
@@ -243,6 +258,7 @@ define(function(require) {
 
     Context.prototype.textSize = function(value, attributes) {
       var size;
+
       size = this.shapeFactory.textSize(this.surface, value, attributes);
       return size;
     };

@@ -6,7 +6,7 @@ define(function(require) {
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
-  DocumentListItemView = require('./documentitem');
+  DocumentListItemView = require('./documentlistitem');
   return DocumentListView = (function(_super) {
 
     __extends(DocumentListView, _super);
@@ -17,14 +17,14 @@ define(function(require) {
 
     DocumentListView.prototype.el = '#document-list';
 
-    DocumentListView.prototype.events = function() {
-      return {
-        'click .btn-toolbar .btn': 'sort',
-        'keydown .list-container': 'navigate',
-        'scroll .list-container': 'load',
-        'click .list-container li': 'select',
-        'dblclick .list-container li': 'open'
-      };
+    DocumentListView.prototype.itemViewType = DocumentListItemView;
+
+    DocumentListView.prototype.events = {
+      'click .btn-toolbar .btn': 'onSort',
+      'keydown .list-container': 'onNavigate',
+      'scroll .list-container': 'onScroll',
+      'click .list-container li': 'onSelect',
+      'dblclick .list-container li': 'onOpen'
     };
 
     DocumentListView.prototype.initialize = function() {
@@ -32,7 +32,7 @@ define(function(require) {
       this.list = this.listContainer.find('> ul');
       this.children = [];
       this.selectedId = void 0;
-      this.template = _($('#document-item-template').html()).template();
+      this.template = _(this.$('#document-item-template').html()).template();
       this.listenTo(this.collection, 'reset sort', this.render);
       this.listenTo(this.collection, 'add', this.renderItem);
       return this.render();
@@ -55,18 +55,15 @@ define(function(require) {
       var _this = this;
       this.removeChildren();
       this.collection.each(function(document) {
-        return _this.renderItem(document, false);
+        return _this.renderItem(document);
       });
       return this;
     };
 
-    DocumentListView.prototype.renderItem = function(document, animate) {
+    DocumentListView.prototype.renderItem = function(document) {
       var child,
         _this = this;
-      if (animate == null) {
-        animate = true;
-      }
-      child = new DocumentListItemView({
+      child = new this.itemViewType({
         model: document,
         template: this.template
       });
@@ -77,10 +74,8 @@ define(function(require) {
         return _this.children.splice(index, 1);
       });
       child.render().$el.data('id', document.id).appendTo(this.list);
-      if (animate) {
-        child.$el.hide().fadeIn();
-      }
-      return this.children.push(child);
+      this.children.push(child);
+      return child;
     };
 
     DocumentListView.prototype.remove = function() {
@@ -98,46 +93,48 @@ define(function(require) {
       return _results;
     };
 
-    DocumentListView.prototype.sort = function(e) {
+    DocumentListView.prototype.onSort = function(e) {
       var button, sortAttribute, sortOrder,
         _this = this;
       button = $(e.currentTarget);
       sortAttribute = button.attr('data-sort-attribute');
       sortOrder = button.attr('data-sort-order');
-      if (sortAttribute != null) {
+      if (sortAttribute) {
         if (sortAttribute === this.collection.sortAttribute) {
           return false;
         }
         this.collection.sortAttribute = sortAttribute;
-      } else if (sortOrder != null) {
+      } else if (sortOrder) {
         if (parseInt(sortOrder, 10) === this.collection.sortOrder) {
           return false;
         }
         this.collection.sortOrder = parseInt(sortOrder, 10);
       }
       this.collection.pageIndex = 0;
-      return this.collection.fetch().always(function() {
-        return _this.scrollToTop();
+      return this.collection.fetch({
+        reset: true,
+        success: function() {
+          return _this.scrollToTop();
+        }
       });
     };
 
-    DocumentListView.prototype.load = function() {
-      var el;
+    DocumentListView.prototype.onScroll = function() {
       if (this.collection.pageIndex >= this.collection.pageCount) {
         return false;
       }
-      el = this.listContainer.get(0);
-      if (el.scrollTop + el.clientHeight + 125 > el.scrollHeight) {
-        this.collection.pageIndex += 1;
-        return this.collection.fetch({
-          update: true,
-          add: true,
-          remove: false
-        });
+      if (!this.isEndOfScrolling()) {
+        return false;
       }
+      this.collection.pageIndex += 1;
+      return this.collection.fetch({
+        update: true,
+        add: true,
+        remove: false
+      });
     };
 
-    DocumentListView.prototype.navigate = function(e) {
+    DocumentListView.prototype.onNavigate = function(e) {
       var index, items, keyCode;
       keyCode = e.which;
       if (keyCode === 38 || keyCode === 40) {
@@ -155,18 +152,26 @@ define(function(require) {
           index += 1;
         }
         return $(items.get(index)).trigger('click');
-      } else if (keyCode === 13 || keyCode === 32) {
+      } else if (keyCode === 32) {
         e.preventDefault();
         return this.list.find('li.active').trigger('dblclick');
+      } else {
+        return true;
       }
     };
 
-    DocumentListView.prototype.select = function(e) {
+    DocumentListView.prototype.onSelect = function(e) {
       return this.triggerEvent(e, 'selected');
     };
 
-    DocumentListView.prototype.open = function(e) {
+    DocumentListView.prototype.onOpen = function(e) {
       return this.triggerEvent(e, 'opened');
+    };
+
+    DocumentListView.prototype.isEndOfScrolling = function() {
+      var el;
+      el = this.listContainer.get(0);
+      return el.scrollTop + el.clientHeight + 125 > el.scrollHeight;
     };
 
     DocumentListView.prototype.triggerEvent = function(e, eventName) {

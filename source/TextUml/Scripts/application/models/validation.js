@@ -1,4 +1,3 @@
-﻿
 define(function() {
   return {
     isValidEmailFormat: function(value) {
@@ -6,6 +5,7 @@ define(function() {
     },
     isValidPasswordLength: function(value) {
       var _ref;
+
       return value && (64 >= (_ref = value.length) && _ref >= 6);
     },
     addError: function(errors, attribute, message) {

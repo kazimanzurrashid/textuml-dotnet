@@ -10,51 +10,57 @@ define (require) ->
   require 'confirm'
 
   class ProfileView extends Backbone.View
-    el: '#profile-dialog'
+    el                  : '#profile-dialog'
+    changePasswordType  : ChangePassword
+    sessionType         : Session
 
     events:
-      'submit form'             : 'changePassword'
-      'click #sign-out-button'  : 'signOut'
+      'shown'                   : 'onDialogShown'
+      'submit form'             : 'onChangePassword'
+      'click #sign-out-button'  : 'onSignOut'
 
     initialize: ->
       @changePasswordForm = @$ 'form'
-      @$el.modal(show: false).on 'shown', =>
-        @changePasswordForm.putFocus()
+      @$el.modal show: false
+      @listenTo events, 'showProfile', @onShowProfile
 
-      events.on 'showProfile', =>
-        @changePasswordForm
-          .resetFields()
-          .hideSummaryError()
-          .hideFieldErrors()
-        @$el.modal 'show'
+    onShowProfile: ->
+      @changePasswordForm
+        .resetFields()
+        .hideSummaryError()
+        .hideFieldErrors()
+      @$el.modal 'show'
 
-    changePassword: (e) ->
+    onDialogShown: -> @changePasswordForm.putFocus()
+
+    onChangePassword: (e) ->
       e.preventDefault()
       @changePasswordForm
         .hideSummaryError()
         .hideFieldErrors()
 
-      changePassword = new ChangePassword
+      changePassword = new @changePasswordType
       Helpers.subscribeModelInvalidEvent changePassword, @changePasswordForm
 
       changePassword.save @changePasswordForm.serializeFields(),
         success: =>
           @$el.modal 'hide'
           events.trigger 'passwordChanged'
-        error: (model, jqxhr) =>
+        error: (_, jqxhr) =>
           if Helpers.hasModelErrors jqxhr
             modelErrors = Helpers.getModelErrors jqxhr
-            return @$el.showFieldErrors errors: modelErrors if modelErrors
-          @$el.showSummaryError
-            message: 'An unexpected error has occurred while changing' +
+            if modelErrors
+              return @changePasswordForm.showFieldErrors errors: modelErrors
+          @changePasswordForm.showSummaryError
+            message: 'An unexpected error has occurred while changing ' +
               'your password.'
 
-    signOut: (e) ->
+    onSignOut: (e) ->
       e.preventDefault()
       @$el.modal 'hide'
 
       $.confirm
         prompt: 'Are you sure you want to sign out?'
-        ok: ->
-          (new Session id: Date.now()).destroy
+        ok: =>
+          (new @sessionType id: Date.now()).destroy
             success: -> events.trigger 'signedOut'

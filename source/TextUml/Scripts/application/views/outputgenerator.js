@@ -16,31 +16,36 @@ define(function(require) {
     OutputGeneratorView.prototype.el = '#output-text-area';
 
     OutputGeneratorView.prototype.initialize = function() {
-      var _this = this;
-      events.on('parseStarted', function() {
-        return _this.$el.val('');
-      });
-      events.on('parseWarning parseError', function(e) {
-        var value;
-        value = _this.$el.val();
-        if (value) {
-          value += '\n';
-        }
-        value += e.message;
-        return _this.$el.val(value);
-      });
-      return events.on('parseCompleted', function(e) {
-        var value;
-        value = '';
-        if (e.diagram) {
-          value = _this.$el.val();
-          if (value) {
-            value += '\n';
-          }
-          value += 'Diagram generated successfully.';
-        }
-        return _this.$el.val(value);
-      });
+      this.listenTo(events, 'parseStarted', this.onParseStarted);
+      this.listenTo(events, 'parseWarning parseError', this.onParseWarningOrError);
+      return this.listenTo(events, 'parseCompleted', this.onParseCompleted);
+    };
+
+    OutputGeneratorView.prototype.onParseStarted = function() {
+      return this.$el.val('');
+    };
+
+    OutputGeneratorView.prototype.onParseWarningOrError = function(e) {
+      var value;
+      value = this.$el.val();
+      if (value) {
+        value += '\n';
+      }
+      value += e.message;
+      return this.$el.val(value);
+    };
+
+    OutputGeneratorView.prototype.onParseCompleted = function(e) {
+      var value;
+      if ((e != null ? e.diagram : void 0) == null) {
+        return false;
+      }
+      value = this.$el.val();
+      if (value) {
+        value += '\n';
+      }
+      value += 'Diagram generated successfully.';
+      return this.$el.val(value);
     };
 
     return OutputGeneratorView;
