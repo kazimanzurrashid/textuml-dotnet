@@ -1,11 +1,10 @@
+﻿
 define(function(require) {
   var Session, _;
-
   _ = require('underscore');
   Session = require('../../../application/models/session');
   return describe('models/session', function() {
     var session;
-
     session = null;
     beforeEach(function() {
       return session = new Session;

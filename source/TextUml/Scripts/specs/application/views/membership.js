@@ -39,10 +39,10 @@ define(function(require) {
         return expect(view.signUp).to.be.ok;
       });
       it('subscribes to showMembership application event', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'showMembership', view.onShowMembership);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'showMembership', view.onShowMembership);
       });
       return it('subscribes to signedIn passwordResetTokenRequested and signedUp application events', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'signedIn passwordResetTokenRequested signedUp', view.onSignedInOrPasswordResetTokenRequestedOrSignedUp);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'signedIn passwordResetTokenRequested signedUp', view.onSignedInOrPasswordResetTokenRequestedOrSignedUp);
       });
     });
     describe('#onShowMembership', function() {

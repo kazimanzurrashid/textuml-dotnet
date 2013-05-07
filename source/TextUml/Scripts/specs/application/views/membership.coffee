@@ -36,13 +36,13 @@
 
       it 'subscribes to showMembership application event', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events,
+          .to.have.been.calledWith events,
             'showMembership',
             view.onShowMembership
 
       it 'subscribes to signedIn passwordResetTokenRequested and signedUp application events', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events,
+          .to.have.been.calledWith events,
             'signedIn passwordResetTokenRequested signedUp',
             view.onSignedInOrPasswordResetTokenRequestedOrSignedUp
 

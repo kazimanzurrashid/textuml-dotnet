@@ -77,7 +77,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Postal">
       <HintPath>..\packages\postal.0.8.2\lib\net45\Postal.dll</HintPath>
@@ -1193,6 +1193,48 @@
     <Content Include="Scripts\specs\application\models\validation.js">
       <DependentUpon>validation.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\comment.js">
+      <DependentUpon>comment.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\condition.js">
+      <DependentUpon>condition.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\context.js">
+      <DependentUpon>context.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\end.js">
+      <DependentUpon>end.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\group.js">
+      <DependentUpon>group.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\message.js">
+      <DependentUpon>message.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\parser.js">
+      <DependentUpon>parser.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\participant.js">
+      <DependentUpon>participant.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\title.js">
+      <DependentUpon>title.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\base.js">
+      <DependentUpon>base.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\composite.js">
+      <DependentUpon>composite.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\condition.js">
+      <DependentUpon>condition.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\diagram.js">
+      <DependentUpon>diagram.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\message.js">
+      <DependentUpon>message.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\views\canvas.js">
       <DependentUpon>canvas.coffee</DependentUpon>
     </Content>
@@ -1418,6 +1460,20 @@
     <Content Include="Scripts\specs\application\views\signup.coffee" />
     <Content Include="Scripts\specs\application\views\forgotpassword.coffee" />
     <Content Include="Scripts\specs\application\views\documentlistitem.coffee" />
+    <Content Include="Scripts\specs\application\uml\models\sequence\base.coffee" />
+    <Content Include="Scripts\specs\application\uml\models\sequence\condition.coffee" />
+    <Content Include="Scripts\specs\application\uml\models\sequence\composite.coffee" />
+    <Content Include="Scripts\specs\application\uml\models\sequence\diagram.coffee" />
+    <Content Include="Scripts\specs\application\uml\models\sequence\message.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\comment.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\condition.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\context.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\end.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\group.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\message.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\participant.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\title.coffee" />
+    <Content Include="Scripts\specs\application\uml\language\sequence\parser.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

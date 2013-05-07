@@ -9,4 +9,4 @@
 
     describe '#model', ->
       it 'is Example', ->
-        expect(examples.model).to.eql Example
+        expect(examples.model).to.deep.equal Example

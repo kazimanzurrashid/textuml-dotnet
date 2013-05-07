@@ -32,11 +32,11 @@
         {
             var assemblies = new[] { Assembly.GetExecutingAssembly() };
 
-            RegisterUi(assemblies);
-            RegisterApi(assemblies, GlobalConfiguration.Configuration);
+            RegisterMvc(assemblies);
+            RegisterWebApi(assemblies, GlobalConfiguration.Configuration);
         }
 
-        private static void RegisterUi(Assembly[] assemblies)
+        private static void RegisterMvc(Assembly[] assemblies)
         {
             var builder = new ContainerBuilder();
 
@@ -67,7 +67,7 @@
             DependencyResolver.SetResolver(resolver);
         }
 
-        private static void RegisterApi(
+        private static void RegisterWebApi(
             Assembly[] assemblies,
             HttpConfiguration configuration)
         {

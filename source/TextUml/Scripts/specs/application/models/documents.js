@@ -44,7 +44,7 @@ define(function(require) {
     });
     describe('#model', function() {
       return it('is Document', function() {
-        return expect(documents.model).to.eql(Document);
+        return expect(documents.model).to.deep.equal(Document);
       });
     });
     describe('#resetSorting', function() {

@@ -1,12 +1,13 @@
-﻿
 define(function(require) {
   var $, difference, inLocalTime, moment, _;
+
   $ = require('jquery');
   _ = require('underscore');
   moment = require('moment');
   require('form');
   difference = function() {
     var offset;
+
     offset = new Date().getTimezoneOffset();
     if (offset > 0) {
       return -offset;
@@ -28,10 +29,12 @@ define(function(require) {
       return jqxhr.status === 400;
     },
     getModelErrors: function(jqxhr) {
-      var modelStateProperty, response;
+      var e, modelStateProperty, response;
+
       try {
         response = $.parseJSON(jqxhr.responseText);
-      } catch (e) {
+      } catch (_error) {
+        e = _error;
         response = null;
       }
       if (response) {

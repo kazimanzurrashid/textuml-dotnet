@@ -24,12 +24,14 @@ define (require) ->
     ]
 
   class Parser
+    contextType: Context
+
     constructor: (options = {}) ->
       @callbacks = _(options.callbacks or {}).defaults
-        onStart: ->
-        onWarning: ->
-        onError: ->
-        onComplete: ->
+        onStart       : ->
+        onWarning     : ->
+        onError       : ->
+        onComplete    : ->
 
       @handlers = options.handlers or createHandlers()
 
@@ -42,7 +44,7 @@ define (require) ->
       lines = _(input.split NewLine).reject (x) ->
         NewLine.test(x) or not (trim(x) or '').length
 
-      context = new Context lines.join '\n'
+      context = new @contextType lines.join '\n'
 
       try
         _(lines).each (line, index) =>

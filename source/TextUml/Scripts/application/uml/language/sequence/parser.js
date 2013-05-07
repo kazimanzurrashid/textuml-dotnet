@@ -1,6 +1,6 @@
+﻿
 define(function(require) {
   var Comment, Condition, Context, End, Group, Message, NewLine, Parser, Participant, Title, createHandlers, trim, _;
-
   _ = require('underscore');
   Comment = require('./comment');
   Title = require('./title');
@@ -16,6 +16,9 @@ define(function(require) {
     return [new Comment, new Title, new Participant, new Message, new Group, new Condition, new End];
   };
   return Parser = (function() {
+
+    Parser.prototype.contextType = Context;
+
     function Parser(options) {
       if (options == null) {
         options = {};
@@ -30,9 +33,8 @@ define(function(require) {
     }
 
     Parser.prototype.parse = function(input) {
-      var context, diagram, exception, lines,
+      var context, diagram, lines,
         _this = this;
-
       this.callbacks.onStart();
       if (!input) {
         this.callbacks.onComplete();
@@ -41,11 +43,10 @@ define(function(require) {
       lines = _(input.split(NewLine)).reject(function(x) {
         return NewLine.test(x) || !(trim(x) || '').length;
       });
-      context = new Context(lines.join('\n'));
+      context = new this.contextType(lines.join('\n'));
       try {
         _(lines).each(function(line, index) {
           var handled, message;
-
           context.updateLineInfo(line, index);
           handled = _(_this.handlers).some(function(handler) {
             return handler.handles(context);
@@ -59,8 +60,7 @@ define(function(require) {
         diagram = context.getDiagram();
         this.callbacks.onComplete(diagram.participants.length ? diagram : void 0);
         return true;
-      } catch (_error) {
-        exception = _error;
+      } catch (exception) {
         this.callbacks.onError(exception);
         return false;
       }

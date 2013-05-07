@@ -17,7 +17,6 @@ require.config
     confirm                       : 'application/lib/confirm'
     flashbar                      : 'application/lib/flashbar'
     form                          : 'application/lib/form'
-
   shim:
     jquery:
       exports: '$'
@@ -26,8 +25,6 @@ require.config
     'jquery.cookie': ['jquery', 'jquery.migrate']
     'jquery.splitter': ['jquery', 'jquery.migrate', 'jquery.cookie']
     bootstrap: ['jquery']
-    signalr: ['jquery']
-    hub: ['jquery', 'signalr']
     underscore:
       exports: '_'
       init: ->

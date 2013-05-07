@@ -63,7 +63,7 @@ define (require) ->
     addElse: (label) ->
       unless @parentCommand?.parent?.getIfGroup()
         errorMessage = "Error on line #{@getLineNumber()}, cannot " +
-          'use \"else\"" without an \"alt\".'
+          'use \"else\" without an \"alt\".'
         throw new Error errorMessage
 
       group = @parentCommand.parent.addElseGroup label

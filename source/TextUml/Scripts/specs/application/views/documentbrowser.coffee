@@ -21,10 +21,11 @@
         resetSelection  : ->
         getSelectedId   : ->
 
-      originalListViewType = DocumentBrowser::listViewType
-      DocumentBrowser::listViewType = stubbedListViewType
-      context = sinon.stub documents: []
-      spiedListenTo = sinon.spy DocumentBrowser.prototype, 'listenTo'
+      originalListViewType              = DocumentBrowser::listViewType
+      DocumentBrowser::listViewType     = stubbedListViewType
+      context                           = sinon.stub documents: []
+      spiedListenTo                     = sinon.spy DocumentBrowser.prototype, 'listenTo'
+
       view = new DocumentBrowser
         el        : $(fixtures.window().document.body).find '#document-browser-dialog'
         context   : context

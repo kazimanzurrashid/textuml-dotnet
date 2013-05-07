@@ -83,7 +83,7 @@ define(function(require) {
       var errorMessage, group, _ref, _ref1;
 
       if (!((_ref = this.parentCommand) != null ? (_ref1 = _ref.parent) != null ? _ref1.getIfGroup() : void 0 : void 0)) {
-        errorMessage = ("Error on line " + (this.getLineNumber()) + ", cannot ") + 'use \"else\"" without an \"alt\".';
+        errorMessage = ("Error on line " + (this.getLineNumber()) + ", cannot ") + 'use \"else\" without an \"alt\".';
         throw new Error(errorMessage);
       }
       group = this.parentCommand.parent.addElseGroup(label);

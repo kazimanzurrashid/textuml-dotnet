@@ -17,13 +17,13 @@ define(function(require) {
     });
     describe('new', function() {
       it('subscribes to parseStarted application event', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'parseStarted', view.onParseStarted);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'parseStarted', view.onParseStarted);
       });
       it('subscribes to parseWarning and parseError application event', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'parseWarning parseError', view.onParseWarningOrError);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'parseWarning parseError', view.onParseWarningOrError);
       });
       return it('subscribes to parseCompleted application event', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'parseCompleted', view.onParseCompleted);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'parseCompleted', view.onParseCompleted);
       });
     });
     describe('onParseStarted', function() {

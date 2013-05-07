@@ -28,7 +28,7 @@
       it 'is set', -> expect(documents.url).to.exist
 
     describe '#model', ->
-      it 'is Document', -> expect(documents.model).to.eql Document
+      it 'is Document', -> expect(documents.model).to.deep.equal Document
 
     describe '#resetSorting', ->
       beforeEach ->

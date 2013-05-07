@@ -17,15 +17,15 @@
     describe 'new', ->
       it 'subscribes to parseStarted application event', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events, 'parseStarted', view.onParseStarted
+          .to.have.been.calledWith events, 'parseStarted', view.onParseStarted
 
       it 'subscribes to parseWarning and parseError application event', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events, 'parseWarning parseError', view.onParseWarningOrError
+          .to.have.been.calledWith events, 'parseWarning parseError', view.onParseWarningOrError
 
       it 'subscribes to parseCompleted application event', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events, 'parseCompleted', view.onParseCompleted
+          .to.have.been.calledWith events, 'parseCompleted', view.onParseCompleted
 
     describe 'onParseStarted', ->
       before ->

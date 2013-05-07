@@ -1,13 +1,12 @@
+﻿
 define(function(require) {
   var $, Helpers, Profile, events;
-
   $ = require('jquery');
   Profile = require('../../../application/views/profile');
   Helpers = require('../../../application/views/helpers');
   events = require('../../../application/events');
   return describe('views/profile', function() {
     var spiedListenTo, view;
-
     spiedListenTo = null;
     view = null;
     before(function() {
@@ -22,12 +21,11 @@ define(function(require) {
         return expect(view.$el.data('modal')).to.be.ok;
       });
       return it('subscribes to showProfile application event', function() {
-        return expect(spiedListenTo).to.be.have.been.calledWith(events, 'showProfile', view.onShowProfile);
+        return expect(spiedListenTo).to.have.been.calledWith(events, 'showProfile', view.onShowProfile);
       });
     });
     describe('#onShowProfile', function() {
       var stubbedHideFieldErrors, stubbedHideSummaryError, stubbedModal, stubbedResetFields;
-
       stubbedResetFields = null;
       stubbedHideSummaryError = null;
       stubbedHideFieldErrors = null;
@@ -48,14 +46,14 @@ define(function(require) {
       it('resets forms fields', function() {
         return expect(stubbedResetFields).to.have.been.calledOnce;
       });
-      it('hides form errors', function() {
+      it('hides form summary errors', function() {
         return expect(stubbedHideSummaryError).to.have.been.calledOnce;
       });
-      it('hides field errors', function() {
+      it('hides form field errors', function() {
         return expect(stubbedHideFieldErrors).to.have.been.calledOnce;
       });
       it('shows modal dialog', function() {
-        return expect(stubbedModal).to.been.calledWith('show');
+        return expect(stubbedModal).to.have.been.calledWith('show');
       });
       return after(function() {
         stubbedResetFields.restore();
@@ -66,7 +64,6 @@ define(function(require) {
     });
     describe('#onDialogShown', function() {
       var spiedPutFocus;
-
       spiedPutFocus = null;
       before(function() {
         spiedPutFocus = sinon.spy(view.changePasswordForm, 'putFocus');
@@ -81,7 +78,6 @@ define(function(require) {
     });
     describe('#onChangePassword', function() {
       var model, stubbedHideFieldErrors, stubbedHideSummaryError, stubbedModel, stubbedSerializeFields, stubbedSubscribeModelInvalidEvent;
-
       stubbedHideSummaryError = null;
       stubbedHideFieldErrors = null;
       stubbedSubscribeModelInvalidEvent = null;
@@ -108,7 +104,6 @@ define(function(require) {
       });
       describe('form submit', function() {
         var spiedSave;
-
         spiedSave = null;
         before(function() {
           spiedSave = sinon.spy(model, 'save');
@@ -141,7 +136,6 @@ define(function(require) {
       describe('persistence', function() {
         describe('success', function() {
           var stubbedEventsTrigger, stubbedModal, stubbedSave;
-
           stubbedSave = null;
           stubbedModal = null;
           stubbedEventsTrigger = null;
@@ -168,7 +162,6 @@ define(function(require) {
         return describe('error', function() {
           describe('client error', function() {
             var stubbedGetModelErrors, stubbedHasModelErrors, stubbedSave, stubbedShowFieldErrors;
-
             stubbedHasModelErrors = null;
             stubbedGetModelErrors = null;
             stubbedShowFieldErrors = null;
@@ -198,7 +191,6 @@ define(function(require) {
           });
           return describe('unknown error', function() {
             var stubbedHasModelErrors, stubbedSave, stubbedShowSummaryError;
-
             stubbedHasModelErrors = null;
             stubbedShowSummaryError = null;
             stubbedSave = null;
@@ -234,7 +226,6 @@ define(function(require) {
     describe('#onSignOut', function() {
       describe('submit', function() {
         var stubbedConfirm, stubbedModalHide;
-
         stubbedModalHide = null;
         stubbedConfirm = null;
         before(function() {
@@ -257,14 +248,12 @@ define(function(require) {
       });
       return describe('confirmed', function() {
         var stubbedConfirm, stubbedEventsTrigger, stubbedModalHide, stubbedModel;
-
         stubbedModalHide = null;
         stubbedConfirm = null;
         stubbedModel = null;
         stubbedEventsTrigger = null;
         before(function() {
           var model;
-
           stubbedModalHide = sinon.stub(view.$el, 'modal', function() {});
           stubbedConfirm = sinon.stub($, 'confirm').yieldsTo('ok');
           model = {

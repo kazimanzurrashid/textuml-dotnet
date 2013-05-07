@@ -24,7 +24,7 @@
 
       it 'subscribes to showProfile application event', -> 
         expect(spiedListenTo)
-          .to.be.have.been.calledWith events, 'showProfile', view.onShowProfile
+          .to.have.been.calledWith events, 'showProfile', view.onShowProfile
 
     describe '#onShowProfile', ->
       stubbedResetFields        = null
@@ -52,14 +52,14 @@
       it 'resets forms fields', ->
         expect(stubbedResetFields).to.have.been.calledOnce
 
-      it 'hides form errors', ->
+      it 'hides form summary errors', ->
         expect(stubbedHideSummaryError).to.have.been.calledOnce
 
-      it 'hides field errors', ->
+      it 'hides form field errors', ->
         expect(stubbedHideFieldErrors).to.have.been.calledOnce
 
       it 'shows modal dialog', ->
-        expect(stubbedModal).to.been.calledWith 'show'
+        expect(stubbedModal).to.have.been.calledWith 'show'
 
       after ->
         stubbedResetFields.restore()
