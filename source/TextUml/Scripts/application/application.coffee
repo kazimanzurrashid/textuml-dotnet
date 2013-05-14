@@ -15,6 +15,7 @@
   Router                    = require './router'
   events                    = require './events'
   layout                    = require './layout'
+  sharing                   = require './sharing'
   require 'flashbar'
 
   clientUrlPrefix = '#!/'
@@ -99,7 +100,7 @@
     start: (options) ->
       layout.init()
 
-      context = new Context options
+      app.context = context = new Context options
 
       attachEventHandlers()
       createViews()

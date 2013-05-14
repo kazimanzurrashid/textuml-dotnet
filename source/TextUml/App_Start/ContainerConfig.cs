@@ -89,7 +89,8 @@
                     new Func<string, string, bool, bool>(WebSecurity.Login))
                 .WithParameter("signOut", new Action(WebSecurity.Logout));
 
-            Func<string, string, bool, string> signUp = (userName, password, requireConfirmation) =>
+            Func<string, string, bool, string> signUp =
+                (userName, password, requireConfirmation) =>
             {
                 var token = WebSecurity.CreateUserAndAccount(
                     userName,
@@ -156,11 +157,14 @@
                     new Func<int>(() =>
                     {
                         var user = Thread.CurrentPrincipal.Identity;
-                        return user.IsAuthenticated ? WebSecurity.GetUserId(user.Name) : 0;
+                        return user.IsAuthenticated ?
+                            WebSecurity.GetUserId(user.Name) :
+                            0;
                     }));
         }
 
-        private static void RegisterUrlSafeSecureDataSerializer(ContainerBuilder builder)
+        private static void RegisterUrlSafeSecureDataSerializer(
+            ContainerBuilder builder)
         {
             var settings = ConfigurationManager.AppSettings;
 

@@ -4,10 +4,11 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Users")]
+    [Table("tw_Users")]
     public class User
     {
         private ICollection<Document> documents;
+        private ICollection<Share> shares;
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual int Id { get; set; }
@@ -19,6 +20,14 @@
             get
             {
                 return documents ?? (documents = new HashSet<Document>());
+            }
+        }
+
+        public virtual ICollection<Share> Shares
+        {
+            get
+            {
+                return shares ?? (shares = new HashSet<Share>());
             }
         }
 

@@ -2,9 +2,11 @@
   Documents = require './models/documents'
 
   class Context
+    documentsType: Documents
+
     constructor: (options = {}) ->
       @resetCurrentDocument()
-      @documents = new Documents
+      @documents = new @documentsType
       if options.userSignedIn
         if options.documents
           @documents.reset options.documents.data
@@ -23,19 +25,21 @@
       @resetCurrentDocument()
 
     resetCurrentDocument: ->
-      @id = null
-      @title = null
-      @content = null
+      @id         = null
+      @title      = null
+      @content    = null
 
-    setCurrentDocument: (id) ->
-      @documents.fetchOne(id)
-        .done (document) =>
-          attributes = document.toJSON()
-          @id = attributes.id
-          @title = attributes.title
-          @content = attributes.content
-        .fail =>
+    setCurrentDocument: (id, callback) ->
+      @documents.fetchOne id,
+        success: (document) =>
+          attributes  = document.toJSON()
+          @id         = attributes.id
+          @title      = attributes.title
+          @content    = attributes.content
+          callback? document
+        error: =>
           @resetCurrentDocument()
+          callback?()
 
     getCurrentDocumentId: -> @id
 
@@ -55,6 +59,7 @@
 
     isCurrentDocumentDirty: ->
       return @content if @isCurrentDocumentNew()
+
       document = @documents.get @id
       @content isnt document.get 'content'
 
@@ -67,10 +72,10 @@
           wait: true
           success: (doc) =>
             @id = doc.id
-            callback()
+            callback?()
       else
         document = @documents.get @id
-        document.save attributes, success: -> callback()
+        document.save attributes, success: -> callback?()
 
     getNewDocumentTitle: ->
       title = @title

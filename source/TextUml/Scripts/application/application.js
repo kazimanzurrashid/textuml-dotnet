@@ -1,7 +1,7 @@
 var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, showInfobar, _;
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing, showInfobar, _;
 
   $ = require('jquery');
   _ = require('underscore');
@@ -19,6 +19,7 @@ define(function(require) {
   Router = require('./router');
   events = require('./events');
   layout = require('./layout');
+  sharing = require('./sharing');
   require('flashbar');
   clientUrlPrefix = '#!/';
   clientUrl = function() {
@@ -124,7 +125,7 @@ define(function(require) {
     clientUrl: clientUrl,
     start: function(options) {
       layout.init();
-      context = new Context(options);
+      app.context = context = new Context(options);
       attachEventHandlers();
       createViews();
       app.router = router = new Router({

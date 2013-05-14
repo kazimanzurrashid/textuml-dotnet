@@ -53,7 +53,7 @@ define(function(require) {
         _this = this;
 
       action = function() {
-        return _this.context.setCurrentDocument(id).always(function(document) {
+        return _this.context.setCurrentDocument(id, function(document) {
           if (!document) {
             $.showErrorbar(("Document with id <strong>" + id + "</strong> ") + 'does not exist.');
             _this.previous();

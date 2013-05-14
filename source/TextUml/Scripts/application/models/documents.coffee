@@ -39,22 +39,24 @@ define (require) ->
       options.url = (_(@).result 'url') + '?' + $.param query
       super options
 
-    fetchOne: (id) ->
-      dfd = $.Deferred()
+    fetchOne: (id, options) ->
+      options = _(options).defaults
+        success: ->
+        error: ->
+
       document = @get id
 
       if document
-        _(-> dfd.resolve document).defer()
+        _(-> options.success document).defer()
       else
         document = new Document
         document.id = id
-        document.fetch()
-          .done =>
-            @add document
-            dfd.resolve document
-          .fail -> dfd.reject()
-      dfd.promise()
-     
+        success = options.success
+        options.success = =>
+          @add document
+          success document
+        document.fetch options
+
     setCounts: (count) ->
       @totalCount = count
       @pageCount = Math.ceil count / @pageSize

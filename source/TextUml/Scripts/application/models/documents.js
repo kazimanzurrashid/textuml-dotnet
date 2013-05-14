@@ -66,27 +66,29 @@ define(function(require) {
       return Documents.__super__.fetch.call(this, options);
     };
 
-    Documents.prototype.fetchOne = function(id) {
-      var dfd, document,
+    Documents.prototype.fetchOne = function(id, options) {
+      var document, success,
         _this = this;
 
-      dfd = $.Deferred();
+      options = _(options).defaults({
+        success: function() {},
+        error: function() {}
+      });
       document = this.get(id);
       if (document) {
-        _(function() {
-          return dfd.resolve(document);
+        return _(function() {
+          return options.success(document);
         }).defer();
       } else {
         document = new Document;
         document.id = id;
-        document.fetch().done(function() {
+        success = options.success;
+        options.success = function() {
           _this.add(document);
-          return dfd.resolve(document);
-        }).fail(function() {
-          return dfd.reject();
-        });
+          return success(document);
+        };
+        return document.fetch(options);
       }
-      return dfd.promise();
     };
 
     Documents.prototype.setCounts = function(count) {

@@ -32,7 +32,7 @@ define (require) ->
 
     openDocument: (id) ->
       action = =>
-        @context.setCurrentDocument(id).always (document) =>
+        @context.setCurrentDocument id, (document) =>
           unless document
             $.showErrorbar "Document with id <strong>#{id}</strong> " +
               'does not exist.'
@@ -66,11 +66,11 @@ define (require) ->
         return false
 
       $.confirm
-        prompt: 'Your document has unsaved changes, if you navigate away ' +
-            'your changes will be lost. Click OK to continue, or Cancel to ' +
-            'stay on the current page.'
-        ok: -> callback()
-        cancel: => @previous()
+        prompt    : 'Your document has unsaved changes, if you navigate away ' +
+                    'your changes will be lost. Click OK to continue, or Cancel to ' +
+                    'stay on the current page.'
+        ok        : -> callback()
+        cancel    : => @previous()
       true
 
     previous: ->

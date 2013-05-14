@@ -20,7 +20,7 @@
         {
             WebSecurity.InitializeDatabaseConnection(
                 "DefaultConnection",
-                "Users",
+                "tw_Users",
                 "Id",
                 "Email",
                 true);
