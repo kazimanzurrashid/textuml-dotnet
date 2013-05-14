@@ -3,12 +3,14 @@ define(function(require) {
 
   Documents = require('./models/documents');
   return Context = (function() {
+    Context.prototype.documentsType = Documents;
+
     function Context(options) {
       if (options == null) {
         options = {};
       }
       this.resetCurrentDocument();
-      this.documents = new Documents;
+      this.documents = new this.documentsType;
       if (options.userSignedIn) {
         if (options.documents) {
           this.documents.reset(options.documents.data);
@@ -46,18 +48,23 @@ define(function(require) {
       return this.content = null;
     };
 
-    Context.prototype.setCurrentDocument = function(id) {
+    Context.prototype.setCurrentDocument = function(id, callback) {
       var _this = this;
 
-      return this.documents.fetchOne(id).done(function(document) {
-        var attributes;
+      return this.documents.fetchOne(id, {
+        success: function(document) {
+          var attributes;
 
-        attributes = document.toJSON();
-        _this.id = attributes.id;
-        _this.title = attributes.title;
-        return _this.content = attributes.content;
-      }).fail(function() {
-        return _this.resetCurrentDocument();
+          attributes = document.toJSON();
+          _this.id = attributes.id;
+          _this.title = attributes.title;
+          _this.content = attributes.content;
+          return typeof callback === "function" ? callback(document) : void 0;
+        },
+        error: function() {
+          _this.resetCurrentDocument();
+          return typeof callback === "function" ? callback() : void 0;
+        }
       });
     };
 
@@ -114,14 +121,14 @@ define(function(require) {
           wait: true,
           success: function(doc) {
             _this.id = doc.id;
-            return callback();
+            return typeof callback === "function" ? callback() : void 0;
           }
         });
       } else {
         document = this.documents.get(this.id);
         return document.save(attributes, {
           success: function() {
-            return callback();
+            return typeof callback === "function" ? callback() : void 0;
           }
         });
       }

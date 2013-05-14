@@ -124,7 +124,7 @@ define(function(require) {
     clientUrl: clientUrl,
     start: function(options) {
       layout.init();
-      context = new Context(options);
+      app.context = context = new Context(options);
       attachEventHandlers();
       createViews();
       app.router = router = new Router({

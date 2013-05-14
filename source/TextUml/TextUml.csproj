@@ -1166,6 +1166,9 @@
     </Content>
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
+    <Content Include="Scripts\specs\application\context.js">
+      <DependentUpon>context.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\models\changepassword.js">
       <DependentUpon>changepassword.coffee</DependentUpon>
     </Content>
@@ -1474,6 +1477,7 @@
     <Content Include="Scripts\specs\application\uml\language\sequence\participant.coffee" />
     <Content Include="Scripts\specs\application\uml\language\sequence\title.coffee" />
     <Content Include="Scripts\specs\application\uml\language\sequence\parser.coffee" />
+    <Content Include="Scripts\specs\application\context.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
