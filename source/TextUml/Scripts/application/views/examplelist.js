@@ -1,8 +1,9 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, Example, ExampleListView, Examples, events, generateData, _;
+  var $, Backbone, Example, ExampleListView, Examples, events, generateData, _, _ref;
+
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
@@ -36,11 +37,11 @@ define(function(require) {
     ]);
   };
   return ExampleListView = (function(_super) {
-
     __extends(ExampleListView, _super);
 
     function ExampleListView() {
-      return ExampleListView.__super__.constructor.apply(this, arguments);
+      _ref = ExampleListView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     ExampleListView.prototype.el = '#example-list';
@@ -57,16 +58,18 @@ define(function(require) {
 
     ExampleListView.prototype.render = function() {
       var _this = this;
+
       this.$el.empty();
       this.collection.each(function(example) {
-        return _this.$el.append($(_this.template(example.toJSON())).data('id', example.cid));
+        return _this.$el.append($(_this.template(example.toJSON())).attr('data-cid', example.cid));
       });
       return this;
     };
 
     ExampleListView.prototype.select = function(e) {
       var cid, example;
-      cid = $(e.currentTarget).data('id');
+
+      cid = $(e.currentTarget).attr('data-cid');
       example = this.collection.get(cid);
       return events.trigger('exampleSelected', {
         example: example

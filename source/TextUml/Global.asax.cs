@@ -9,6 +9,7 @@
     {
         protected void Application_Start()
         {
+            RouteTable.Routes.MapHubs();
             AreaRegistration.RegisterAllAreas();
             ElmahConfig.Register();
             MembershipConfig.Register();

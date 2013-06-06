@@ -7,7 +7,7 @@ namespace TextUml.DataAccess.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Users",
+                "dbo.tu_Users",
                 c => new
                 {
                     Id = c.Int(false, true),
@@ -19,8 +19,8 @@ namespace TextUml.DataAccess.Migrations
 
         public override void Down()
         {
-            DropIndex("dbo.Users", new[] { "Email" });
-            DropTable("dbo.Users");
+            DropIndex("dbo.tu_Users", new[] { "Email" });
+            DropTable("dbo.tu_Users");
         }
     }
 }

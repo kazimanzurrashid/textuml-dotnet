@@ -56,7 +56,9 @@
 
             if (!string.IsNullOrWhiteSpace(model.Filter))
             {
+                // ReSharper disable ImplicitlyCapturedClosure
                 query = query.Where(d => d.Title.Contains(model.Filter));
+                // ReSharper restore ImplicitlyCapturedClosure
             }
 
             if (model.Skip > 0)

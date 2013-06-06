@@ -74,6 +74,10 @@ define(function(require) {
     Documents.prototype.fetchOne = function(id, options) {
       var document, success,
         _this = this;
+<<<<<<< HEAD
+=======
+
+>>>>>>> signalr
       options = _(options).defaults({
         success: function() {},
         error: function() {}
