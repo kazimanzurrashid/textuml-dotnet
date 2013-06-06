@@ -1,8 +1,7 @@
-var __slice = [].slice;
+﻿var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing, showInfobar, _;
-
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, showInfobar, _;
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
@@ -19,12 +18,10 @@ define(function(require) {
   Router = require('./router');
   events = require('./events');
   layout = require('./layout');
-  sharing = require('./sharing');
   require('flashbar');
   clientUrlPrefix = '#!/';
   clientUrl = function() {
     var path, segments;
-
     segments = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     path = segments.join('/');
     if (path.length && path.indexOf('/') === 0) {
@@ -34,7 +31,6 @@ define(function(require) {
   };
   hasClientUrl = function() {
     var hash;
-
     hash = window.location.hash;
     if (hash.length > clientUrlPrefix.length) {
       return true;
@@ -66,7 +62,6 @@ define(function(require) {
     events.on('newDocumentTitleAssigned', function() {
       return context.saveCurrentDocument(function() {
         var url;
-
         showInfobar('Your document is successfully saved.');
         url = clientUrl('documents', context.getCurrentDocumentId());
         return router.navigate(url);
@@ -77,7 +72,6 @@ define(function(require) {
     });
     events.on('myAccount', function() {
       var eventName;
-
       eventName = context.isUserSignedIn() ? 'showProfile' : 'showMembership';
       return events.trigger(eventName);
     });

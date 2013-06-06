@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("tw_Users")]
+    [Table("tu_Users")]
     public class User
     {
         private ICollection<Document> documents;

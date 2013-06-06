@@ -29,7 +29,7 @@ define (require) ->
         .keys()
         .filter((key) -> key.toLowerCase() is 'modelstate')
         .first()
-        .value();
+        .value()
 
       return response[modelStateProperty] if modelStateProperty
     undefined

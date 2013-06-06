@@ -3,7 +3,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("tw_Shares")]
+    [Table("tu_Shares")]
     public class Share
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

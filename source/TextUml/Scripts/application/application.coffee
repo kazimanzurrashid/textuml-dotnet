@@ -15,7 +15,6 @@
   Router                    = require './router'
   events                    = require './events'
   layout                    = require './layout'
-  sharing                   = require './sharing'
   require 'flashbar'
 
   clientUrlPrefix = '#!/'

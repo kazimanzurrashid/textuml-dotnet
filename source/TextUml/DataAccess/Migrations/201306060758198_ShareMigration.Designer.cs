@@ -5,13 +5,13 @@ namespace TextUml.DataAccess.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    public sealed partial class DocumentMigration : IMigrationMetadata
+    public sealed partial class ShareMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(DocumentMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(ShareMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201304260631086_DocumentMigration"; }
+            get { return "201306060758198_ShareMigration"; }
         }
         
         string IMigrationMetadata.Source

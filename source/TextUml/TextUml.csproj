@@ -92,7 +92,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -222,25 +222,17 @@
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Infrastructure\MailUrlResolver.cs" />
     <Compile Include="Infrastructure\UrlSafeSecureDataSerializer.cs" />
-    <Compile Include="DataAccess\Migrations\201304260629409_UserMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201304260629409_UserMigration.Designer.cs">
-      <DependentUpon>201304260629409_UserMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201306060753370_UserMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201306060753370_UserMigration.Designer.cs">
+      <DependentUpon>201306060753370_UserMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201304260631086_DocumentMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201304260631086_DocumentMigration.Designer.cs">
-      <DependentUpon>201304260631086_DocumentMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201306060755020_DocumentMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201306060755020_DocumentMigration.Designer.cs">
+      <DependentUpon>201306060755020_DocumentMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201305211828022_ShareMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201305211828022_ShareMigration.Designer.cs">
-      <DependentUpon>201305211828022_ShareMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\Migrations\201305221215446_AddSharedWithEmailsToDocument.cs" />
-    <Compile Include="DataAccess\Migrations\201305221215446_AddSharedWithEmailsToDocument.Designer.cs">
-      <DependentUpon>201305221215446_AddSharedWithEmailsToDocument.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DataAccess\Migrations\201306010210318_AddPrefixToTablesMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201306010210318_AddPrefixToTablesMigration.Designer.cs">
-      <DependentUpon>201306010210318_AddPrefixToTablesMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201306060758198_ShareMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201306060758198_ShareMigration.Designer.cs">
+      <DependentUpon>201306060758198_ShareMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CreateSession.cs" />
@@ -1482,20 +1474,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataAccess\Migrations\201304260629409_UserMigration.resx">
-      <DependentUpon>201304260629409_UserMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201306060753370_UserMigration.resx">
+      <DependentUpon>201306060753370_UserMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201304260631086_DocumentMigration.resx">
-      <DependentUpon>201304260631086_DocumentMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201306060755020_DocumentMigration.resx">
+      <DependentUpon>201306060755020_DocumentMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201305211828022_ShareMigration.resx">
-      <DependentUpon>201305211828022_ShareMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201305221215446_AddSharedWithEmailsToDocument.resx">
-      <DependentUpon>201305221215446_AddSharedWithEmailsToDocument.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201306010210318_AddPrefixToTablesMigration.resx">
-      <DependentUpon>201306010210318_AddPrefixToTablesMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201306060758198_ShareMigration.resx">
+      <DependentUpon>201306060758198_ShareMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

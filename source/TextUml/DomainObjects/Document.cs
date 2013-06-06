@@ -5,7 +5,7 @@ namespace TextUml.DomainObjects
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("tw_Documents")]
+    [Table("tu_Documents")]
     public class Document
     {
         private ICollection<Share> shares;

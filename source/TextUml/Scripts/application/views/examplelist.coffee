@@ -46,10 +46,10 @@ define (require) ->
     render: ->
       @$el.empty()
       @collection.each (example) =>
-        @$el.append $(@template example.toJSON()).data('id', example.cid)
+        @$el.append $(@template example.toJSON()).attr 'data-cid', example.cid
       @
 
     select: (e) ->
-      cid = $(e.currentTarget).data 'id'
+      cid = $(e.currentTarget).attr 'data-cid'
       example = @collection.get cid
       events.trigger 'exampleSelected', { example }

@@ -5,13 +5,13 @@ namespace TextUml.DataAccess.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    public sealed partial class AddPrefixToTablesMigration : IMigrationMetadata
+    public sealed partial class UserMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddPrefixToTablesMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UserMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201306010210318_AddPrefixToTablesMigration"; }
+            get { return "201306060753370_UserMigration"; }
         }
         
         string IMigrationMetadata.Source
