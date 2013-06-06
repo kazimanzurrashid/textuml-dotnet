@@ -1,7 +1,8 @@
 define(function(require) {
-  var Context, Documents;
+  var Context, Documents, sharing;
 
   Documents = require('./models/documents');
+  sharing = require('./sharing');
   return Context = (function() {
     Context.prototype.documentsType = Documents;
 
@@ -30,16 +31,18 @@ define(function(require) {
       }
       this.signedIn = true;
       if (fetchDocuments) {
-        return this.documents.fetch({
+        this.documents.fetch({
           reset: true
         });
       }
+      return sharing.start();
     };
 
     Context.prototype.userSignedOut = function() {
       this.signedIn = false;
       this.documents.reset();
-      return this.resetCurrentDocument();
+      this.resetCurrentDocument();
+      return sharing.stop();
     };
 
     Context.prototype.resetCurrentDocument = function() {

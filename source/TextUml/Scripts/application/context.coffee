@@ -1,5 +1,6 @@
 ﻿define (require) ->
   Documents = require './models/documents'
+  sharing   = require './sharing'
 
   class Context
     documentsType: Documents
@@ -18,11 +19,13 @@
     userSignedIn: (fetchDocuments = true) ->
       @signedIn = true
       @documents.fetch reset: true if fetchDocuments
+      sharing.start()
 
     userSignedOut: ->
       @signedIn = false
       @documents.reset()
       @resetCurrentDocument()
+      sharing.stop()
 
     resetCurrentDocument: ->
       @id         = null

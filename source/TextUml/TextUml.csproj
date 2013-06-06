@@ -525,6 +525,7 @@
     <Content Include="Scripts\config.js">
       <DependentUpon>config.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\hubs.js" />
     <Content Include="Scripts\jquery-migrate-1.1.1.js" />
     <Content Include="Scripts\jquery-migrate-1.1.1.min.js">
       <DependentUpon>jquery-migrate-1.1.1.js</DependentUpon>
