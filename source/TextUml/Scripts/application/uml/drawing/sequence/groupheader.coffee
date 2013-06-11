@@ -4,6 +4,7 @@ define (require) ->
   LineStyle = require '../linestyle'
 
   LabelMargin = 8
+
   textAttributes =
     fontFamily: Config.fontFamily
     fontSize: Config.fontSize

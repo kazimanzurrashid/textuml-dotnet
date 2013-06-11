@@ -1,3 +1,3 @@
 define ->
-  left: 0
-  right: 1
+  left    : 0
+  right   : 1

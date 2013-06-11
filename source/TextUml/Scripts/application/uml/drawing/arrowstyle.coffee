@@ -1,3 +1,3 @@
 define ->
-  open: 0
-  close: 1
+  open    : 0
+  close   : 1

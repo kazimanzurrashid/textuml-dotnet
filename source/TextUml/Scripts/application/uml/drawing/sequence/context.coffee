@@ -8,9 +8,9 @@ define (require) ->
   GroupModel      = require '../../models/sequence/group'
   MessageModel    = require '../../models/sequence/message'
 
-  PaperMargin = 80
-  ShapeMargin = 40
-  MessageMargin = 10
+  PaperMargin       = 80
+  ShapeMargin       = 40
+  MessageMargin     = 10
 
   class Context
     constructor: (@diagram, @surface, @shapeFactory) ->
