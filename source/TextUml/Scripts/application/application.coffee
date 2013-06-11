@@ -1,6 +1,5 @@
 ﻿define (require) ->
   $                         = require 'jquery'
-  _                         = require 'underscore'
   Backbone                  = require 'backbone'
   NavigationView            = require './views/navigation'
   ExampleListView           = require './views/examplelist'
@@ -30,8 +29,6 @@
     return false if clientUrlPrefix.indexOf(hash) is 0
     true
 
-  showInfobar = (message) -> _(() -> $.showInfobar message).delay 1000 * 0.7
-
   context   = null
   router    = null
 
@@ -42,11 +39,18 @@
       if context.isCurrentDocumentNew()
         return events.trigger 'showNewDocumentTitle'
       context.saveCurrentDocument ->
-        showInfobar 'Your document is successfully saved.'
+        $.showInfobar 'Your document is successfully saved.'
+
+    events.on 'shareDocument', ->
+      if context.isCurrentDocumentNew()
+        return $.showErrorbar 'Your document must be saved prior sharing with peers.'
+
+      unless context.isUserSignedIn()
+        return events.trigger 'showMembership'
 
     events.on 'newDocumentTitleAssigned', ->
       context.saveCurrentDocument ->
-        showInfobar 'Your document is successfully saved.'
+        $.showInfobar 'Your document is successfully saved.'
         url = clientUrl 'documents', context.getCurrentDocumentId()
         router.navigate url
 
@@ -62,24 +66,24 @@
 
     events.on 'signedIn', ->
       context.userSignedIn()
-      showInfobar 'You are now signed in.'
+      $.showInfobar 'You are now signed in.'
 
     events.on 'passwordResetTokenRequested', ->
-      showInfobar 'An email with a password reset link has been sent to ' +
+      $.showInfobar 'An email with a password reset link has been sent to ' +
         'your email address. Please open the link to reset your password.'
 
     events.on 'passwordChanged', ->
-      showInfobar 'You have changed your password successfully.'
+      $.showInfobar 'You have changed your password successfully.'
 
     events.on 'signedUp', ->
-      showInfobar 'Thank you for signing up, an email with a confirmation ' +
+      $.showInfobar 'Thank you for signing up, an email with a confirmation ' +
         'link has been sent to your email address. Please open the link ' +
         'to activate your account.'
 
     events.on 'signedOut', ->
       context.userSignedOut()
       router.navigate clientUrl('documents', 'new'), true
-      showInfobar 'You are now signed out.'
+      $.showInfobar 'You are now signed out.'
 
   createViews = ->
     app.views =
