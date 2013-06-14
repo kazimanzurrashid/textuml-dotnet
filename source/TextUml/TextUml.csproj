@@ -526,6 +526,13 @@
       <DependentUpon>config.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\hubs.js" />
+    <None Include="Scripts\jquery-1.10.1.intellisense.js">
+      <DependentUpon>jquery-1.10.1.js</DependentUpon>
+    </None>
+    <Content Include="Scripts\jquery-1.10.1.js" />
+    <Content Include="Scripts\jquery-1.10.1.min.js">
+      <DependentUpon>jquery-1.10.1.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-migrate-1.1.1.js" />
     <Content Include="Scripts\jquery-migrate-1.1.1.min.js">
       <DependentUpon>jquery-migrate-1.1.1.js</DependentUpon>
@@ -1059,13 +1066,6 @@
     <Content Include="Content\less\bootstrap.less" />
     <Content Include="Content\less\alerts.less" />
     <Content Include="Content\less\accordion.less" />
-    <None Include="Scripts\jquery-1.9.1.intellisense.js">
-      <DependentUpon>jquery-1.9.1.js</DependentUpon>
-    </None>
-    <Content Include="Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.js">
-      <DependentUpon>jquery-1.9.1.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.splitter.js" />
     <Content Include="Scripts\jquery.splitter.min.js">
@@ -1245,9 +1245,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Scripts\jquery-1.9.1.min.map">
-      <DependentUpon>jquery-1.9.1.js</DependentUpon>
-    </Content>
     <Content Include="Views\Mocha\Index.cshtml" />
     <Content Include="Scripts\main.coffee">
       <Compile>True</Compile>
@@ -1397,6 +1394,9 @@
     <Content Include="Scripts\specs\application\uml\language\sequence\title.coffee" />
     <Content Include="Scripts\specs\application\uml\language\sequence\parser.coffee" />
     <Content Include="Scripts\specs\application\context.coffee" />
+    <Content Include="Scripts\jquery-1.10.1.min.map">
+      <DependentUpon>jquery-1.10.1.js</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

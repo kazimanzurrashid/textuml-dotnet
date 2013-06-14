@@ -1,4 +1,3 @@
-﻿
 define('jquery', function() {
   return jQuery;
 });
@@ -33,14 +32,8 @@ require.config({
     'jquery.migrate': ['jquery'],
     'jquery.cookie': ['jquery', 'jquery.migrate'],
     'jquery.splitter': ['jquery', 'jquery.migrate', 'jquery.cookie'],
-    signalr: {
-      deps: ['jquery'],
-      exports: '$'
-    },
-    hubs: {
-      deps: ['jquery', 'signalr'],
-      exports: '$'
-    },
+    signalr: ['jquery'],
+    hubs: ['jquery', 'signalr'],
     underscore: {
       exports: '_',
       init: function() {

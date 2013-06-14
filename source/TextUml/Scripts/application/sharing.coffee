@@ -7,6 +7,7 @@
 
   start: ->
     $.connection.hub.start().done ->
+      proxy.server.hello();
       console.log 'Signalr Connected'
 
   stop: ->
