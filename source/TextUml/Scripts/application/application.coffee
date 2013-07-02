@@ -42,11 +42,11 @@
         $.showInfobar 'Your document is successfully saved.'
 
     events.on 'shareDocument', ->
-      if context.isCurrentDocumentNew()
-        return $.showErrorbar 'Your document must be saved prior sharing with peers.'
-
       unless context.isUserSignedIn()
         return events.trigger 'showMembership'
+
+      if context.isCurrentDocumentNew()
+        return $.showErrorbar 'Your document must be saved prior sharing with peers.'
 
     events.on 'newDocumentTitleAssigned', ->
       context.saveCurrentDocument ->

@@ -1,10 +1,10 @@
+﻿
 define(function(require) {
   var $, defaults, template, _;
-
   _ = require('underscore');
   $ = require('jquery');
   require('bootstrap');
-  template = _("<div class=\"modal fade hide\">\n  <div class=\"modal-header\">\n    <button type=\"button\" class=\"close\" title=\"close\" data-dismiss=\"modal\">&times;</button>\n    <h3>{{title}}</h3>\n  </div>\n  <div class=\"modal-body\">{{prompt}}</div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn\">Ok</button>\n    <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n  </div>\n</div>").template();
+  template = _("<div class=\"modal fade hide\">\n  <div class=\"modal-header\">\n    <button type=\"button\" class=\"close\" title=\"close\" data-dismiss=\"modal\">&times;</button>\n    <h3><%= title %></h3>\n  </div>\n  <div class=\"modal-body\"><%= prompt %></div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn\">Ok</button>\n    <button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">Cancel</button>\n  </div>\n</div>").template();
   defaults = {
     title: 'Confirm',
     prompt: 'Are you sure you want to perform this action?',
@@ -13,7 +13,6 @@ define(function(require) {
   };
   $.confirm = function(options) {
     var data, dialog;
-
     options = $.extend(defaults, options);
     data = {
       title: options.title,

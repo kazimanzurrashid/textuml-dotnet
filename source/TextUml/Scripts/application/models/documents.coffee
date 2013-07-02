@@ -19,11 +19,6 @@ define (require) ->
       @resetSorting()
       @resetPaging()
 
-    reset: ->
-      @resetSorting()
-      @resetPaging()
-      super
-
     parse: (resp) ->
       @setCounts resp[@countAttribute]
       resp[@resultAttribute]

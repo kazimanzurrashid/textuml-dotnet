@@ -25,11 +25,27 @@
       </div>
       <script id="document-item-template" type="text/html">
         <div class="display">
-          <span title="Double click to edit">{{title}}</span> 
-          <small title="{{lastUpdatedInHumanizeTime()}}">last updated {{lastUpdatedInRelativeTime()}}</small>
+          <div>
+            <% if (!owned) { %>
+              <i class="icon-group" title="shared"></i>
+            <% } %>
+            <span><%= title %></span>
+          </div>
+          <small title="<%= lastUpdatedInHumanizeTime() %>">last updated <%= lastUpdatedInRelativeTime() %></small>
+        </div>
+      </script>
+      <script id="document-edit-item-template" type="text/html">
+        <div class="display">
+          <div>
+            <% if (!owned) { %>
+              <i class="icon-group" title="shared"></i>
+            <% } %>
+            <span title="double click to edit"><%= title %></span>
+          </div>
+          <small title="<%= lastUpdatedInHumanizeTime() %>">last updated <%= lastUpdatedInRelativeTime() %></small>
         </div>
         <div class="edit">
-          <input type="text" value="{{title}}" title="Type your title and hit enter" />
+          <input type="text" value="<%= title %>" title="Type your title and hit enter" />
         </div>
         <i class="icon-trash" title="Delete" data-command="delete"></i>
       </script>

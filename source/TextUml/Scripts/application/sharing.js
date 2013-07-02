@@ -3,7 +3,7 @@ define(function(require) {
   var $, proxy;
   $ = require('jquery');
   require('signalr');
-  require('hubs');
+  require('noext!/signalr/hubs');
   proxy = $.connection.sharingHub;
   return {
     start: function() {

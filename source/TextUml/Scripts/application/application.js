@@ -1,8 +1,7 @@
-var __slice = [].slice;
+﻿var __slice = [].slice;
 
 define(function(require) {
   var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router;
-
   $ = require('jquery');
   Backbone = require('backbone');
   NavigationView = require('./views/navigation');
@@ -22,7 +21,6 @@ define(function(require) {
   clientUrlPrefix = '#!/';
   clientUrl = function() {
     var path, segments;
-
     segments = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     path = segments.join('/');
     if (path.length && path.indexOf('/') === 0) {
@@ -32,7 +30,6 @@ define(function(require) {
   };
   hasClientUrl = function() {
     var hash;
-
     hash = window.location.hash;
     if (hash.length > clientUrlPrefix.length) {
       return true;
@@ -57,17 +54,16 @@ define(function(require) {
       });
     });
     events.on('shareDocument', function() {
-      if (context.isCurrentDocumentNew()) {
-        return $.showErrorbar('Your document must be saved prior sharing with peers.');
-      }
       if (!context.isUserSignedIn()) {
         return events.trigger('showMembership');
+      }
+      if (context.isCurrentDocumentNew()) {
+        return $.showErrorbar('Your document must be saved prior sharing with peers.');
       }
     });
     events.on('newDocumentTitleAssigned', function() {
       return context.saveCurrentDocument(function() {
         var url;
-
         $.showInfobar('Your document is successfully saved.');
         url = clientUrl('documents', context.getCurrentDocumentId());
         return router.navigate(url);
@@ -78,7 +74,6 @@ define(function(require) {
     });
     events.on('myAccount', function() {
       var eventName;
-
       eventName = context.isUserSignedIn() ? 'showProfile' : 'showMembership';
       return events.trigger(eventName);
     });

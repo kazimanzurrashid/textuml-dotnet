@@ -63,8 +63,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
-    <Reference Include="Elmah.Mvc">
-      <HintPath>..\packages\Elmah.MVC.2.0.2\lib\net40\Elmah.Mvc.dll</HintPath>
+    <Reference Include="Elmah.Mvc, Version=2.0.0.37572, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Elmah.MVC.2.1.0\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -335,6 +336,9 @@
     <Content Include="Scripts\application\sharing.js">
       <DependentUpon>sharing.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\application\views\documentlistitem.js">
+      <DependentUpon>documentlistitem.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\application\uml\drawing\arrowdirection.js">
       <DependentUpon>arrowdirection.coffee</DependentUpon>
     </Content>
@@ -470,8 +474,8 @@
     <Content Include="Scripts\application\views\documentlist.js">
       <DependentUpon>documentlist.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\application\views\documentlistitem.js">
-      <DependentUpon>documentlistitem.coffee</DependentUpon>
+    <Content Include="Scripts\application\views\documentlistedititem.js">
+      <DependentUpon>documentlistedititem.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\application\views\documenttitle.js">
       <DependentUpon>documenttitle.coffee</DependentUpon>
@@ -525,7 +529,7 @@
     <Content Include="Scripts\config.js">
       <DependentUpon>config.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\hubs.js" />
+    <Content Include="Scripts\application\views\documentlistitem.coffee" />
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>
@@ -986,7 +990,7 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\application\views\documentlistitem.coffee">
+    <Content Include="Scripts\application\views\documentlistedititem.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
       <Bare>True</Bare>
@@ -1083,6 +1087,7 @@
     <Content Include="Scripts\moment.min.js">
       <DependentUpon>moment.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\noext.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\specs\application\context.js">

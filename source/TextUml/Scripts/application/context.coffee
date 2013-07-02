@@ -39,6 +39,7 @@
           @id         = attributes.id
           @title      = attributes.title
           @content    = attributes.content
+          @editable   = attributes.editable
           callback? document
         error: =>
           @resetCurrentDocument()
@@ -49,22 +50,27 @@
     getCurrentDocumentTitle: -> @title or ''
 
     setCurrentDocumentTitle: (value) ->
+      return false unless @isCurrentDocumentEditable()
       value = null unless value
       @title = value
 
     getCurrentDocumentContent: -> @content or ''
 
     setCurrentDocumentContent: (value) ->
+      return false unless @isCurrentDocumentEditable()
       value = null unless value
       @content = value
 
     isCurrentDocumentNew: -> not @id
 
     isCurrentDocumentDirty: ->
+      return false unless @isCurrentDocumentEditable()
       return @content if @isCurrentDocumentNew()
 
       document = @documents.get @id
       @content isnt document.get 'content'
+
+    isCurrentDocumentEditable: -> @editable
 
     saveCurrentDocument: (callback) ->
       attributes = content: @content

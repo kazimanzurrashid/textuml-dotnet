@@ -1,9 +1,10 @@
+﻿
 define(function(require) {
   var Context, Documents, sharing;
-
   Documents = require('./models/documents');
   sharing = require('./sharing');
   return Context = (function() {
+
     Context.prototype.documentsType = Documents;
 
     function Context(options) {
@@ -53,15 +54,14 @@ define(function(require) {
 
     Context.prototype.setCurrentDocument = function(id, callback) {
       var _this = this;
-
       return this.documents.fetchOne(id, {
         success: function(document) {
           var attributes;
-
           attributes = document.toJSON();
           _this.id = attributes.id;
           _this.title = attributes.title;
           _this.content = attributes.content;
+          _this.editable = attributes.editable;
           return typeof callback === "function" ? callback(document) : void 0;
         },
         error: function() {
@@ -80,6 +80,9 @@ define(function(require) {
     };
 
     Context.prototype.setCurrentDocumentTitle = function(value) {
+      if (!this.isCurrentDocumentEditable()) {
+        return false;
+      }
       if (!value) {
         value = null;
       }
@@ -91,6 +94,9 @@ define(function(require) {
     };
 
     Context.prototype.setCurrentDocumentContent = function(value) {
+      if (!this.isCurrentDocumentEditable()) {
+        return false;
+      }
       if (!value) {
         value = null;
       }
@@ -103,7 +109,9 @@ define(function(require) {
 
     Context.prototype.isCurrentDocumentDirty = function() {
       var document;
-
+      if (!this.isCurrentDocumentEditable()) {
+        return false;
+      }
       if (this.isCurrentDocumentNew()) {
         return this.content;
       }
@@ -111,10 +119,13 @@ define(function(require) {
       return this.content !== document.get('content');
     };
 
+    Context.prototype.isCurrentDocumentEditable = function() {
+      return this.editable;
+    };
+
     Context.prototype.saveCurrentDocument = function(callback) {
       var attributes, document,
         _this = this;
-
       attributes = {
         content: this.content
       };
@@ -139,7 +150,6 @@ define(function(require) {
 
     Context.prototype.getNewDocumentTitle = function() {
       var count, title;
-
       title = this.title;
       if (!title) {
         count = this.documents.length + 1;

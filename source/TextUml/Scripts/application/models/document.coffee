@@ -7,10 +7,12 @@ define (require) ->
     urlRoot: '/api/documents'
 
     defaults: ->
-      title     : null
-      content   : null
-      createdAt : null
-      updatedAt : null
+      title         : null
+      content       : null
+      owned         : null
+      editable      : null
+      createdAt     : null
+      updatedAt     : null
 
     validate: (attributes) ->
       errors = {}

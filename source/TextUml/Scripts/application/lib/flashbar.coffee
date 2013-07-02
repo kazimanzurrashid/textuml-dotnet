@@ -7,10 +7,10 @@
   animationDuration = 400
 
   template = _("""
-    <div class="alert alert-{{type}} fade.in flash-bar hide">
+    <div class="alert alert-<%= type %> fade.in flash-bar hide">
       <button type="button" class="close" data-dismiss="alert" title="close">&times;</button>
-      <i class="{{icon}}"></i>
-      <span>{{message}}</span>
+      <i class="<%= icon %>"></i>
+      <span><%= message %></span>
     </div>
   """).template()
 

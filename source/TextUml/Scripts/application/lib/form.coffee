@@ -80,7 +80,7 @@
       <div class="alert alert-error fade in">
         <button type="button" class="close" data-dismiss="alert" title="close">&times;</button>
         <i class="icon-warning-sign"></i> 
-        <span>{{message}}</span>
+        <span><%= message %></span>
       </div>
     """).template()
 

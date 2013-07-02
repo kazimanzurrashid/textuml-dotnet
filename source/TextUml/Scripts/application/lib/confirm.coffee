@@ -7,9 +7,9 @@
     <div class="modal fade hide">
       <div class="modal-header">
         <button type="button" class="close" title="close" data-dismiss="modal">&times;</button>
-        <h3>{{title}}</h3>
+        <h3><%= title %></h3>
       </div>
-      <div class="modal-body">{{prompt}}</div>
+      <div class="modal-body"><%= prompt %></div>
       <div class="modal-footer">
         <button type="button" class="btn">Ok</button>
         <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>

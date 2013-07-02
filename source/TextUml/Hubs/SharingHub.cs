@@ -18,5 +18,11 @@
             System.Diagnostics.Debug.Write(this.Context.ConnectionId);
             return base.OnConnected();
         }
+
+        public override Task OnReconnected()
+        {
+            System.Diagnostics.Debug.Write(this.Context.ConnectionId);
+            return base.OnReconnected();
+        }
     }
 }

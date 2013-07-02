@@ -39,7 +39,7 @@ define (require) ->
       'click li': 'select'
 
     initialize: ->
-      @template     = _('<li>{{display}}</li>').template()
+      @template     = _('<li><%= display %></li>').template()
       @collection   = generateData()
       @render()
 

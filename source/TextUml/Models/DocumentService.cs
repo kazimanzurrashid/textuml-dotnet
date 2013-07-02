@@ -3,7 +3,6 @@
     using System;
     using System.Linq;
     using System.Linq.Dynamic;
-    using System.Linq.Expressions;
 
     using DataAccess;
     using DomainObjects;
@@ -24,20 +23,7 @@
     }
 
     public class DocumentService : IDocumentService
-    {
-        private static readonly Expression<Func<Document, DocumentRead>>
-            MapExpression = d =>
-            new DocumentRead
-                {
-                    Id = d.Id,
-                    Title = d.Title,
-                    Content = d.Content,
-                    CreatedAt = d.CreatedAt,
-                    UpdatedAt = d.UpdatedAt
-                };
-
-        private static readonly Func<Document, DocumentRead> Map = MapExpression.Compile();
- 
+    { 
         private readonly IDataContext dataContext;
         private readonly int userId;
 
@@ -49,39 +35,44 @@
 
         public PagedQueryResult<DocumentRead> Query(DocumentsQuery model)
         {
-            var query = dataContext.Documents
-                .Where(d => d.UserId == userId)
-                .Select(MapExpression)
-                .OrderBy(model.GetOrderByClause());
+            var documents = Query();
 
             if (!string.IsNullOrWhiteSpace(model.Filter))
             {
                 // ReSharper disable ImplicitlyCapturedClosure
-                query = query.Where(d => d.Title.Contains(model.Filter));
+                documents = documents.Where(d => d.Title.Contains(model.Filter));
                 // ReSharper restore ImplicitlyCapturedClosure
             }
 
+            documents = documents.OrderBy(model.GetOrderByClause());
+
             if (model.Skip > 0)
             {
-                query = query.Skip(model.Skip);
+                documents = documents.Skip(model.Skip);
             }
 
-            var data = query.Take(model.Top)
-                .ToList();
+            var data = documents.Take(model.Top).ToList();
 
             var count = string.IsNullOrWhiteSpace(model.Filter) ?
-                dataContext.Documents.LongCount(d => d.UserId == userId) :
                 dataContext.Documents.LongCount(d =>
-                    d.UserId == userId && d.Title.Contains(model.Filter));
+                    d.UserId == userId || d.Shares.Any(s => s.UserId == userId)) :
+                dataContext.Documents.LongCount(d =>
+                    (d.UserId == userId || d.Shares.Any(s => s.UserId == userId)) &&
+                    d.Title.Contains(model.Filter));
 
             return new PagedQueryResult<DocumentRead>(data, count);
         }
 
         public DocumentRead One(int id, Action notFound)
         {
-            var document = Get(id, notFound);
+            var document = Query().FirstOrDefault(d => d.Id == id);
 
-            return document == null ? null : Map(document);
+            if (document == null)
+            {
+                notFound();
+            }
+
+            return document;
         }
 
         public DocumentRead Create(DocumentEdit model)
@@ -93,41 +84,62 @@
             dataContext.Documents.Add(document);
             dataContext.SaveChanges();
 
-            return Map(document);
+            return new DocumentRead
+                       {
+                           Id = document.Id,
+                           Title = document.Title,
+                           Content = document.Content,
+                           Owned = true,
+                           Editable = true,
+                           CreatedAt = document.CreatedAt,
+                           UpdatedAt = document.UpdatedAt
+                       };
         }
 
         public DocumentRead Update(int id, DocumentEdit model, Action notFound)
         {
-            var document = Get(id, notFound);
+            var ownedDocumentsQuery = dataContext.Documents
+                .Where(d => d.Id == id && d.UserId == userId)
+                .Select(d => new { document = d, owned = true });
 
-            if (document == null)
+            var sharedDocumentsQuery = dataContext.Documents
+                .Where(d =>
+                    d.Id == id &&
+                    d.Shares.Any(s =>
+                        s.UserId == userId &&
+                        (s.Permissions & Permissions.Write) ==
+                        Permissions.Write))
+                .Select(d => new { document = d, owned = false });
+
+            var info = ownedDocumentsQuery
+                .Concat(sharedDocumentsQuery)
+                .FirstOrDefault();
+
+            if (info == null)
             {
+                notFound();
                 return null;
             }
 
-            document.Merge(model);
-            document.UpdatedAt = Clock.UtcNow();
+            info.document.Merge(model);
+            info.document.UpdatedAt = Clock.UtcNow();
 
-            dataContext.MarkAsModified(document);
+            dataContext.MarkAsModified(info.document);
             dataContext.SaveChanges();
 
-            return Map(document);
+            return new DocumentRead
+                       {
+                           Id = info.document.Id,
+                           Title = info.document.Title,
+                           Content = info.document.Content,
+                           Owned = info.owned,
+                           Editable = true,
+                           CreatedAt = info.document.CreatedAt,
+                           UpdatedAt = info.document.UpdatedAt
+                       };
         }
 
         public void Delete(int id, Action notFound)
-        {
-            var document = Get(id, notFound);
-
-            if (document == null)
-            {
-                return;
-            }
-
-            dataContext.Documents.Remove(document);
-            dataContext.SaveChanges();
-        }
-
-        private Document Get(int id, Action notFound)
         {
             var document = dataContext.Documents
                 .FirstOrDefault(d => d.Id == id && d.UserId == userId);
@@ -135,9 +147,52 @@
             if (document == null)
             {
                 notFound();
+                return;
             }
 
-            return document;
+            dataContext.Documents.Remove(document);
+            dataContext.SaveChanges();
+        }
+
+        private IQueryable<DocumentRead> Query()
+        {
+            var ownedDocumentsQuery = dataContext
+                .Documents
+                .Where(d => d.UserId == userId)
+                .Select(d =>
+                    new DocumentRead
+                    {
+                       Id = d.Id,
+                       Title = d.Title,
+                       Content = d.Content,
+                       Owned = true,
+                       Editable = true,
+                       CreatedAt = d.CreatedAt,
+                       UpdatedAt = d.UpdatedAt
+                    });
+
+            var sharedDocumentsQuery = dataContext.Shares
+                .Where(s => s.UserId == userId)
+                .Select(s => new
+                    {
+                        share = s,
+                        document = s.Document
+                    })
+                .Select(x => new DocumentRead
+                    {
+                        Id = x.document.Id,
+                        Title = x.document.Title,
+                        Content = x.document.Content,
+                        Owned = false,
+                        Editable = (x.share.Permissions & Permissions.Write) == Permissions.Write,
+                        CreatedAt = x.document.CreatedAt,
+                        UpdatedAt = x.document.UpdatedAt
+                    })
+                .Distinct();
+
+            var documents = ownedDocumentsQuery.Concat(sharedDocumentsQuery);
+
+            return documents;
         }
     }
 }

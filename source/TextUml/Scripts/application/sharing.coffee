@@ -1,7 +1,7 @@
 ﻿define (require) ->
   $ = require 'jquery'
   require 'signalr'
-  require 'hubs'
+  require 'noext!/signalr/hubs'
 
   proxy = $.connection.sharingHub
 

@@ -1,12 +1,14 @@
 define (require) ->
-  $                       = require 'jquery'
-  _                       = require 'underscore'
-  Backbone                = require 'backbone'
-  DocumentListItemView    = require './documentlistitem'
+  $                           = require 'jquery'
+  _                           = require 'underscore'
+  Backbone                    = require 'backbone'
+  DocumentListItemView        = require './documentlistitem'
+  DocumentListEditItemView    = require './documentlistedititem'
 
   class DocumentListView extends Backbone.View
     el                  : '#document-list'
     itemViewType        : DocumentListItemView
+    editItemViewType    : DocumentListEditItemView
 
     events:
       'click .btn-toolbar .btn'       : 'onSort'
@@ -16,11 +18,12 @@ define (require) ->
       'dblclick .list-container li'   : 'onOpen'
 
     initialize: ->
-      @listContainer      = @$ '.list-container'
-      @list               = @listContainer.find '> ul'
-      @children           = []
-      @selectedId         = undefined
-      @template           = _(@$('#document-item-template').html()).template()
+      @listContainer        = @$ '.list-container'
+      @list                 = @listContainer.find '> ul'
+      @children             = []
+      @selectedId           = undefined
+      @itemTemplate         = _(@$('#document-item-template').html()).template()
+      @editItemTemplate     = _(@$('#document-edit-item-template').html()).template()
 
       @listenTo @collection, 'reset sort', @render
       @listenTo @collection, 'add', @renderItem
@@ -41,9 +44,10 @@ define (require) ->
       @
 
     renderItem: (document) ->
-      child = new @itemViewType
-        model     : document
-        template  : @template
+      child = if document.get('editable')
+          new @editItemViewType model: document, template: @editItemTemplate
+        else
+          new @itemViewType model: document, template: @itemTemplate
 
       @listenTo child, 'removing', =>
         index = _(@children).indexOf child
@@ -52,7 +56,7 @@ define (require) ->
 
       child.render()
         .$el
-        .data('id', document.id)
+        .attr('data-id', document.id)
         .appendTo @list
 
       @children.push child
@@ -121,7 +125,7 @@ define (require) ->
     triggerEvent: (e, eventName) ->
       e.preventDefault()
       element = $ e.currentTarget
-      id = element.data 'id'
+      id = element.attr 'data-id'
       @resetSelection()
       element.addClass 'active'
       @selectedId = id

@@ -2,11 +2,12 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, DocumentListItemView, DocumentListView, _;
+  var $, Backbone, DocumentListEditItemView, DocumentListItemView, DocumentListView, _;
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
   DocumentListItemView = require('./documentlistitem');
+  DocumentListEditItemView = require('./documentlistedititem');
   return DocumentListView = (function(_super) {
 
     __extends(DocumentListView, _super);
@@ -18,6 +19,8 @@ define(function(require) {
     DocumentListView.prototype.el = '#document-list';
 
     DocumentListView.prototype.itemViewType = DocumentListItemView;
+
+    DocumentListView.prototype.editItemViewType = DocumentListEditItemView;
 
     DocumentListView.prototype.events = {
       'click .btn-toolbar .btn': 'onSort',
@@ -32,7 +35,8 @@ define(function(require) {
       this.list = this.listContainer.find('> ul');
       this.children = [];
       this.selectedId = void 0;
-      this.template = _(this.$('#document-item-template').html()).template();
+      this.itemTemplate = _(this.$('#document-item-template').html()).template();
+      this.editItemTemplate = _(this.$('#document-edit-item-template').html()).template();
       this.listenTo(this.collection, 'reset sort', this.render);
       this.listenTo(this.collection, 'add', this.renderItem);
       return this.render();
@@ -63,9 +67,12 @@ define(function(require) {
     DocumentListView.prototype.renderItem = function(document) {
       var child,
         _this = this;
-      child = new this.itemViewType({
+      child = document.get('editable') ? new this.editItemViewType({
         model: document,
-        template: this.template
+        template: this.editItemTemplate
+      }) : new this.itemViewType({
+        model: document,
+        template: this.itemTemplate
       });
       this.listenTo(child, 'removing', function() {
         var index;
@@ -73,7 +80,7 @@ define(function(require) {
         _this.stopListening(child, 'removing');
         return _this.children.splice(index, 1);
       });
-      child.render().$el.data('id', document.id).appendTo(this.list);
+      child.render().$el.attr('data-id', document.id).appendTo(this.list);
       this.children.push(child);
       return child;
     };
@@ -178,7 +185,7 @@ define(function(require) {
       var element, id;
       e.preventDefault();
       element = $(e.currentTarget);
-      id = element.data('id');
+      id = element.attr('data-id');
       this.resetSelection();
       element.addClass('active');
       this.selectedId = id;
