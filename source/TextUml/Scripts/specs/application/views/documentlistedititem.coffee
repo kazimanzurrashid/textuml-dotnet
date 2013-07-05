@@ -1,8 +1,8 @@
 ﻿define (require) ->
   $                   = require 'jquery'
-  DocumentListItem    = require '../../../application/views/documentlistitem'
+  DocumentListItem    = require '../../../application/views/documentlistedititem'
 
-  describe 'views/documentlistitem', ->
+  describe 'views/documentlistedititem', ->
     stubbedListenTo       = null
     stubbedTemplate       = null
     model                 = null

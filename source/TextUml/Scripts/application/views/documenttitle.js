@@ -1,19 +1,18 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, DocumentTitleView, events, _ref;
-
+  var Backbone, DocumentTitleView, events;
   Backbone = require('backbone');
   events = require('../events');
   require('form');
   require('bootstrap');
   return DocumentTitleView = (function(_super) {
+
     __extends(DocumentTitleView, _super);
 
     function DocumentTitleView() {
-      _ref = DocumentTitleView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return DocumentTitleView.__super__.constructor.apply(this, arguments);
     }
 
     DocumentTitleView.prototype.el = '#document-title-dialog';
@@ -48,7 +47,6 @@ define(function(require) {
 
     DocumentTitleView.prototype.onSubmit = function(e) {
       var errors, title;
-
       e.preventDefault();
       title = this.input.val();
       if (!title) {

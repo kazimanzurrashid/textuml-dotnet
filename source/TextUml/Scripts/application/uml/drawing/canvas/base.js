@@ -1,7 +1,8 @@
+﻿
 define(function() {
   var Base;
-
   return Base = (function() {
+
     function Base(attributes) {
       this.attributes = attributes != null ? attributes : {};
     }
@@ -25,14 +26,12 @@ define(function() {
 
     Base.prototype.getX2 = function() {
       var x2;
-
       x2 = this.getX1() + this.getWidth();
       return x2;
     };
 
     Base.prototype.getY2 = function() {
       var y2;
-
       y2 = this.getY1() + this.getHeight();
       return y2;
     };

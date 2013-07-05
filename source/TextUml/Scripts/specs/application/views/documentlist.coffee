@@ -12,20 +12,22 @@
     view                  = null
 
     before ->
-      fixtures.set """
-        <div id="document-list">
-          <div class="btn-toolbar">
-            <a class="btn" data-sort-attribute="title">title</a>
-            <a class="btn" data-sort-order="0">ascending</a>
-          </div>
-          <div class="list-container">
-            <ul></ul>
-          </div>
-          <script id="document-item-template" type="text/html">
-            {{title}}
-          </script>
-        </div>
-        """
+      fixtures.set('<div id="document-list">' +
+          '<div class="btn-toolbar">' +
+            '<a class="btn" data-sort-attribute="title">title</a>' +
+            '<a class="btn" data-sort-order="0">ascending</a>' +
+          '</div>' +
+          '<div class="list-container">' +
+            '<ul></ul>'+
+          '</div>' +
+          '<script id="document-item-template" type="text/html">' +
+            '<%= title %>'+
+          '</script>' +
+          '<script id="document-edit-item-template" type="text/html">' +
+            '<%= title %>' +
+          '</script>' +
+        '</div>')
+
       collection = new Documents [
         new Document
           id          : 1

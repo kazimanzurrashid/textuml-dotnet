@@ -1,6 +1,6 @@
+﻿
 define(function(require) {
   var $, fontFamily, fontSize;
-
   $ = require('jquery');
   fontFamily = $('body').css('fontFamily');
   fontSize = parseInt($('body').css('fontSize'), 10);

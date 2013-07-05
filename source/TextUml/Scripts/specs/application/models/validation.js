@@ -1,6 +1,6 @@
+﻿
 define(function(require) {
   var Validation, repeatString;
-
   Validation = require('../../../application/models/validation');
   repeatString = require('../../helpers').repeatString;
   return describe('models/validation', function() {
@@ -37,7 +37,6 @@ define(function(require) {
     });
     return describe('.addError', function() {
       var errors;
-
       errors = null;
       beforeEach(function() {
         errors = {};

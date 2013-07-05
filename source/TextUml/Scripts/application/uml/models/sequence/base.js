@@ -1,14 +1,14 @@
+﻿
 define(function() {
   var Base;
-
   return Base = (function() {
+
     function Base(parent) {
       this.setParent(parent);
     }
 
     Base.prototype.setParent = function(parent) {
       var index;
-
       if (this.parent === parent) {
         return this;
       }

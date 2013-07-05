@@ -14,7 +14,7 @@ namespace TextUml.DataAccess.Migrations
                     Id = c.Int(false, true),
                     DocumentId = c.Int(false),
                     UserId = c.Int(false),
-                    Permissions = c.Int(false),
+                    CanEdit = c.Boolean(false)
                 })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.tu_Documents", t => t.DocumentId)

@@ -8,7 +8,7 @@
     using DomainObjects;
     using Properties;
 
-    public class MembershipConfig
+    public static class MembershipConfig
     {
         public static void Register()
         {

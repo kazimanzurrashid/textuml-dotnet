@@ -1,9 +1,8 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var Composite, CompositeModel, Condition, ConditionModel, Config, Group, GroupHeader, GroupModel, Message, MessageModel, getCondition, _;
-
   _ = require('underscore');
   Config = require('./config');
   Composite = require('./composite');
@@ -18,6 +17,7 @@ define(function(require) {
     return Condition || (Condition = require('./condition'));
   };
   return Group = (function(_super) {
+
     __extends(Group, _super);
 
     function Group(model, nestingLevel) {
@@ -29,7 +29,6 @@ define(function(require) {
     Group.prototype.draw = function(context) {
       var box, header, height, nestingLevel, width, x, y,
         _this = this;
-
       nestingLevel = this.nestingLevel;
       x = context.getXMargin(nestingLevel);
       y = context.getNextShapeStartY();
@@ -40,7 +39,6 @@ define(function(require) {
       this.children.push(header);
       _(this.model.children).each(function(c) {
         var condition, shape;
-
         shape = null;
         if (c instanceof CompositeModel) {
           nestingLevel += 1;

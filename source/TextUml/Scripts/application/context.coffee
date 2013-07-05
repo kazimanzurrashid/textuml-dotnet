@@ -1,11 +1,10 @@
 ﻿define (require) ->
   Documents = require './models/documents'
-  sharing   = require './sharing'
 
   class Context
     documentsType: Documents
 
-    constructor: (options = {}) ->
+    constructor: (options) ->
       @resetCurrentDocument()
       @documents = new @documentsType
       if options.userSignedIn
@@ -19,18 +18,19 @@
     userSignedIn: (fetchDocuments = true) ->
       @signedIn = true
       @documents.fetch reset: true if fetchDocuments
-      sharing.start()
 
     userSignedOut: ->
       @signedIn = false
       @documents.reset()
       @resetCurrentDocument()
-      sharing.stop()
 
     resetCurrentDocument: ->
       @id         = null
       @title      = null
       @content    = null
+      @owned      = true
+      @shared     = false
+      @editable   = true
 
     setCurrentDocument: (id, callback) ->
       @documents.fetchOne id,
@@ -39,6 +39,8 @@
           @id         = attributes.id
           @title      = attributes.title
           @content    = attributes.content
+          @owned      = attributes.owned
+          @shared     = attributes.shared
           @editable   = attributes.editable
           callback? document
         error: =>
@@ -72,7 +74,11 @@
 
     isCurrentDocumentEditable: -> @editable
 
+    isCurrentDocumentShared: -> @shared
+
     saveCurrentDocument: (callback) ->
+      return false unless @isCurrentDocumentEditable()
+
       attributes = content: @content
 
       if @isCurrentDocumentNew()

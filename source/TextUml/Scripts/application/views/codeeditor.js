@@ -67,6 +67,9 @@ define(function(require) {
 
     CodeEditorView.prototype.onExampleSelected = function(e) {
       var code;
+      if (!this.context.isCurrentDocumentEditable()) {
+        return false;
+      }
       code = this.editor.getValue();
       if (code) {
         code += '\n';
@@ -79,6 +82,7 @@ define(function(require) {
     CodeEditorView.prototype.onDocumentChanged = function() {
       var code;
       code = this.context.getCurrentDocumentContent();
+      this.editor.setOption('readOnly', !this.context.isCurrentDocumentEditable());
       this.editor.setValue(code);
       return this.editor.focus();
     };

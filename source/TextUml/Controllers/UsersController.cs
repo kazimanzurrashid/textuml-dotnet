@@ -16,17 +16,20 @@
         private readonly Func<string, string, bool, string> signup;
         private readonly IMailer mailer;
         private readonly IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer;
+        private readonly INewUserConfirmedHandler newUserConfirmedHandler;
 
         private bool? debuggingEnabled;
 
         public UsersController(
             Func<string, string, bool, string> signup,
             IMailer mailer,
-            IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer)
+            IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer,
+            INewUserConfirmedHandler newUserConfirmedHandler)
         {
             this.signup = signup;
             this.mailer = mailer;
             this.urlSafeSecureDataSerializer = urlSafeSecureDataSerializer;
+            this.newUserConfirmedHandler = newUserConfirmedHandler;
         }
 
         public bool IsDebuggingEnabled
@@ -67,14 +70,14 @@
             }
 
             var statusCode = MembershipCreateStatus.Success;
-            var userName = model.Email.ToLowerInvariant();
+            var email = model.Email.ToLowerInvariant();
             var token = string.Empty;
 
             var requireConfirmation = !IsDebuggingEnabled;
 
             try
             {
-                token = signup(userName, model.Password, requireConfirmation);
+                token = signup(email, model.Password, requireConfirmation);
             }
             catch (MembershipCreateUserException e)
             {
@@ -87,14 +90,18 @@
                 {
                     var userConfirmationToken = new UserConfirmationToken
                                                     {
-                                                        Email = userName,
+                                                        Email = email,
                                                         Token = token
                                                     };
 
                     var securedToken = urlSafeSecureDataSerializer.Serialize(
                         userConfirmationToken);
 
-                    await mailer.UserConfirmationAsync(userName, securedToken);
+                    await mailer.UserConfirmationAsync(email, securedToken);
+                }
+                else
+                {
+                    newUserConfirmedHandler.Handle(email);
                 }
 
                 return Request.CreateResponse(HttpStatusCode.NoContent);

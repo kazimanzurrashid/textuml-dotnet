@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var ChangePassword, repeatString, _;
-
   _ = require('underscore');
   ChangePassword = require('../../../application/models/changepassword');
   repeatString = require('../../helpers').repeatString;
   return describe('models/changepassword', function() {
     var changePassword;
-
     changePassword = null;
     beforeEach(function() {
       return changePassword = new ChangePassword;

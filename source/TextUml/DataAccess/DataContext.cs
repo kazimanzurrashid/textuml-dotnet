@@ -1,7 +1,6 @@
 ﻿namespace TextUml.DataAccess
 {
     using System;
-    using System.Data;
     using System.Data.Entity;
 
     using DomainObjects;
@@ -12,9 +11,9 @@
 
         IDbSet<Document> Documents { get; }
 
+        IDbSet<Invitation> Invitations { get; }
+
         IDbSet<Share> Shares { get; }
- 
-        void MarkAsModified<T>(T instance) where T : class;
 
         int SaveChanges();
     }
@@ -23,6 +22,7 @@
     {
         private IDbSet<User> users;
         private IDbSet<Document> documents;
+        private IDbSet<Invitation> invitations;
         private IDbSet<Share> shares;
  
         public DataContext() : base("DefaultConnection")
@@ -39,14 +39,17 @@
             get { return documents ?? (documents = CreateSet<Document>()); }
         }
 
+        public IDbSet<Invitation> Invitations
+        {
+            get
+            {
+                return invitations ?? (invitations = CreateSet<Invitation>());
+            }
+        }
+
         public IDbSet<Share> Shares
         {
             get { return shares ?? (shares = CreateSet<Share>()); }
-        }
-
-        public void MarkAsModified<T>(T instance) where T : class
-        {
-            Entry(instance).State = EntityState.Modified;
         }
 
         protected virtual IDbSet<T> CreateSet<T>() where T : class

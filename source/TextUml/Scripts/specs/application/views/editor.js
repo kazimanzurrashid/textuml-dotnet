@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, Editor, events;
-
   $ = require('jquery');
   Editor = require('../../../application/views/editor');
   events = require('../../../application/events');
   return describe('views/editor', function() {
     var originalCodeEditorViewType, originalOutputGeneratorViewType, originalParerType, spiedListenTo, view;
-
     originalCodeEditorViewType = null;
     originalOutputGeneratorViewType = null;
     originalParerType = null;
@@ -43,7 +42,6 @@ define(function(require) {
     });
     describe('#onCodeChanged', function() {
       var code, stubbedParse;
-
       code = 'A -> B: Method';
       stubbedParse = null;
       before(function() {

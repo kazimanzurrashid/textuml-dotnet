@@ -1,10 +1,8 @@
 ﻿namespace TextUml.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    [Serializable]
     public class PagedQueryResult<T>
     {
         public PagedQueryResult() : this(Enumerable.Empty<T>(), 0L)

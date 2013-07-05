@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, Navigation, events;
-
   $ = require('jquery');
   Navigation = require('../../../application/views/navigation');
   events = require('../../../application/events');
   return describe('views/navigation', function() {
     var view;
-
     view = null;
     before(function() {
       fixtures.set("<div id=\"navigation\">\n  <ul class=\"nav\">\n    <li class=\"test-1\">\n      <a  data-command=\"dummy-event\" href=\"javascript:;\">Test 1</a>\n    </li>\n    <li class=\"test-2\">\n      <a href=\"javascript:;\">Test 2</a>\n    </li>\n  </ul>\n</div>");
@@ -16,7 +15,6 @@ define(function(require) {
     });
     describe('menu item clicks', function() {
       var stubbedTrigger;
-
       stubbedTrigger = null;
       beforeEach(function() {
         return stubbedTrigger = sinon.stub(events, 'trigger', function() {});

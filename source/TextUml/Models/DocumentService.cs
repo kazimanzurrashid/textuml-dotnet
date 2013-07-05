@@ -90,6 +90,7 @@
                            Title = document.Title,
                            Content = document.Content,
                            Owned = true,
+                           Shared = false,
                            Editable = true,
                            CreatedAt = document.CreatedAt,
                            UpdatedAt = document.UpdatedAt
@@ -100,16 +101,23 @@
         {
             var ownedDocumentsQuery = dataContext.Documents
                 .Where(d => d.Id == id && d.UserId == userId)
-                .Select(d => new { document = d, owned = true });
+                .Select(d => new
+                                 {
+                                     document = d,
+                                     shared = d.Shares.Any(),
+                                     owned = true
+                                 });
 
             var sharedDocumentsQuery = dataContext.Documents
                 .Where(d =>
                     d.Id == id &&
-                    d.Shares.Any(s =>
-                        s.UserId == userId &&
-                        (s.Permissions & Permissions.Write) ==
-                        Permissions.Write))
-                .Select(d => new { document = d, owned = false });
+                    d.Shares.Any(s => s.UserId == userId && s.CanEdit))
+                .Select(d => new
+                                 {
+                                     document = d, 
+                                     shared = true,
+                                     owned = false
+                                 });
 
             var info = ownedDocumentsQuery
                 .Concat(sharedDocumentsQuery)
@@ -124,7 +132,6 @@
             info.document.Merge(model);
             info.document.UpdatedAt = Clock.UtcNow();
 
-            dataContext.MarkAsModified(info.document);
             dataContext.SaveChanges();
 
             return new DocumentRead
@@ -133,6 +140,7 @@
                            Title = info.document.Title,
                            Content = info.document.Content,
                            Owned = info.owned,
+                           Shared = info.shared,
                            Editable = true,
                            CreatedAt = info.document.CreatedAt,
                            UpdatedAt = info.document.UpdatedAt
@@ -166,6 +174,7 @@
                        Title = d.Title,
                        Content = d.Content,
                        Owned = true,
+                       Shared = d.Shares.Any(),
                        Editable = true,
                        CreatedAt = d.CreatedAt,
                        UpdatedAt = d.UpdatedAt
@@ -184,7 +193,8 @@
                         Title = x.document.Title,
                         Content = x.document.Content,
                         Owned = false,
-                        Editable = (x.share.Permissions & Permissions.Write) == Permissions.Write,
+                        Shared = true,
+                        Editable = x.share.CanEdit,
                         CreatedAt = x.document.CreatedAt,
                         UpdatedAt = x.document.UpdatedAt
                     })

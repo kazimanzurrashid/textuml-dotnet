@@ -6,9 +6,9 @@
 
     public interface IMailer
     {
-        Task UserConfirmationAsync(string receipent, string token);
+        Task UserConfirmationAsync(string recipient, string token);
 
-        Task ForgotPasswordAsync(string receipent, string token);
+        Task ForgotPasswordAsync(string recipient, string token);
     }
 
     public class Mailer : IMailer
@@ -27,20 +27,20 @@
             this.emailService = emailService;
         }
 
-        public Task UserConfirmationAsync(string receipent, string token)
+        public Task UserConfirmationAsync(string recipient, string token)
         {
             dynamic email = new Email("UserConfirmation");
-            email.To = receipent;
+            email.To = recipient;
             email.From = sender;
             email.Url = urlResolver.UserConfirmation(token);
 
             return emailService.SendAsync(email);
         }
 
-        public Task ForgotPasswordAsync(string receipent, string token)
+        public Task ForgotPasswordAsync(string recipient, string token)
         {
             dynamic email = new Email("ForgotPassword");
-            email.To = receipent;
+            email.To = recipient;
             email.From = sender;
             email.Url = urlResolver.ForgotPassword(token);
 

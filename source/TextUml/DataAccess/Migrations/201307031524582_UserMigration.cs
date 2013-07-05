@@ -11,7 +11,7 @@ namespace TextUml.DataAccess.Migrations
                 c => new
                 {
                     Id = c.Int(false, true),
-                    Email = c.String(false, 256)
+                    Email = c.String(false, 128)
                 })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Email, true);

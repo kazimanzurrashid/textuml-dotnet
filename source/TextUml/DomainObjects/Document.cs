@@ -8,25 +8,34 @@ namespace TextUml.DomainObjects
     [Table("tu_Documents")]
     public class Document
     {
+        private ICollection<Invitation> invitations;
         private ICollection<Share> shares;
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+        public int Id { get; set; }
 
-        public virtual string Title { get; set; }
+        [Required, StringLength(128)]
+        public string Title { get; set; }
 
-        public virtual string Content { get; set; }
+        public string Content { get; set; }
 
-        public virtual string SharedWithEmails { get; set; }
+        public DateTime CreatedAt { get; set; }
 
-        public virtual DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-        public virtual DateTime UpdatedAt { get; set; }
-
-        public virtual int UserId { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
+
+        public virtual ICollection<Invitation> Invitations
+        {
+            get
+            {
+                return invitations ??
+                    (invitations = new HashSet<Invitation>());
+            }
+        }
 
         public virtual ICollection<Share> Shares
         {

@@ -1,7 +1,7 @@
 ﻿var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router;
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing;
   $ = require('jquery');
   Backbone = require('backbone');
   NavigationView = require('./views/navigation');
@@ -15,6 +15,7 @@ define(function(require) {
   ExportedDocumentView = require('./views/exporteddocument');
   Context = require('./context');
   Router = require('./router');
+  Sharing = require('./sharing');
   events = require('./events');
   layout = require('./layout');
   require('flashbar');
@@ -39,6 +40,7 @@ define(function(require) {
     }
     return true;
   };
+  sharing = null;
   context = null;
   router = null;
   attachEventHandlers = function() {
@@ -78,6 +80,7 @@ define(function(require) {
       return events.trigger(eventName);
     });
     events.on('signedIn', function() {
+      sharing.start();
       context.userSignedIn();
       return $.showInfobar('You are now signed in.');
     });
@@ -91,6 +94,7 @@ define(function(require) {
       return $.showInfobar('Thank you for signing up, an email with a confirmation ' + 'link has been sent to your email address. Please open the link ' + 'to activate your account.');
     });
     return events.on('signedOut', function() {
+      sharing.stop();
       context.userSignedOut();
       router.navigate(clientUrl('documents', 'new'), true);
       return $.showInfobar('You are now signed out.');
@@ -122,6 +126,12 @@ define(function(require) {
     start: function(options) {
       layout.init();
       app.context = context = new Context(options);
+      app.sharing = sharing = new Sharing({
+        context: context
+      });
+      if (options.userSignedIn) {
+        sharing.start();
+      }
       attachEventHandlers();
       createViews();
       app.router = router = new Router({

@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, ExportedDocument, events;
-
   $ = require('jquery');
   ExportedDocument = require('../../../application/views/exporteddocument');
   events = require('../../../application/events');
   return describe('views/exporteddocument', function() {
     var spiedListenTo, view;
-
     view = null;
     spiedListenTo = null;
     before(function() {
@@ -26,7 +25,6 @@ define(function(require) {
     });
     describe('#onDocumentExported', function() {
       var stubbedImageProp, stubbedModal;
-
       stubbedModal = null;
       stubbedImageProp = null;
       before(function() {
@@ -49,7 +47,6 @@ define(function(require) {
     });
     describe('#onDialogShown', function() {
       var stubbedFadeIn;
-
       stubbedFadeIn = null;
       before(function() {
         stubbedFadeIn = sinon.stub(view.messageBox, 'fadeIn', function() {});
@@ -64,7 +61,6 @@ define(function(require) {
     });
     describe('#onDialogHide', function() {
       var stubbedHide;
-
       stubbedHide = null;
       before(function() {
         stubbedHide = sinon.stub(view.messageBox, 'hide', function() {});

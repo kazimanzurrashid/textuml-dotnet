@@ -11,17 +11,20 @@
         private readonly Func<string, string, bool> confirmUser;
         private readonly Func<string, string, bool> resetPassword;
         private readonly IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer;
+        private readonly INewUserConfirmedHandler newUserConfirmedHandler;
 
         private FlashMessages flash;
 
         public SupportsController(
             Func<string, string, bool> confirmUser,
             Func<string, string, bool> resetPassword,
-            IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer)
+            IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer,
+            INewUserConfirmedHandler newUserConfirmedHandler)
         {
             this.confirmUser = confirmUser;
             this.resetPassword = resetPassword;
             this.urlSafeSecureDataSerializer = urlSafeSecureDataSerializer;
+            this.newUserConfirmedHandler = newUserConfirmedHandler;
         }
 
         public FlashMessages Flash
@@ -46,6 +49,7 @@
                 userConfirmationToken.Email,
                 userConfirmationToken.Token))
             {
+                newUserConfirmedHandler.Handle(userConfirmationToken.Email);
                 Flash[FlashMessageType.Success] = "Your account is now " +
                     "successfully verified.";
             }

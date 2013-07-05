@@ -11,12 +11,11 @@ namespace TextUml.DataAccess.Migrations
                 c => new
                 {
                     Id = c.Int(false, true),
-                    Title = c.String(false, 256),
+                    Title = c.String(false, 128),
                     Content = c.String(true, isMaxLength: true),
-                    SharedWithEmails = c.String(true, 2048),
                     CreatedAt = c.DateTime(false),
                     UpdatedAt = c.DateTime(false),
-                    UserId = c.Int(false),
+                    UserId = c.Int(false)
                 })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.tu_Users", t => t.UserId);

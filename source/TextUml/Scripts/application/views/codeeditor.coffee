@@ -47,6 +47,7 @@ define (require) ->
       @listenTo events, 'documentChanged', @onDocumentChanged
 
     onExampleSelected: (e) ->
+      return false unless @context.isCurrentDocumentEditable()
       code = @editor.getValue()
       code += '\n' if code
       code += e.example.get 'snippet'
@@ -55,6 +56,7 @@ define (require) ->
 
     onDocumentChanged: ->
       code = @context.getCurrentDocumentContent()
+      @editor.setOption 'readOnly', not @context.isCurrentDocumentEditable()
       @editor.setValue code
       @editor.focus()
 

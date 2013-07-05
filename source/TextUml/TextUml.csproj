@@ -196,7 +196,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MochaController.cs" />
-    <Compile Include="DomainObjects\Permissions.cs" />
+    <Compile Include="DomainObjects\Invitation.cs" />
     <Compile Include="DomainObjects\Share.cs" />
     <Compile Include="Extensions\ClientViewExtensions.cs" />
     <Compile Include="Controllers\PasswordsController.cs" />
@@ -223,17 +223,21 @@
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Infrastructure\MailUrlResolver.cs" />
     <Compile Include="Infrastructure\UrlSafeSecureDataSerializer.cs" />
-    <Compile Include="DataAccess\Migrations\201306060753370_UserMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201306060753370_UserMigration.Designer.cs">
-      <DependentUpon>201306060753370_UserMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307031524582_UserMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307031524582_UserMigration.Designer.cs">
+      <DependentUpon>201307031524582_UserMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201306060755020_DocumentMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201306060755020_DocumentMigration.Designer.cs">
-      <DependentUpon>201306060755020_DocumentMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307031534598_DocumentMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307031534598_DocumentMigration.Designer.cs">
+      <DependentUpon>201307031534598_DocumentMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201306060758198_ShareMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201306060758198_ShareMigration.Designer.cs">
-      <DependentUpon>201306060758198_ShareMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307031536407_InvitationMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307031536407_InvitationMigration.Designer.cs">
+      <DependentUpon>201307031536407_InvitationMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataAccess\Migrations\201307031542455_ShareMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307031542455_ShareMigration.Designer.cs">
+      <DependentUpon>201307031542455_ShareMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CreateSession.cs" />
@@ -242,6 +246,7 @@
     <Compile Include="Models\DocumentRead.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\DocumentsQuery.cs" />
+    <Compile Include="Models\NewUserConfirmedHandler.cs" />
     <Compile Include="Models\PagedQueryResult.cs" />
     <Compile Include="Models\ResetPassword.cs" />
     <Compile Include="Models\UserConfirmationToken.cs" />
@@ -529,7 +534,12 @@
     <Content Include="Scripts\config.js">
       <DependentUpon>config.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\application\views\documentlistitem.coffee" />
+    <Content Include="Scripts\application\views\documentlistitem.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>
@@ -1026,50 +1036,184 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\application\sharing.coffee" />
-    <Content Include="Content\less\font-awesome-ie7.less" />
-    <Content Include="Content\less\font-awesome.less" />
-    <Content Include="Content\less\wells.less" />
-    <Content Include="Content\less\variables.less" />
-    <Content Include="Content\less\utilities.less" />
-    <Content Include="Content\less\type.less" />
-    <Content Include="Content\less\tooltip.less" />
-    <Content Include="Content\less\thumbnails.less" />
-    <Content Include="Content\less\tables.less" />
-    <Content Include="Content\less\sprites.less" />
-    <Content Include="Content\less\scaffolding.less" />
-    <Content Include="Content\less\responsive-utilities.less" />
-    <Content Include="Content\less\responsive-navbar.less" />
-    <Content Include="Content\less\responsive-768px-979px.less" />
-    <Content Include="Content\less\responsive-767px-max.less" />
-    <Content Include="Content\less\responsive-1200px-min.less" />
-    <Content Include="Content\less\responsive.less" />
-    <Content Include="Content\less\reset.less" />
-    <Content Include="Content\less\progress-bars.less" />
-    <Content Include="Content\less\popovers.less" />
-    <Content Include="Content\less\pagination.less" />
-    <Content Include="Content\less\pager.less" />
-    <Content Include="Content\less\navs.less" />
-    <Content Include="Content\less\navbar.less" />
-    <Content Include="Content\less\modals.less" />
-    <Content Include="Content\less\mixins.less" />
-    <Content Include="Content\less\media.less" />
-    <Content Include="Content\less\layouts.less" />
-    <Content Include="Content\less\labels-badges.less" />
-    <Content Include="Content\less\hero-unit.less" />
-    <Content Include="Content\less\grid.less" />
-    <Content Include="Content\less\forms.less" />
-    <Content Include="Content\less\dropdowns.less" />
-    <Content Include="Content\less\component-animations.less" />
-    <Content Include="Content\less\code.less" />
-    <Content Include="Content\less\close.less" />
-    <Content Include="Content\less\carousel.less" />
-    <Content Include="Content\less\buttons.less" />
-    <Content Include="Content\less\button-groups.less" />
-    <Content Include="Content\less\breadcrumbs.less" />
-    <Content Include="Content\less\bootstrap.less" />
-    <Content Include="Content\less\alerts.less" />
-    <Content Include="Content\less\accordion.less" />
+    <Content Include="Scripts\application\sharing.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Content\less\font-awesome-ie7.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\font-awesome.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\wells.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\variables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\type.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tooltip.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\thumbnails.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\sprites.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\scaffolding.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-768px-979px.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-767px-max.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-1200px-min.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\reset.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\progress-bars.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\popovers.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pagination.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pager.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\modals.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\mixins.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\media.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\layouts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\labels-badges.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\hero-unit.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\grid.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\forms.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\dropdowns.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\component-animations.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\code.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\close.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\carousel.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\buttons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\button-groups.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\breadcrumbs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\bootstrap.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\alerts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\accordion.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.splitter.js" />
     <Content Include="Scripts\jquery.splitter.min.js">
@@ -1171,11 +1315,8 @@
     <Content Include="Scripts\specs\application\views\documentbrowser.js">
       <DependentUpon>documentbrowser.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\specs\application\views\documentlist.js">
-      <DependentUpon>documentlist.coffee</DependentUpon>
-    </Content>
-    <Content Include="Scripts\specs\application\views\documentlistitem.js">
-      <DependentUpon>documentlistitem.coffee</DependentUpon>
+    <Content Include="Scripts\specs\application\views\documentlistedititem.js">
+      <DependentUpon>documentlistedititem.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\specs\application\views\documenttitle.js">
       <DependentUpon>documenttitle.coffee</DependentUpon>
@@ -1371,37 +1512,142 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\specs\application\views\documentlist.coffee">
+    <Content Include="Scripts\specs\application\views\codeeditor.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\specs\application\views\codeeditor.coffee" />
-    <Content Include="Scripts\specs\application\views\canvas.coffee" />
-    <Content Include="Scripts\specs\application\views\documentbrowser.coffee" />
-    <Content Include="Scripts\specs\application\views\signin.coffee" />
-    <Content Include="Scripts\specs\application\views\signup.coffee" />
-    <Content Include="Scripts\specs\application\views\forgotpassword.coffee" />
-    <Content Include="Scripts\specs\application\views\documentlistitem.coffee" />
-    <Content Include="Scripts\specs\application\uml\models\sequence\base.coffee" />
-    <Content Include="Scripts\specs\application\uml\models\sequence\condition.coffee" />
-    <Content Include="Scripts\specs\application\uml\models\sequence\composite.coffee" />
-    <Content Include="Scripts\specs\application\uml\models\sequence\diagram.coffee" />
-    <Content Include="Scripts\specs\application\uml\models\sequence\message.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\comment.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\condition.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\context.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\end.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\group.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\message.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\participant.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\title.coffee" />
-    <Content Include="Scripts\specs\application\uml\language\sequence\parser.coffee" />
-    <Content Include="Scripts\specs\application\context.coffee" />
+    <Content Include="Scripts\specs\application\views\canvas.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentbrowser.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\signin.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\signup.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\forgotpassword.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\views\documentlistedititem.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\base.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\condition.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\composite.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\diagram.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\models\sequence\message.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\comment.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\condition.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\context.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\end.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\group.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\message.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\participant.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\title.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\uml\language\sequence\parser.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\specs\application\context.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <Content Include="Scripts\jquery-1.10.1.min.map">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\views\documentlist.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1414,7 +1660,7 @@
   <ItemGroup>
     <Content Include="Content\application.less">
       <Compile>True</Compile>
-      <Minify>True</Minify>
+      <Minify>False</Minify>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1480,14 +1726,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataAccess\Migrations\201306060753370_UserMigration.resx">
-      <DependentUpon>201306060753370_UserMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307031524582_UserMigration.resx">
+      <DependentUpon>201307031524582_UserMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201306060755020_DocumentMigration.resx">
-      <DependentUpon>201306060755020_DocumentMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307031534598_DocumentMigration.resx">
+      <DependentUpon>201307031534598_DocumentMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201306060758198_ShareMigration.resx">
-      <DependentUpon>201306060758198_ShareMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307031536407_InvitationMigration.resx">
+      <DependentUpon>201307031536407_InvitationMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DataAccess\Migrations\201307031542455_ShareMigration.resx">
+      <DependentUpon>201307031542455_ShareMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

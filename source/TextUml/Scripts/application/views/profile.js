@@ -1,9 +1,8 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, ChangePassword, Helpers, ProfileView, Session, events, _ref;
-
+  var $, Backbone, ChangePassword, Helpers, ProfileView, Session, events;
   $ = require('jquery');
   Backbone = require('backbone');
   ChangePassword = require('../models/changepassword');
@@ -14,11 +13,11 @@ define(function(require) {
   require('form');
   require('confirm');
   return ProfileView = (function(_super) {
+
     __extends(ProfileView, _super);
 
     function ProfileView() {
-      _ref = ProfileView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return ProfileView.__super__.constructor.apply(this, arguments);
     }
 
     ProfileView.prototype.el = '#profile-dialog';
@@ -53,7 +52,6 @@ define(function(require) {
     ProfileView.prototype.onChangePassword = function(e) {
       var changePassword,
         _this = this;
-
       e.preventDefault();
       this.changePasswordForm.hideSummaryError().hideFieldErrors();
       changePassword = new this.changePasswordType;
@@ -65,7 +63,6 @@ define(function(require) {
         },
         error: function(_, jqxhr) {
           var modelErrors;
-
           if (Helpers.hasModelErrors(jqxhr)) {
             modelErrors = Helpers.getModelErrors(jqxhr);
             if (modelErrors) {
@@ -83,7 +80,6 @@ define(function(require) {
 
     ProfileView.prototype.onSignOut = function(e) {
       var _this = this;
-
       e.preventDefault();
       this.$el.modal('hide');
       return $.confirm({

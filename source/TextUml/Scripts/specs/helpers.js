@@ -1,3 +1,4 @@
+﻿
 define(function() {
   return {
     repeatString: function(length, character) {

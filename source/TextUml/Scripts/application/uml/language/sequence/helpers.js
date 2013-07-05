@@ -1,8 +1,8 @@
+﻿
 define(function() {
   return {
     trim: function(input) {
       var counter, result;
-
       if (!input) {
         return input;
       }

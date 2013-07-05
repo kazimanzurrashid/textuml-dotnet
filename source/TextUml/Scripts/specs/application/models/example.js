@@ -1,10 +1,9 @@
+﻿
 define(function(require) {
   var Example;
-
   Example = require('../../../application/models/example');
   return describe('models/example', function() {
     var example;
-
     example = null;
     beforeEach(function() {
       return example = new Example;

@@ -1,6 +1,6 @@
+﻿
 define(function(require) {
   var $, _;
-
   $ = require('jquery');
   _ = require('underscore');
   require('jquery.splitter');

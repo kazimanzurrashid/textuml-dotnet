@@ -1,13 +1,12 @@
+﻿
 define(function(require) {
   var Backbone, Document, Documents, SortOrder;
-
   Backbone = require('backbone');
   Document = require('../../../application/models/document');
   SortOrder = require('../../../application/models/sortorder');
   Documents = require('../../../application/models/documents');
   return describe('models/documents', function() {
     var documents;
-
     documents = null;
     beforeEach(function() {
       return documents = new Documents;
@@ -86,7 +85,6 @@ define(function(require) {
     });
     describe('#parse', function() {
       var input, output;
-
       input = null;
       output = null;
       beforeEach(function() {
@@ -111,7 +109,6 @@ define(function(require) {
     });
     return describe('#fetch', function() {
       var options, stubbedFetch;
-
       stubbedFetch = null;
       options = null;
       before(function() {

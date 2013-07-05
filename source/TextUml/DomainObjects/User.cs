@@ -11,9 +11,10 @@
         private ICollection<Share> shares;
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual int Id { get; set; }
+        public int Id { get; set; }
 
-        public virtual string Email { get; set; }
+        [Required, StringLength(128)]
+        public string Email { get; set; }
 
         public virtual ICollection<Document> Documents
         {
@@ -36,7 +37,16 @@
             public const string Administrator = "administrator";
             public const string User = "user";
 
-            public static readonly IEnumerable<string> All = new[] { Administrator, User };
+            private static readonly string[] List = new[]
+            {
+                Administrator,
+                User
+            };
+
+            public static IEnumerable<string> All
+            {
+                get { return List; }
+            }
         }
     }
 }

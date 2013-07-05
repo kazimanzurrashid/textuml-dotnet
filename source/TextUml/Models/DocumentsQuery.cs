@@ -60,12 +60,12 @@
                 orderByPairs[0],
                 StringComparer.OrdinalIgnoreCase))
             {
-                var sortColumnErrorMessage = string.Format(
+                var sortPropertyErrorMessage = string.Format(
                     CultureInfo.CurrentCulture,
                     "Invalid sort property, only supports {0}.",
                     string.Join(", ", SortProperties));
 
-                yield return new ValidationResult(sortColumnErrorMessage);
+                yield return new ValidationResult(sortPropertyErrorMessage);
             }
 
             if (orderByPairs.Length < 2 ||

@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, Membership, events;
-
   $ = require('jquery');
   Membership = require('../../../application/views/membership');
   events = require('../../../application/events');
   return describe('views/membership', function() {
     var originalForgotPasswordViewType, originalSignInViewType, originalSignUpViewType, spiedListenTo, view;
-
     originalSignInViewType = null;
     originalForgotPasswordViewType = null;
     originalSignUpViewType = null;
@@ -47,7 +46,6 @@ define(function(require) {
     });
     describe('#onShowMembership', function() {
       var cancelCallback, okCallback, originalCancelCallback, originalOkCallback, stubbedFirstTabTrigger, stubbedModal;
-
       originalCancelCallback = null;
       originalOkCallback = null;
       okCallback = null;
@@ -87,7 +85,6 @@ define(function(require) {
     });
     describe('onSignedInOrPasswordResetTokenRequestedOrSignedUp', function() {
       var originalCanceled, stubbedModal;
-
       originalCanceled = null;
       stubbedModal = null;
       before(function() {
@@ -108,12 +105,10 @@ define(function(require) {
     });
     describe('#onTabHeaderShown', function() {
       var spiedPutFocus, stubbedSelector;
-
       stubbedSelector = null;
       spiedPutFocus = null;
       before(function() {
         var match;
-
         match = {
           putFocus: function() {}
         };
@@ -137,7 +132,6 @@ define(function(require) {
     });
     describe('#onDialogShow', function() {
       var originalCanceled, stubbedHideFieldErrors, stubbedHideSummaryError, stubbedResetFields;
-
       stubbedResetFields = null;
       stubbedHideSummaryError = null;
       stubbedHideFieldErrors = null;
@@ -177,7 +171,6 @@ define(function(require) {
     });
     describe('#onDialogShown', function() {
       var stubbedPutFocus;
-
       stubbedPutFocus = null;
       before(function() {
         stubbedPutFocus = sinon.stub(view.$el, 'putFocus', function() {});
@@ -193,7 +186,6 @@ define(function(require) {
     describe('#onDialogHidden', function() {
       describe('cancel', function() {
         var cancelCalled, originalCancelCallback, originalCanceled;
-
         originalCanceled = null;
         originalCancelCallback = null;
         cancelCalled = null;
@@ -217,7 +209,6 @@ define(function(require) {
       });
       return describe('ok', function() {
         var okCalled, originalCanceled, originalOkCallback;
-
         originalCanceled = null;
         originalOkCallback = null;
         okCalled = null;

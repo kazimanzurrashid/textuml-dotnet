@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, ExampleList, events;
-
   $ = require('jquery');
   ExampleList = require('../../../application/views/examplelist');
   events = require('../../../application/events');
   return describe('views/examplelist', function() {
     var stubbedRender, view;
-
     stubbedRender = null;
     view = null;
     before(function() {
@@ -26,7 +25,6 @@ define(function(require) {
     });
     describe('#select', function() {
       var example, stubbedCollectionGet, stubbedEventsTrigger;
-
       example = {};
       stubbedEventsTrigger = null;
       stubbedCollectionGet = null;

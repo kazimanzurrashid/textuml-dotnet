@@ -8,6 +8,8 @@
 
         public bool Owned { get; set; }
 
+        public bool Shared { get; set; }
+
         public bool Editable { get; set; }
 
         public DateTime? CreatedAt { get; set; }

@@ -1,13 +1,13 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var Base, Kinetic, Text, _;
-
   _ = require('underscore');
   Kinetic = require('kinetic');
   Base = require('./base');
   return Text = (function(_super) {
+
     __extends(Text, _super);
 
     function Text(x, y, value, attributes) {
@@ -19,7 +19,6 @@ define(function(require) {
 
     Text.size = function(surface, value, attributes) {
       var result, text;
-
       text = new Text(0, 0, value, attributes).draw(surface);
       result = {
         width: text.getWidth(),

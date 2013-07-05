@@ -1,9 +1,8 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var Composite, Config, Margin, Participant, textAttributes;
-
   Config = require('./config');
   Composite = require('./composite');
   Margin = 30;
@@ -13,6 +12,7 @@ define(function(require) {
     fill: Config.foreColor
   };
   return Participant = (function(_super) {
+
     __extends(Participant, _super);
 
     function Participant(model) {
@@ -22,7 +22,6 @@ define(function(require) {
 
     Participant.prototype.draw = function(context) {
       var box, height, point, text, width;
-
       point = context.getParticipantShapeStartPoint(this.model);
       text = context.shapeFactory.text(point.x + Margin, point.y + Margin, this.model.name, textAttributes).draw(context.surface);
       width = (Margin * 2) + text.getWidth();
@@ -40,7 +39,6 @@ define(function(require) {
 
     Participant.prototype.getLifelineStartPoint = function() {
       var x, y;
-
       x = this.getX1() + (this.getWidth() / 2);
       y = this.getY1() + this.getHeight();
       return {

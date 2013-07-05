@@ -4961,3 +4961,7 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+#footer {
+  font-size: .85em;
+  text-align: center;
+}

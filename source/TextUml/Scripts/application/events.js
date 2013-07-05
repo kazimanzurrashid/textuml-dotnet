@@ -1,6 +1,6 @@
+﻿
 define(function(require) {
   var Backbone, events, _;
-
   _ = require('underscore');
   Backbone = require('backbone');
   events = {};

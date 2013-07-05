@@ -1,15 +1,15 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var $, Backbone, Router, events;
-
   $ = require('jquery');
   Backbone = require('backbone');
   events = require('./events');
   require('flashbar');
   require('confirm');
   return Router = (function(_super) {
+
     __extends(Router, _super);
 
     Router.prototype.routes = {
@@ -20,12 +20,10 @@ define(function(require) {
 
     function Router() {
       var _this = this;
-
       Router.__super__.constructor.apply(this, arguments);
       this.localHistory = [];
       this.on('all', function() {
         var path;
-
         path = Backbone.history.fragment;
         if (_this.localHistory.length && _this.localHistory[_this.localHistory.length - 1] === path) {
           return false;
@@ -41,7 +39,6 @@ define(function(require) {
 
     Router.prototype.newDocument = function() {
       var _this = this;
-
       return this.promptForUnsavedChanges(function() {
         _this.context.resetCurrentDocument();
         return events.trigger('documentChanged');
@@ -51,7 +48,6 @@ define(function(require) {
     Router.prototype.openDocument = function(id) {
       var action,
         _this = this;
-
       action = function() {
         return _this.context.setCurrentDocument(id, function(document) {
           if (!document) {
@@ -79,7 +75,6 @@ define(function(require) {
     Router.prototype.openDocuments = function() {
       var action,
         _this = this;
-
       action = function() {
         _this.context.resetCurrentDocument();
         events.trigger('documentChanged');
@@ -106,7 +101,6 @@ define(function(require) {
 
     Router.prototype.promptForUnsavedChanges = function(callback) {
       var _this = this;
-
       if (this.implicitRedirect) {
         return false;
       }
@@ -128,7 +122,6 @@ define(function(require) {
 
     Router.prototype.previous = function() {
       var path;
-
       if (this.localHistory.length > 1) {
         path = this.localHistory[this.localHistory.length - 2];
       } else {

@@ -1,12 +1,11 @@
+﻿
 define(function(require) {
   var $, DocumentTitle, events;
-
   $ = require('jquery');
   DocumentTitle = require('../../../application/views/documenttitle');
   events = require('../../../application/events');
   return describe('views/documenttitle', function() {
     var context, spiedListenTo, view;
-
     context = null;
     spiedListenTo = null;
     view = null;
@@ -32,7 +31,6 @@ define(function(require) {
     });
     describe('#onShowNewDocumentTitle', function() {
       var stubbedGetTitle, stubbedModal, stubbedVal, title;
-
       title = 'test diagram';
       stubbedGetTitle = null;
       stubbedVal = null;
@@ -59,7 +57,6 @@ define(function(require) {
     });
     describe('#onDialogShow', function() {
       var stubbedHideFieldErrors;
-
       stubbedHideFieldErrors = null;
       before(function() {
         stubbedHideFieldErrors = sinon.stub(view.$el, 'hideFieldErrors', function() {});
@@ -74,7 +71,6 @@ define(function(require) {
     });
     describe('#onDiaglogShown', function() {
       var stubbedPutFocus;
-
       stubbedPutFocus = null;
       before(function() {
         stubbedPutFocus = sinon.stub(view.$el, 'putFocus', function() {});
@@ -90,7 +86,6 @@ define(function(require) {
     describe('#onSubmit', function() {
       describe('success', function() {
         var stubbedEventsTrigger, stubbedModal, stubbedSetTitle, stubbedVal, title;
-
         title = 'test diagram';
         stubbedVal = null;
         stubbedSetTitle = null;
@@ -125,7 +120,6 @@ define(function(require) {
       });
       return describe('error', function() {
         var stubbedShowFieldErrors, stubbedVal;
-
         stubbedVal = null;
         stubbedShowFieldErrors = null;
         before(function() {

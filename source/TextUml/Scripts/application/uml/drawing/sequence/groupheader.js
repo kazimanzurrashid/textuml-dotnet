@@ -1,9 +1,8 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
   var Composite, Config, GroupHeader, LabelMargin, LineStyle, textAttributes;
-
   Config = require('./config');
   Composite = require('./composite');
   LineStyle = require('../linestyle');
@@ -14,6 +13,7 @@ define(function(require) {
     fill: Config.foreColor
   };
   return GroupHeader = (function(_super) {
+
     __extends(GroupHeader, _super);
 
     function GroupHeader(x, y, showType, model) {
@@ -26,7 +26,6 @@ define(function(require) {
 
     GroupHeader.prototype.draw = function(context) {
       var label, labelText, line1, line2, type, typeText, x, y;
-
       x = this.x;
       y = this.y;
       type = this.model.type;

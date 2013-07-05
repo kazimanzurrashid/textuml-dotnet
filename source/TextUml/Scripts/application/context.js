@@ -1,16 +1,12 @@
 ﻿
 define(function(require) {
-  var Context, Documents, sharing;
+  var Context, Documents;
   Documents = require('./models/documents');
-  sharing = require('./sharing');
   return Context = (function() {
 
     Context.prototype.documentsType = Documents;
 
     function Context(options) {
-      if (options == null) {
-        options = {};
-      }
       this.resetCurrentDocument();
       this.documents = new this.documentsType;
       if (options.userSignedIn) {
@@ -32,24 +28,25 @@ define(function(require) {
       }
       this.signedIn = true;
       if (fetchDocuments) {
-        this.documents.fetch({
+        return this.documents.fetch({
           reset: true
         });
       }
-      return sharing.start();
     };
 
     Context.prototype.userSignedOut = function() {
       this.signedIn = false;
       this.documents.reset();
-      this.resetCurrentDocument();
-      return sharing.stop();
+      return this.resetCurrentDocument();
     };
 
     Context.prototype.resetCurrentDocument = function() {
       this.id = null;
       this.title = null;
-      return this.content = null;
+      this.content = null;
+      this.owned = true;
+      this.shared = false;
+      return this.editable = true;
     };
 
     Context.prototype.setCurrentDocument = function(id, callback) {
@@ -61,6 +58,8 @@ define(function(require) {
           _this.id = attributes.id;
           _this.title = attributes.title;
           _this.content = attributes.content;
+          _this.owned = attributes.owned;
+          _this.shared = attributes.shared;
           _this.editable = attributes.editable;
           return typeof callback === "function" ? callback(document) : void 0;
         },
@@ -123,9 +122,16 @@ define(function(require) {
       return this.editable;
     };
 
+    Context.prototype.isCurrentDocumentShared = function() {
+      return this.shared;
+    };
+
     Context.prototype.saveCurrentDocument = function(callback) {
       var attributes, document,
         _this = this;
+      if (!this.isCurrentDocumentEditable()) {
+        return false;
+      }
       attributes = {
         content: this.content
       };

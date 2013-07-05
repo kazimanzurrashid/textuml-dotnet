@@ -34,9 +34,8 @@
 
         public ActionResult Index()
         {
-            var command = new DocumentsQuery();
             var model = IsAuthenticated ?
-                documentService.Query(command) :
+                documentService.Query(new DocumentsQuery()) :
                 new PagedQueryResult<DocumentRead>();
 
             return View(model);

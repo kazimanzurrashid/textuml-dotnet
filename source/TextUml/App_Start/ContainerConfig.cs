@@ -26,7 +26,7 @@
 
     using UserRoles = DomainObjects.User.Roles;
 
-    public class ContainerConfig
+    public static class ContainerConfig
     {
         public static void Register()
         {
@@ -50,7 +50,7 @@
             Register<DataContext>(builder).InstancePerHttpRequest();
             RegisterDocumentService(builder);
             RegisterUrlSafeSecureDataSerializer(builder);
-
+            Register<NewUserConfirmedHandler>(builder);
             Register<CookieTempDataProvider>(builder);
 
             builder.RegisterType<SupportsController>()

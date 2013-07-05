@@ -1,11 +1,10 @@
+﻿
 define(function(require) {
   var Document, _;
-
   _ = require('underscore');
   Document = require('../../../application/models/document');
   return describe('models/document', function() {
     var document;
-
     document = null;
     beforeEach(function() {
       return document = new Document;

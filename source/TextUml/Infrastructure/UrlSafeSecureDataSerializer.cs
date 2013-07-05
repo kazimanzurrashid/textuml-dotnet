@@ -94,23 +94,47 @@
                     crypto.Key,
                     crypto.IV))
                 {
-                    using (var buffer = new MemoryStream())
-                    {
-                        using (var writer = new StreamWriter(
-                            new CryptoStream(
-                                buffer,
-                                encryptor,
-                                CryptoStreamMode.Write)))
-                        {
-                            writer.Write(plain);
-                        }
+                    MemoryStream plainStream = null;
+                    CryptoStream cryptoStream = null;
+                    StreamWriter writer = null;
 
-                        buffer.Flush();
+                    try
+                    {
+                        plainStream = new MemoryStream();
+                        cryptoStream = new CryptoStream(
+                            plainStream,
+                            encryptor,
+                            CryptoStreamMode.Write);
+
+                        writer = new StreamWriter(cryptoStream);
+                        writer.Write(plain);
+                        writer.Flush();
 
                         var encrypted = Convert.ToBase64String(
-                            buffer.ToArray());
+                            plainStream.ToArray());
 
                         return encrypted;
+                    }
+                    finally
+                    {
+                        if (writer != null)
+                        {
+                            writer.Dispose();
+                        }
+                        else
+                        {
+                            if (cryptoStream != null)
+                            {
+                                cryptoStream.Dispose();
+                            }
+                            else
+                            {
+                                if (plainStream != null)
+                                {
+                                    plainStream.Dispose();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -126,17 +150,39 @@
                     crypto.Key,
                     crypto.IV))
                 {
-                    using (var buffer = new MemoryStream(data))
-                    {
-                        using (var reader = new StreamReader(
-                            new CryptoStream(
-                                buffer,
-                                decryptor,
-                                CryptoStreamMode.Read)))
-                        {
-                            var plain = reader.ReadToEnd();
+                    MemoryStream plainStream = null;
+                    CryptoStream cryptoStream = null;
+                    StreamReader reader = null;
 
-                            return plain;
+                    try
+                    {
+                        plainStream = new MemoryStream(data);
+                        cryptoStream = new CryptoStream(plainStream, decryptor, CryptoStreamMode.Read);
+                        reader = new StreamReader(cryptoStream);
+
+                        var plain = reader.ReadToEnd();
+
+                        return plain;
+                    }
+                    finally
+                    {
+                        if (reader != null)
+                        {
+                            reader.Dispose();
+                        }
+                        else
+                        {
+                            if (cryptoStream != null)
+                            {
+                                cryptoStream.Dispose();
+                            }
+                            else
+                            {
+                                if (plainStream != null)
+                                {
+                                    plainStream.Dispose();
+                                }
+                            }
                         }
                     }
                 }
@@ -147,9 +193,17 @@
         {
             var crypto = SymmetricAlgorithm.Create(algorithm);
 
-            crypto.Key = key;
-            crypto.IV = vector;
-            crypto.Padding = PaddingMode.None;
+            try
+            {
+                crypto.Key = key;
+                crypto.IV = vector;
+                crypto.Padding = PaddingMode.None;
+            }
+            catch
+            {
+                crypto.Dispose();
+                throw;
+            }
 
             return crypto;
         }

@@ -10,6 +10,7 @@ define (require) ->
       title         : null
       content       : null
       owned         : null
+      shared        : null
       editable      : null
       createdAt     : null
       updatedAt     : null

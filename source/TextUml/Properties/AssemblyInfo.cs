@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 [assembly: AssemblyTitle("TextUml")]
 [assembly: AssemblyProduct("TextUml")]
@@ -16,3 +17,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: CLSCompliant(true)]
 [assembly: Guid("7f050e02-058c-4198-8e46-4a26d38d4eea")]
+[assembly: NeutralResourcesLanguageAttribute("en-US")]

@@ -12,6 +12,7 @@
   ExportedDocumentView      = require './views/exporteddocument'
   Context                   = require './context'
   Router                    = require './router'
+  Sharing                   = require './sharing'
   events                    = require './events'
   layout                    = require './layout'
   require 'flashbar'
@@ -29,6 +30,7 @@
     return false if clientUrlPrefix.indexOf(hash) is 0
     true
 
+  sharing   = null
   context   = null
   router    = null
 
@@ -65,6 +67,7 @@
       events.trigger eventName
 
     events.on 'signedIn', ->
+      sharing.start()
       context.userSignedIn()
       $.showInfobar 'You are now signed in.'
 
@@ -81,6 +84,7 @@
         'to activate your account.'
 
     events.on 'signedOut', ->
+      sharing.stop()
       context.userSignedOut()
       router.navigate clientUrl('documents', 'new'), true
       $.showInfobar 'You are now signed out.'
@@ -104,7 +108,9 @@
       layout.init()
 
       app.context = context = new Context options
+      app.sharing = sharing = new Sharing { context }
 
+      sharing.start() if options.userSignedIn
       attachEventHandlers()
       createViews()
 

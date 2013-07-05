@@ -1,18 +1,17 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Composite, Condition, Group, _, _ref;
-
+  var Composite, Condition, Group, _;
   _ = require('underscore');
   Composite = require('./composite');
   Group = require('./group');
   return Condition = (function(_super) {
+
     __extends(Condition, _super);
 
     function Condition() {
-      _ref = Condition.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return Condition.__super__.constructor.apply(this, arguments);
     }
 
     Condition.prototype.createIfGroup = function(label) {

@@ -1,28 +1,39 @@
 ﻿namespace TextUml.Hubs
 {
     using System;
-    using System.Threading.Tasks;
+    using System.Globalization;
 
     using Microsoft.AspNet.SignalR;
 
-    [CLSCompliant(false)]
+    [Authorize, CLSCompliant(false)]
     public class SharingHub : Hub
     {
-        public void Hello()
+        public void Subscribe(int documentId)
         {
-            Clients.All.hello();
+            var id = documentId.ToString(CultureInfo.CurrentCulture);
+
+            Groups.Add(Context.ConnectionId, id);
+
+            Clients.Group(id, Context.ConnectionId)
+                .subscribed(documentId, Context.User.Identity.Name);
         }
 
-        public override Task OnConnected()
+        public void Update(int documentId, string content)
         {
-            System.Diagnostics.Debug.Write(this.Context.ConnectionId);
-            return base.OnConnected();
+            var id = documentId.ToString(CultureInfo.CurrentCulture);
+
+            Clients.Group(id, Context.ConnectionId)
+                .updated(documentId, content, Context.User.Identity.Name);
         }
 
-        public override Task OnReconnected()
+        public void Unsubscribe(int documentId)
         {
-            System.Diagnostics.Debug.Write(this.Context.ConnectionId);
-            return base.OnReconnected();
+            var id = documentId.ToString(CultureInfo.CurrentCulture);
+
+            Groups.Remove(Context.ConnectionId, id);
+
+            Clients.Group(id, Context.ConnectionId)
+                .unsubscribed(documentId, Context.User.Identity.Name);
         }
     }
 }

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width" />
   <title>Mocha</title>
   <link rel="stylesheet" href="~/Content/mocha.css" />
-  <script src="~/Scripts/jquery-1.9.1.js"></script>
+  <script src="~/Scripts/jquery-1.10.1.js"></script>
   <script src="~/Scripts/specs/bdd/mocha.js"></script>
   <script src="~/Scripts/specs/bdd/chai.js"></script>
   <script src="~/Scripts/specs/bdd/sinon.js"></script>
@@ -29,9 +29,11 @@
     <script src="~/Scripts/require.js"></script>
     <script>
       require(['./scripts/config'], function () {
-        require([@Html.Raw(string.Join(",\n", Model))], function () {
-          mocha.checkLeaks();
-          mocha.run();
+        require(['noext', 'signalr'], function() {
+          require([@Html.Raw(string.Join(",\n", Model))], function () {
+            mocha.checkLeaks();
+            mocha.run();
+          });
         });
       });
     </script>
