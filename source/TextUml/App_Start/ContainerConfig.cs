@@ -7,6 +7,7 @@
     using System.Web.Http;
     using System.Web.Mvc;
 
+    using Microsoft.AspNet.SignalR;
     using WebMatrix.WebData;
 
     using Autofac;
@@ -17,6 +18,7 @@
     using Postal;
 
     using DataAccess;
+    using Hubs;
     using Properties;
     using Services;
 
@@ -28,6 +30,7 @@
 
             RegisterMvc(assemblies);
             RegisterWebApi(assemblies, GlobalConfiguration.Configuration);
+            RegisterSignalr();
         }
 
         private static void RegisterMvc(Assembly[] assemblies)
@@ -39,7 +42,6 @@
             builder.RegisterModelBinderProvider();
             builder.RegisterFilterProvider();
 
-            Register<DataContext>(builder).InstancePerHttpRequest();
             Register<CookieTempDataProvider>(builder);
 
             var container = builder.Build();
@@ -58,12 +60,21 @@
             builder.RegisterWebApiModelBinders(assemblies);
             builder.RegisterApiControllers(assemblies);
 
-            Register<DataContext>(builder).InstancePerApiRequest();
-
             var container = builder.Build();
 
             configuration.DependencyResolver =
                 new AutofacWebApiDependencyResolver(container);
+        }
+
+        private static void RegisterSignalr()
+        {
+            var builder = CreateContainerBuilder();
+            var container = builder.Build();
+
+            GlobalHost.DependencyResolver
+                .Register(
+                    typeof(SharingHub),
+                    () => new SharingHub(container.Resolve<IShareService>()));
         }
 
         private static ContainerBuilder CreateContainerBuilder()
@@ -98,6 +109,7 @@
             Register<DocumentService>(builder);
             Register<ShareService>(builder);
             Register<NewUserConfirmedHandler>(builder);
+            Register<DataContext>(builder);
 
             return builder;
         }

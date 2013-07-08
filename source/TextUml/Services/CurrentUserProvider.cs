@@ -10,7 +10,6 @@
     public class CurrentUserProvider : ICurrentUserProvider
     {
         private readonly Func<int> getId;
-        private int? id;
 
         public CurrentUserProvider(Func<int> getId)
         {
@@ -19,15 +18,7 @@
 
         public int UserId
         {
-            get
-            {
-                if (id == null)
-                {
-                    id = getId();
-                }
-
-                return id.GetValueOrDefault();
-            }
+            get { return getId(); }
         }
     }
 }

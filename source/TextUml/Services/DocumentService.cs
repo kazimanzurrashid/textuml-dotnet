@@ -44,7 +44,7 @@
             }
 
             var userId = currentUserProvider.UserId;
-            var documents = Query();
+            var documents = Query(userId);
 
             if (!string.IsNullOrWhiteSpace(model.Filter))
             {
@@ -82,7 +82,8 @@
                 throw new ArgumentNullException("notFound");
             }
 
-            var document = Query().FirstOrDefault(d => d.Id == id);
+            var document = Query(currentUserProvider.UserId)
+                .FirstOrDefault(d => d.Id == id);
 
             if (document == null)
             {
@@ -132,6 +133,7 @@
             }
 
             var userId = currentUserProvider.UserId;
+
             var ownedDocumentsQuery = dataContext.Documents
                 .Where(d => d.Id == id && d.UserId == userId)
                 .Select(d => new
@@ -201,10 +203,8 @@
             dataContext.SaveChanges();
         }
 
-        private IQueryable<DocumentRead> Query()
+        private IQueryable<DocumentRead> Query(int userId)
         {
-            var userId = currentUserProvider.UserId;
-
             var ownedDocumentsQuery = dataContext.Documents
                 .Where(d => d.UserId == userId)
                 .Select(d =>

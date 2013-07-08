@@ -13,7 +13,12 @@
     {
         IEnumerable<ShareRead> Query(int documentId);
 
-        void Update(int documentId, IEnumerable<ShareEdit> models, Action notFound);
+        void Update(
+            int documentId,
+            IEnumerable<ShareEdit> models,
+            Action notFound);
+
+        bool CanEdit(int documentId);
     }
 
     public class ShareService : IShareService
@@ -83,6 +88,20 @@
             UpdateShares(documentId, invitationEmails, allInvitations);
 
             dataContext.SaveChanges();
+        }
+
+        public bool CanEdit(int documentId)
+        {
+            var userId = currentUserProvider.UserId;
+
+            var result = dataContext.Shares.Any(s =>
+                (s.DocumentId == documentId &&
+                s.Document.UserId == userId) ||
+                (s.DocumentId == documentId &&
+                s.UserId == userId &&
+                s.CanEdit));
+
+            return result;
         }
 
         private IEnumerable<Invitation> UpdateInvitations(

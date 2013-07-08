@@ -5765,7 +5765,10 @@ body {
 #document-list li .edit input[type="text"] {
   margin-bottom: 0;
 }
-#document-list li i.icon-trash {
+#document-list li .icon-group {
+  vertical-align: inherit;
+}
+#document-list li .icon-trash {
   display: inline-block;
   float: right;
 }
