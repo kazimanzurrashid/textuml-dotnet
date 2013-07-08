@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.Threading.Tasks;
 
     using Microsoft.AspNet.SignalR;
 
@@ -17,7 +18,21 @@
             this.service = service;
         }
 
-        public void Subscribe(int documentId)
+        private string UserName
+        {
+            get
+            {
+                var fullname = Context.User.Identity.Name;
+
+                var names = fullname.Split(
+                        new[] { '@' },
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                return names.Length > 1 ? names[0] : fullname;
+            }
+        }
+
+        public async Task Subscribe(int documentId)
         {
             if (!service.CanView(documentId))
             {
@@ -26,10 +41,9 @@
 
             var id = documentId.ToString(CultureInfo.CurrentCulture);
 
-            Groups.Add(Context.ConnectionId, id);
+            await Groups.Add(Context.ConnectionId, id);
 
-            Clients.Group(id, Context.ConnectionId)
-                .subscribed(documentId, Context.User.Identity.Name);
+            Clients.OthersInGroup(id).subscribed(documentId, UserName);
         }
 
         public void Update(int documentId, string content)
@@ -41,18 +55,16 @@
 
             var id = documentId.ToString(CultureInfo.CurrentCulture);
 
-            Clients.Group(id, Context.ConnectionId)
-                .updated(documentId, content, Context.User.Identity.Name);
+            Clients.OthersInGroup(id).updated(documentId, content, UserName);
         }
 
-        public void Unsubscribe(int documentId)
+        public async Task Unsubscribe(int documentId)
         {
             var id = documentId.ToString(CultureInfo.CurrentCulture);
 
-            Groups.Remove(Context.ConnectionId, id);
+            await Groups.Remove(Context.ConnectionId, id);
 
-            Clients.Group(id, Context.ConnectionId)
-                .unsubscribed(documentId, Context.User.Identity.Name);
+            Clients.OthersInGroup(id).unsubscribed(documentId, UserName);
         }
     }
 }

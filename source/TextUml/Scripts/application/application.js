@@ -1,9 +1,10 @@
 ﻿var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing;
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing, toastr;
   $ = require('jquery');
   Backbone = require('backbone');
+  toastr = require('toastr');
   NavigationView = require('./views/navigation');
   ExampleListView = require('./views/examplelist');
   EditorView = require('./views/editor');
@@ -86,11 +87,21 @@ define(function(require) {
     events.on('signedUp', function() {
       return $.showInfobar('Thank you for signing up, an email with a confirmation ' + 'link has been sent to your email address. Please open the link ' + 'to activate your account.');
     });
-    return events.on('signedOut', function() {
+    events.on('signedOut', function() {
       sharing.stop();
       context.userSignedOut();
       router.navigate(clientUrl('documents', 'new'), true);
       return $.showInfobar('You are now signed out.');
+    });
+    events.on('userJoined', function(e) {
+      if (e.documentId === context.getCurrentDocumentId()) {
+        return toastr.info("" + e.user + " has joined.");
+      }
+    });
+    return events.on('userLeft', function(e) {
+      if (e.documentId === context.getCurrentDocumentId()) {
+        return toastr.info("" + e.user + " has left.");
+      }
     });
   };
   createViews = function() {
@@ -120,6 +131,9 @@ define(function(require) {
   app = {
     clientUrl: clientUrl,
     start: function(options) {
+      toastr.options = {
+        positionClass: 'toast-bottom-right'
+      };
       layout.init();
       app.context = context = new Context(options);
       app.sharing = sharing = new Sharing({

@@ -7,16 +7,20 @@
   proxy = $.connection.sharingHub
 
   proxy.client.subscribed = (documentId, user) ->
-    console.log "User #{user} joined to document ##{documentId}"
-    events.trigger 'userJoined', { documentId, user }
+    events.trigger 'userJoined',
+      documentId: parseInt documentId, 10
+      user: user
 
-  proxy.client.updated = (documentId, content) ->
-    console.log "Document ##{documentId} content changed by #{user}"
-    events.trigger 'documentContentChanged', { documentId, content, user }
+  proxy.client.updated = (documentId, content, user) ->
+    events.trigger 'documentContentChanged',
+      documentId: parseInt documentId, 10
+      content: content
+      user: user
 
   proxy.client.unsubscribed = (documentId, user) ->
-    console.log "User #{user} left from document ##{documentId}"
-    events.trigger 'userLeft', { documentId, user }
+    events.trigger 'userLeft',
+      documentId: parseInt documentId, 10
+      user: user
 
   class Sharing
     constructor: (options) ->
@@ -25,8 +29,6 @@
 
     start: ->
       $.connection.hub.start().done =>
-        console.log 'Signalr Connected'
-
         events.on 'documentChanged', (e) =>
           id = @documentId
           if id

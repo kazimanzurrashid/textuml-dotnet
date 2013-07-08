@@ -26,10 +26,10 @@
       <script id="document-item-template" type="text/html">
         <div class="display">
           <div>
-            <% if (!owned) { %>
+            <span><%= title %></span>
+            <% if (shared) { %>
               <i class="icon-group" title="shared"></i>
             <% } %>
-            <span><%= title %></span>
           </div>
           <small title="<%= lastUpdatedInHumanizeTime() %>">last updated <%= lastUpdatedInRelativeTime() %></small>
         </div>
@@ -37,10 +37,10 @@
       <script id="document-edit-item-template" type="text/html">
         <div class="display">
           <div>
-            <% if (!owned) { %>
+            <span title="double click to edit"><%= title %></span>
+            <% if (shared) { %>
               <i class="icon-group" title="shared"></i>
             <% } %>
-            <span title="double click to edit"><%= title %></span>
           </div>
           <small title="<%= lastUpdatedInHumanizeTime() %>">last updated <%= lastUpdatedInRelativeTime() %></small>
         </div>

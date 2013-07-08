@@ -293,6 +293,7 @@
       <Minify>False</Minify>
     </None>
     <Content Include="Content\mocha.css" />
+    <None Include="Content\toastr.less" />
     <Content Include="Global.asax" />
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
     <Content Include="Scripts\application\application.js">
@@ -566,7 +567,6 @@
     <Content Include="Properties\project.ruleset" />
     <Content Include="Scripts\application\views\sharedocument.coffee" />
     <Content Include="Scripts\application\models\shares.coffee" />
-    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>
@@ -1384,9 +1384,7 @@
       <DependentUpon>helpers.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js">
-      <DependentUpon>toastr.js</DependentUpon>
-    </Content>
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js">
       <DependentUpon>underscore.js</DependentUpon>

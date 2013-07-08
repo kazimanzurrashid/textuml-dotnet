@@ -7,24 +7,21 @@ define(function(require) {
   require('noext!/signalr/hubs');
   proxy = $.connection.sharingHub;
   proxy.client.subscribed = function(documentId, user) {
-    console.log("User " + user + " joined to document #" + documentId);
     return events.trigger('userJoined', {
-      documentId: documentId,
+      documentId: parseInt(documentId, 10),
       user: user
     });
   };
-  proxy.client.updated = function(documentId, content) {
-    console.log("Document #" + documentId + " content changed by " + user);
+  proxy.client.updated = function(documentId, content, user) {
     return events.trigger('documentContentChanged', {
-      documentId: documentId,
+      documentId: parseInt(documentId, 10),
       content: content,
       user: user
     });
   };
   proxy.client.unsubscribed = function(documentId, user) {
-    console.log("User " + user + " left from document #" + documentId);
     return events.trigger('userLeft', {
-      documentId: documentId,
+      documentId: parseInt(documentId, 10),
       user: user
     });
   };
@@ -38,7 +35,6 @@ define(function(require) {
     Sharing.prototype.start = function() {
       var _this = this;
       return $.connection.hub.start().done(function() {
-        console.log('Signalr Connected');
         return events.on('documentChanged', function(e) {
           var id;
           id = _this.documentId;

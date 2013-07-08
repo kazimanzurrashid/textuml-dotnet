@@ -1,6 +1,7 @@
 ﻿define (require) ->
   $                         = require 'jquery'
   Backbone                  = require 'backbone'
+  toastr                    = require 'toastr'
   NavigationView            = require './views/navigation'
   ExampleListView           = require './views/examplelist'
   EditorView                = require './views/editor'
@@ -83,6 +84,14 @@
       router.navigate clientUrl('documents', 'new'), true
       $.showInfobar 'You are now signed out.'
 
+    events.on 'userJoined', (e) ->
+      if e.documentId is context.getCurrentDocumentId()
+        toastr.info "#{e.user} has joined."
+
+    events.on 'userLeft', (e) ->
+      if e.documentId is context.getCurrentDocumentId()
+        toastr.info "#{e.user} has left."
+
   createViews = ->
     app.views =
       navigation          : new NavigationView
@@ -100,6 +109,7 @@
     clientUrl: clientUrl
 
     start: (options) ->
+      toastr.options = positionClass: 'toast-bottom-right'
       layout.init()
 
       app.context = context = new Context options
