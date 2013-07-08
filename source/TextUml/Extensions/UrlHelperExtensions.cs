@@ -7,15 +7,20 @@
     {
         private static string clientLinkPrefix = "#!/";
 
-        public static string ClientUrlPrefix
+        public static string ClientPrefix
         {
             get { return clientLinkPrefix; }
 
             set { clientLinkPrefix = value; }
         }
 
-        public static string ApiUrlPrefix(this UrlHelper instance)
+        public static string ApiPrefix(this UrlHelper instance)
         {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
             var root = instance.Content("~/api");
 
             if (root.EndsWith("/", StringComparison.Ordinal))
@@ -26,11 +31,11 @@
             return root;
         }
 
-        public static string ClientUrl(
+        public static string Client(
             this UrlHelper instance,
             params string[] paths)
         {
-            var url = ClientUrlPrefix;
+            var url = ClientPrefix;
 
             var relativePath = string.Join("/", paths);
 

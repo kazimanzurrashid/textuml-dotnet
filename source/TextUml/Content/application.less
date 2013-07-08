@@ -2,6 +2,8 @@
 @import 'less/mixins.less';
 @import 'less/reset.less';
 @import 'less/scaffolding.less';
+@import "less/grid.less";
+@import "less/layouts.less";
 @import 'less/type.less';
 @import 'less/forms.less';
 @import 'less/font-awesome.less';
@@ -15,15 +17,10 @@
 @import 'less/modals.less';
 @import "less/labels-badges.less";
 @import 'less/utilities.less';
+@import 'less/bootswatch.less';
 
 @import 'jquery.splitter.less';
 @import 'codemirror.less';
-
-.box-sizing(@size: border-box) {
-  -moz-box-sizing: @size;
-  -webkit-box-sizing: @size;
-  box-sizing: @size;
-}
 
 .section-content {
   bottom: 0;
@@ -104,7 +101,7 @@ html, body {
   textarea {
     .box-shadow(none);
     .square(100%);
-    .box-sizing;
+    .box-sizing(border-box);
     -webkit-appearance: caret;
     border: none;
     font-family: @monoFontFamily; 
@@ -267,6 +264,20 @@ html, body {
         .center-block;
       }
     }
+  }
+}
+
+#document-share-dialog {
+  dl,
+  .new-share,
+  .edit-share,
+  .share-list {
+    margin: 0;
+  }
+
+  .header {
+    font-weight: bold;
+    margin-bottom: @baseLineHeight / 2;
   }
 }
 

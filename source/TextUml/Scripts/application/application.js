@@ -1,7 +1,7 @@
 ﻿var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing;
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing;
   $ = require('jquery');
   Backbone = require('backbone');
   NavigationView = require('./views/navigation');
@@ -13,6 +13,7 @@ define(function(require) {
   DocumentTitleView = require('./views/documenttitle');
   DocumentBrowserView = require('./views/documentbrowser');
   ExportedDocumentView = require('./views/exporteddocument');
+  ShareDocumentView = require('./views/sharedocument');
   Context = require('./context');
   Router = require('./router');
   Sharing = require('./sharing');
@@ -54,14 +55,6 @@ define(function(require) {
       return context.saveCurrentDocument(function() {
         return $.showInfobar('Your document is successfully saved.');
       });
-    });
-    events.on('shareDocument', function() {
-      if (!context.isUserSignedIn()) {
-        return events.trigger('showMembership');
-      }
-      if (context.isCurrentDocumentNew()) {
-        return $.showErrorbar('Your document must be saved prior sharing with peers.');
-      }
     });
     events.on('newDocumentTitleAssigned', function() {
       return context.saveCurrentDocument(function() {
@@ -118,7 +111,10 @@ define(function(require) {
       documentBrowser: new DocumentBrowserView({
         context: context
       }),
-      exportedDocument: new ExportedDocumentView
+      exportedDocument: new ExportedDocumentView,
+      shareDocumentView: new ShareDocumentView({
+        context: context
+      })
     };
   };
   app = {

@@ -74,6 +74,8 @@
 
     isCurrentDocumentEditable: -> @editable
 
+    isCurrentDocumentOwned: -> @owned
+
     isCurrentDocumentShared: -> @shared
 
     saveCurrentDocument: (callback) ->

@@ -1,5 +1,6 @@
 ﻿namespace TextUml.Extensions
 {
+    using System;
     using System.Web;
 
     using DomainObjects;
@@ -13,17 +14,17 @@
 
         public static bool CanProfile(this HttpContextBase instance)
         {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
             if (instance.Request.IsLocal)
             {
                 return true;
             }
 
             var user = instance.User;
-
-            if (user == null)
-            {
-                return false;
-            }
 
             return user.Identity.IsAuthenticated &&
                 user.IsInRole(User.Roles.Administrator);

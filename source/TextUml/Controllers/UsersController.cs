@@ -1,6 +1,5 @@
 ﻿namespace TextUml.Controllers
 {
-    using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -10,10 +9,11 @@
 
     using Infrastructure;
     using Models;
+    using Services;
 
     public class UsersController : ApiController
     {
-        private readonly Func<string, string, bool, string> signup;
+        private readonly IMembershipService membershipService;
         private readonly IMailer mailer;
         private readonly IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer;
         private readonly INewUserConfirmedHandler newUserConfirmedHandler;
@@ -21,12 +21,12 @@
         private bool? debuggingEnabled;
 
         public UsersController(
-            Func<string, string, bool, string> signup,
+            IMembershipService membershipService,
             IMailer mailer,
             IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer,
             INewUserConfirmedHandler newUserConfirmedHandler)
         {
-            this.signup = signup;
+            this.membershipService = membershipService;
             this.mailer = mailer;
             this.urlSafeSecureDataSerializer = urlSafeSecureDataSerializer;
             this.newUserConfirmedHandler = newUserConfirmedHandler;
@@ -77,7 +77,10 @@
 
             try
             {
-                token = signup(email, model.Password, requireConfirmation);
+                token = membershipService.Signup(
+                    email,
+                    model.Password,
+                    requireConfirmation);
             }
             catch (MembershipCreateUserException e)
             {

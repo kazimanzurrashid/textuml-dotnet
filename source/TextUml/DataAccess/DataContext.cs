@@ -1,11 +1,10 @@
 ﻿namespace TextUml.DataAccess
 {
-    using System;
     using System.Data.Entity;
 
     using DomainObjects;
 
-    public interface IDataContext : IDisposable
+    public interface IDataContext
     {
         IDbSet<User> Users { get; }
 

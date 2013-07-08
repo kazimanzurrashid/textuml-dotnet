@@ -1,0 +1,13 @@
+﻿<Dictionary>
+  <Words>
+    <Recognized>
+      <Word>Api</Word>
+      <Word>Elmah</Word>
+      <Word>Mvc</Word>
+      <Word>Uml</Word>
+    </Recognized>
+    <DiscreteExceptions>
+      <Term>PreStart</Term>
+    </DiscreteExceptions>
+  </Words>
+</Dictionary>

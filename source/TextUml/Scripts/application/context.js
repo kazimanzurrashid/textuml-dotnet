@@ -122,6 +122,10 @@ define(function(require) {
       return this.editable;
     };
 
+    Context.prototype.isCurrentDocumentOwned = function() {
+      return this.owned;
+    };
+
     Context.prototype.isCurrentDocumentShared = function() {
       return this.shared;
     };

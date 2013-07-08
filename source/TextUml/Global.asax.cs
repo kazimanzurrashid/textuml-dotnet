@@ -14,7 +14,6 @@
             ElmahConfig.Register();
             MembershipConfig.Register();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             ContainerConfig.Register();
         }

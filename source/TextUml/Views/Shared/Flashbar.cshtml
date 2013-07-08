@@ -1,10 +1,10 @@
 ﻿@using TextUml.Infrastructure
-@{ var flashMessages = new FlashMessages(ViewContext.Controller.TempData); }
+@{ var flashMessages = new FlashMessageCollection(ViewContext.Controller.TempData); }
 @foreach (var flashMessage in flashMessages.Where(p =>
   !string.IsNullOrWhiteSpace(p.Key) &&
   !string.IsNullOrWhiteSpace(p.Value))) {
   <div class="alert alert-@flashMessage.Key.ToLowerInvariant() fade in flash-bar">
-    <button type="button" class="close" data-dismiss="alert" title="close">&times;</button>
+    <a href="javascript:;" rel="nofollow" class="close" data-dismiss="alert" title="close">&times;</a>
     @{
       var icon = string.Empty;
       switch (flashMessage.Key.ToLowerInvariant())

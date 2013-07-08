@@ -10,6 +10,7 @@
   DocumentTitleView         = require './views/documenttitle'
   DocumentBrowserView       = require './views/documentbrowser'
   ExportedDocumentView      = require './views/exporteddocument'
+  ShareDocumentView         = require './views/sharedocument'
   Context                   = require './context'
   Router                    = require './router'
   Sharing                   = require './sharing'
@@ -42,13 +43,6 @@
         return events.trigger 'showNewDocumentTitle'
       context.saveCurrentDocument ->
         $.showInfobar 'Your document is successfully saved.'
-
-    events.on 'shareDocument', ->
-      unless context.isUserSignedIn()
-        return events.trigger 'showMembership'
-
-      if context.isCurrentDocumentNew()
-        return $.showErrorbar 'Your document must be saved prior sharing with peers.'
 
     events.on 'newDocumentTitleAssigned', ->
       context.saveCurrentDocument ->
@@ -100,6 +94,7 @@
       documentTitle       : new DocumentTitleView { context }
       documentBrowser     : new DocumentBrowserView { context }
       exportedDocument    : new ExportedDocumentView
+      shareDocumentView   : new ShareDocumentView { context }
 
   app =
     clientUrl: clientUrl

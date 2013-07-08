@@ -6,6 +6,7 @@
     using System.Web.Http;
 
     using Models;
+    using Services;
 
     [Authorize]
     public class DocumentsController : ApiController
@@ -54,18 +55,33 @@
             }
 
             var result = service.Create(model);
-            var response = Request.CreateResponse(
-                HttpStatusCode.Created,
-                result);
 
-            var location = Url.Link("DefaultApi", new { id = result.Id });
+            HttpResponseMessage response = null;
 
-            if (location != null)
+            try
             {
-                response.Headers.Location = new Uri(location);
-            }
+                response = Request.CreateResponse(
+                                HttpStatusCode.Created,
+                                result);
 
-            return response;
+                var location = Url.Link("DefaultApi", new { id = result.Id });
+
+                if (location != null)
+                {
+                    response.Headers.Location = new Uri(location);
+                }
+
+                return response;
+            }
+            catch
+            {
+                if (response != null)
+                {
+                    response.Dispose();
+                }
+
+                throw;
+            }
         }
 
         public HttpResponseMessage Put(int id, DocumentEdit model)

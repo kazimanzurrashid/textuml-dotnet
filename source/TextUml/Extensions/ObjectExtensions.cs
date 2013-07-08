@@ -17,7 +17,7 @@ namespace TextUml.Extensions
 
         private static readonly Func<string, object, object, object>
             DefaultConfictHandler = (key, oldValue, newValue) => newValue;
- 
+
         public static string ToJson(this object instance)
         {
             if (instance == null)
@@ -38,15 +38,81 @@ namespace TextUml.Extensions
 
         public static TTarget Merge<TTarget, TSource>(
             this TTarget target,
+            TSource source) where TTarget : class where TSource : class
+        {
+            return Merge(target, source, null, null, DefaultConfictHandler);
+        }
+
+        public static TTarget Merge<TTarget, TSource>(
+            this TTarget target,
             TSource source,
-            string[] includedProperties = null,
-            string[] excludedProperties = null,
-            Func<string, object, object, object> conflictHandler = null)
+            string[] includedProperties)
             where TTarget : class
             where TSource : class
         {
-            var handler = conflictHandler ??
-                          DefaultConfictHandler;
+            return Merge(
+                target,
+                source,
+                includedProperties,
+                null,
+                DefaultConfictHandler);
+        }
+
+        public static TTarget Merge<TTarget, TSource>(
+            this TTarget target,
+            TSource source,
+            string[] includedProperties,
+            Func<string, object, object, object> conflictHandler)
+            where TTarget : class
+            where TSource : class
+        {
+            return Merge(
+                target,
+                source,
+                includedProperties,
+                null,
+                conflictHandler);
+        }
+
+        public static TTarget Merge<TTarget, TSource>(
+            this TTarget target,
+            TSource source,
+            string[] includedProperties,
+            string[] excludedProperties)
+            where TTarget : class
+            where TSource : class
+        {
+            return Merge(
+                target,
+                source,
+                includedProperties,
+                excludedProperties,
+                DefaultConfictHandler);
+        }
+
+        public static TTarget Merge<TTarget, TSource>(
+            this TTarget target,
+            TSource source,
+            string[] includedProperties,
+            string[] excludedProperties,
+            Func<string, object, object, object> conflictHandler)
+            where TTarget : class
+            where TSource : class
+        {
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            if (conflictHandler == null)
+            {
+                throw new ArgumentNullException("conflictHandler");
+            }
 
             var targetProperties = TypeDescriptor.GetProperties(target)
                 .Cast<PropertyDescriptor>()
@@ -78,7 +144,7 @@ namespace TextUml.Extensions
                     continue;
                 }
 
-                var value = handler(key, oldValue, newValue);
+                var value = conflictHandler(key, oldValue, newValue);
 
                 targetProperties[key].SetValue(target, value);
             }

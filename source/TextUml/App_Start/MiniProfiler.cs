@@ -5,6 +5,7 @@
 
 namespace TextUml.Infrastructure
 {
+    using System;
     using System.Linq;
     using System.Web;
     using System.Web.Mvc;
@@ -44,6 +45,11 @@ namespace TextUml.Infrastructure
     {
         public void Init(HttpApplication context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException("context");
+            }
+
             var startedProfiling = false;
 
             context.BeginRequest += (sender, e) =>

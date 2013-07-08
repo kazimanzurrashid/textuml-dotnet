@@ -24,7 +24,7 @@
 
     <div class="alert alert-error @alertBlockCssClass fade in">
       @if (model.Closable) {
-        <button type="button" class="close" data-dismiss="alert" title="close">&times;</button>
+        <a href="javascript:;" rel="nofollow" class="close" data-dismiss="alert" title="close">&times;</a>
       }
       @if (errorMessages.Count == 1) {
         if (!string.IsNullOrWhiteSpace(model.Title)) {

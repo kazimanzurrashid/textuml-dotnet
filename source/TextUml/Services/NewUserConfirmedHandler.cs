@@ -1,4 +1,4 @@
-﻿namespace TextUml.Models
+﻿namespace TextUml.Services
 {
     using System.Linq;
 

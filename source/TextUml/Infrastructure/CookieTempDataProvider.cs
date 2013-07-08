@@ -14,6 +14,11 @@
         public IDictionary<string, object> LoadTempData(
             ControllerContext controllerContext)
         {
+            if (controllerContext == null)
+            {
+                throw new ArgumentNullException("controllerContext");
+            }
+
             var httpContext = controllerContext.HttpContext;
             var cookie = httpContext.Request.Cookies[TempDataCookieKey];
 
@@ -32,17 +37,27 @@
 
         public void SaveTempData(
             ControllerContext controllerContext,
-            IDictionary<string, object> data)
+            IDictionary<string, object> values)
         {
+            if (controllerContext == null)
+            {
+                throw new ArgumentNullException("controllerContext");
+            }
+
+            if (values == null)
+            {
+                throw new ArgumentNullException("values");
+            }
+
             var httpContext = controllerContext.HttpContext;
 
-            if (data.Count == 0)
+            if (values.Count == 0)
             {
                 ExpireCookie(httpContext.Response);
                 return;
             }
 
-            var payload = Serialize(data);
+            var payload = Serialize(values);
 
             var cookie = new HttpCookie(TempDataCookieKey)
                 {

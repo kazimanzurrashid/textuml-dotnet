@@ -19,8 +19,14 @@
                 new ConcurrentDictionary<string, IEnumerable<string>>();
 
         public static void IncludeClientViews(
+            this HtmlHelper instance)
+        {
+            IncludeClientViews(instance, ViewFolder);
+        }
+
+        public static void IncludeClientViews(
             this HtmlHelper instance,
-            string folder = ViewFolder)
+            string folder)
         {
             foreach (var template in GetClientViews(folder))
             {

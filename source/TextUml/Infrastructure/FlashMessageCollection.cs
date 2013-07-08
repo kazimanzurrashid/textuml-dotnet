@@ -4,13 +4,13 @@
     using System.Collections;
     using System.Collections.Generic;
 
-    public class FlashMessages : IEnumerable<KeyValuePair<string, string>>
+    public class FlashMessageCollection : IEnumerable<KeyValuePair<string, string>>
     {
         public const string Key = "__Flash";
 
         private readonly IDictionary<string, object> backingStore;
 
-        public FlashMessages(IDictionary<string, object> backingStore)
+        public FlashMessageCollection(IDictionary<string, object> backingStore)
         {
             this.backingStore = backingStore;
         }

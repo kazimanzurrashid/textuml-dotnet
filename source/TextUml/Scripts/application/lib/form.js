@@ -43,13 +43,14 @@ define(function(require) {
     });
   };
   $.fn.showFieldErrors = function(options) {
-    var cssClass, errors, firstInput,
+    var cssClass, errors, firstInput, inline,
       _this = this;
     options = $.extend({
       inline: false,
       errors: {}
     }, options);
-    cssClass = options.inline ? 'help-inline' : 'help-block';
+    inline = options.inline;
+    cssClass = inline ? 'help-inline' : 'help-block';
     errors = options.errors || {};
     firstInput = null;
     this.each(function() {
@@ -71,7 +72,7 @@ define(function(require) {
             firstInput = input;
           }
           input.closest('.control-group').addClass('error');
-          container = options.inline ? input.parent() : input.closest('.controls');
+          container = inline ? input.parent() : input.closest('.controls');
           return _(errors[key]).each(function(message) {
             return $('<span>', {
               text: message,
@@ -127,8 +128,8 @@ define(function(require) {
   $.fn.putFocus = function() {
     var _this = this;
     _(function() {
-      return _this.find(':input').not(':button').not(':disabled').first().focus();
-    }).delay(100);
+      return _this.find(':input').not(':button').not(':checkbox').not(':checkbox').not(':radio').not(':disabled').first().select().focus();
+    }).delay(80);
     return this;
   };
   return $;

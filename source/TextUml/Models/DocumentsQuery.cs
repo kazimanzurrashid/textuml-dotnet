@@ -27,9 +27,12 @@
 
         public string OrderBy { get; set; }
 
-        public string GetOrderByClause()
+        public string OrderByClause
         {
-            return OrderBy ?? "updatedAt desc ";
+            get
+            {
+                return OrderBy ?? "updatedAt desc";
+            }
         }
 
         public IEnumerable<ValidationResult> Validate(

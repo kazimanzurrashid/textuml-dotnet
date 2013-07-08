@@ -36,7 +36,8 @@
 
   $.fn.showFieldErrors = (options) ->
     options = $.extend inline: false, errors: {}, options
-    cssClass = if options.inline then 'help-inline' else 'help-block'
+    inline = options.inline
+    cssClass = if inline then 'help-inline' else 'help-block'
     errors = options.errors || {}
     firstInput = null
     @each ->
@@ -55,7 +56,7 @@
           .each (key) ->
             firstInput = input unless firstInput
             input.closest('.control-group').addClass 'error'
-            container = if options.inline
+            container = if inline
                 input.parent()
               else
                 input.closest '.controls'
@@ -102,10 +103,14 @@
     _(() =>
       @find(':input')
         .not(':button')
+        .not(':checkbox')
+        .not(':checkbox')
+        .not(':radio')
         .not(':disabled')
         .first()
+        .select()
         .focus()
-      ).delay 100
+      ).delay 80
     @
 
   $

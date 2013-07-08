@@ -31,7 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Properties\project.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -190,12 +190,12 @@
   <ItemGroup>
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\ElmahConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\MembershipConfig.cs" />
     <Compile Include="App_Start\MiniProfiler.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MochaController.cs" />
+    <Compile Include="Controllers\SharesController.cs" />
     <Compile Include="DomainObjects\Invitation.cs" />
     <Compile Include="DomainObjects\Share.cs" />
     <Compile Include="Extensions\ClientViewExtensions.cs" />
@@ -215,10 +215,11 @@
     <Compile Include="DataAccess\DataContext.cs" />
     <Compile Include="DomainObjects\Document.cs" />
     <Compile Include="DomainObjects\User.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Hubs\SharingHub.cs" />
     <Compile Include="Infrastructure\Clock.cs" />
     <Compile Include="Infrastructure\CookieTempDataProvider.cs" />
-    <Compile Include="Infrastructure\FlashMessages.cs" />
+    <Compile Include="Infrastructure\FlashMessageCollection.cs" />
     <Compile Include="Infrastructure\FlashMessageType.cs" />
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Infrastructure\MailUrlResolver.cs" />
@@ -246,9 +247,14 @@
     <Compile Include="Models\DocumentRead.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\DocumentsQuery.cs" />
-    <Compile Include="Models\NewUserConfirmedHandler.cs" />
+    <Compile Include="Models\ShareEdit.cs" />
+    <Compile Include="Models\ShareRead.cs" />
+    <Compile Include="Services\CurrentUserProvider.cs" />
+    <Compile Include="Services\MembershipService.cs" />
+    <Compile Include="Services\NewUserConfirmedHandler.cs" />
     <Compile Include="Models\PagedQueryResult.cs" />
     <Compile Include="Models\ResetPassword.cs" />
+    <Compile Include="Services\ShareService.cs" />
     <Compile Include="Models\UserConfirmationToken.cs" />
     <Compile Include="Models\ValidationSummary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -257,10 +263,13 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Models\DocumentService.cs" />
+    <Compile Include="Services\DocumentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\application.css">
+      <DependentUpon>application.less</DependentUpon>
+    </Content>
+    <Content Include="Content\application.min.css">
       <DependentUpon>application.less</DependentUpon>
     </Content>
     <Content Include="Content\font\fontawesome-webfont.svg" />
@@ -284,6 +293,7 @@
     </None>
     <Content Include="Content\mocha.css" />
     <Content Include="Global.asax" />
+    <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
     <Content Include="Scripts\application\application.js">
       <DependentUpon>application.coffee</DependentUpon>
     </Content>
@@ -325,6 +335,12 @@
     </Content>
     <Content Include="Scripts\application\models\session.js">
       <DependentUpon>session.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\application\models\share.js">
+      <DependentUpon>share.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\application\models\shares.js">
+      <DependentUpon>shares.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\application\models\sortorder.js">
       <DependentUpon>sortorder.coffee</DependentUpon>
@@ -515,6 +531,9 @@
     <Content Include="Scripts\application\views\profile.js">
       <DependentUpon>profile.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\application\views\sharedocument.js">
+      <DependentUpon>sharedocument.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\application\views\signin.js">
       <DependentUpon>signin.coffee</DependentUpon>
     </Content>
@@ -540,6 +559,12 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
+    <Content Include="Scripts\application\models\share.coffee" />
+    <Content Include="Content\less\bootswatch.less" />
+    <Content Include="Content\less\original_variables.less" />
+    <Content Include="Properties\project.ruleset" />
+    <Content Include="Scripts\application\views\sharedocument.coffee" />
+    <Content Include="Scripts\application\models\shares.coffee" />
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>
@@ -566,10 +591,6 @@
     <Content Include="Scripts\codemirror\addon\selection\active-line.js" />
     <Content Include="Scripts\codemirror\addon\selection\mark-selection.js" />
     <Content Include="Scripts\codemirror\codemirror.js" />
-    <Content Include="Scripts\html5shiv.js" />
-    <Content Include="Scripts\html5shiv.min.js">
-      <DependentUpon>html5shiv.js</DependentUpon>
-    </Content>
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1219,10 +1240,6 @@
     <Content Include="Scripts\jquery.splitter.min.js">
       <DependentUpon>jquery.splitter.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\json2.js" />
-    <Content Include="Scripts\json2.min.js">
-      <DependentUpon>json2.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\less.min.js" />
     <Content Include="Scripts\main.js">
       <DependentUpon>main.coffee</DependentUpon>
@@ -1372,7 +1389,6 @@
     <Content Include="Views\ClientViews\DocumentBrowser.cshtml" />
     <Content Include="Views\ClientViews\Profile.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\LegacyIE.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\ClientViews\_ChangePassword.cshtml" />
@@ -1648,6 +1664,7 @@
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </Content>
     <Content Include="Scripts\specs\application\views\documentlist.coffee" />
+    <Content Include="Views\ClientViews\DocumentShare.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

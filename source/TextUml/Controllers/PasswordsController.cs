@@ -8,20 +8,18 @@
 
     using Infrastructure;
     using Models;
+    using Services;
 
     public class PasswordsController : ApiController
     {
-        private readonly Func<string, string> forgotPassword;
-        private readonly Func<string, string, string, bool> changePassword;
+        private readonly IMembershipService membershipService;
         private readonly IMailer mailer;
 
         public PasswordsController(
-            Func<string, string> forgotPassword,
-            Func<string, string, string, bool> changePassword,
+            IMembershipService membershipService,
             IMailer mailer)
         {
-            this.forgotPassword = forgotPassword;
-            this.changePassword = changePassword;
+            this.membershipService = membershipService;
             this.mailer = mailer;
         }
 
@@ -34,12 +32,12 @@
                     ModelState);
             }
 
-            var userName = model.Email.ToLowerInvariant();
-            var token = forgotPassword(userName);
+            var email = model.Email.ToLowerInvariant();
+            var token = membershipService.ForgotPassword(email);
 
             if (!string.IsNullOrWhiteSpace(token))
             {
-                await mailer.ForgotPasswordAsync(userName, token);
+                await mailer.ForgotPasswordAsync(email, token);
             }
 
             return Request.CreateResponse(HttpStatusCode.NoContent);
@@ -48,6 +46,11 @@
         [Authorize]
         public HttpResponseMessage Change(ChangePassword model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
             if (!ModelState.IsValid)
             {
                 return Request.CreateErrorResponse(
@@ -57,7 +60,7 @@
 
             try
             {
-                if (changePassword(
+                if (membershipService.ChangePassword(
                     User.Identity.Name,
                     model.OldPassword,
                     model.NewPassword))

@@ -5,33 +5,39 @@
 
     using Infrastructure;
     using Models;
+    using Services;
 
     public class SupportsController : Controller
     {
-        private readonly Func<string, string, bool> confirmUser;
-        private readonly Func<string, string, bool> resetPassword;
-        private readonly IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer;
+        private readonly IMembershipService membershipService;
+        private readonly IUrlSafeSecureDataSerializer
+            urlSafeSecureDataSerializer;
+
         private readonly INewUserConfirmedHandler newUserConfirmedHandler;
 
-        private FlashMessages flash;
+        private FlashMessageCollection flash;
 
         public SupportsController(
-            Func<string, string, bool> confirmUser,
-            Func<string, string, bool> resetPassword,
+            IMembershipService membershipService,
             IUrlSafeSecureDataSerializer urlSafeSecureDataSerializer,
             INewUserConfirmedHandler newUserConfirmedHandler)
         {
-            this.confirmUser = confirmUser;
-            this.resetPassword = resetPassword;
+            this.membershipService = membershipService;
             this.urlSafeSecureDataSerializer = urlSafeSecureDataSerializer;
             this.newUserConfirmedHandler = newUserConfirmedHandler;
         }
 
-        public FlashMessages Flash
+        public FlashMessageCollection Flash
         {
-            get { return flash ?? (flash = new FlashMessages(TempData)); }
+            get
+            {
+                return flash ?? (flash = new FlashMessageCollection(TempData));
+            }
 
-            set { flash = value; }
+            set
+            {
+                flash = value;
+            }
         }
 
         [HttpGet]
@@ -45,7 +51,7 @@
             var userConfirmationToken = urlSafeSecureDataSerializer
                 .Deserialize<UserConfirmationToken>(token);
 
-            if (confirmUser(
+            if (membershipService.Confirm(
                 userConfirmationToken.Email,
                 userConfirmationToken.Token))
             {
@@ -72,12 +78,17 @@
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult ResetPassword(ResetPassword model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException("model");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            if (resetPassword(model.Token, model.Password))
+            if (membershipService.ResetPassword(model.Token, model.Password))
             {
                 Flash[FlashMessageType.Success] = "Your password is " +
                     "successfully changed.";
