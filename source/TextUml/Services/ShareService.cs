@@ -18,6 +18,8 @@
             IEnumerable<ShareEdit> models,
             Action notFound);
 
+        bool CanView(int documentId);
+
         bool CanEdit(int documentId);
     }
 
@@ -88,6 +90,19 @@
             UpdateShares(documentId, invitationEmails, allInvitations);
 
             dataContext.SaveChanges();
+        }
+
+        public bool CanView(int documentId)
+        {
+            var userId = currentUserProvider.UserId;
+
+            var result = dataContext.Shares.Any(s =>
+                (s.DocumentId == documentId &&
+                s.Document.UserId == userId) ||
+                (s.DocumentId == documentId &&
+                s.UserId == userId));
+
+            return result;
         }
 
         public bool CanEdit(int documentId)

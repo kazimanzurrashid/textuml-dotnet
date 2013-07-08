@@ -1665,6 +1665,7 @@
     </Content>
     <Content Include="Scripts\specs\application\views\documentlist.coffee" />
     <Content Include="Views\ClientViews\DocumentShare.cshtml" />
+    <Content Include="Views\Shared\GitHubRibbon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

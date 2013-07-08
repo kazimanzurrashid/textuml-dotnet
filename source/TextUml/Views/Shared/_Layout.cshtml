@@ -29,6 +29,7 @@
   @RenderSection("Header", false)
   @RenderBody()
   @Html.Partial("Footer")
+  @Html.Partial("GitHubRibbon")
   @if (Context.CanProfile()) {
     @MiniProfiler.RenderIncludes(RenderPosition.Right)
   }

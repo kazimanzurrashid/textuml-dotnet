@@ -5,7 +5,7 @@
 
     using Microsoft.AspNet.SignalR;
 
-    using TextUml.Services;
+    using Services;
 
     [Authorize, CLSCompliant(false)]
     public class SharingHub : Hub
@@ -19,6 +19,11 @@
 
         public void Subscribe(int documentId)
         {
+            if (!service.CanView(documentId))
+            {
+                return;
+            }
+
             var id = documentId.ToString(CultureInfo.CurrentCulture);
 
             Groups.Add(Context.ConnectionId, id);
@@ -29,12 +34,12 @@
 
         public void Update(int documentId, string content)
         {
-            var id = documentId.ToString(CultureInfo.CurrentCulture);
-
             if (!service.CanEdit(documentId))
             {
                 return;
             }
+
+            var id = documentId.ToString(CultureInfo.CurrentCulture);
 
             Clients.Group(id, Context.ConnectionId)
                 .updated(documentId, content, Context.User.Identity.Name);
