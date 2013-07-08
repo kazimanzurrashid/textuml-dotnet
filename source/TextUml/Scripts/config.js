@@ -18,6 +18,7 @@ require.config({
     codemirrormarkselection: './codemirror/addon/selection/active-line',
     codemirroractiveline: './codemirror/addon/selection/mark-selection',
     noext: './noext',
+    toastr: './toastr',
     signalr: './jquery.signalR-1.1.2',
     confirm: 'application/lib/confirm',
     flashbar: 'application/lib/flashbar',

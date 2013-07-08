@@ -287,6 +287,7 @@
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\FontAwesome.otf" />
+    <Content Include="Content\githubribbon.less" />
     <None Include="Content\jquery.splitter.less">
       <Compile>False</Compile>
       <Minify>False</Minify>
@@ -565,6 +566,7 @@
     <Content Include="Properties\project.ruleset" />
     <Content Include="Scripts\application\views\sharedocument.coffee" />
     <Content Include="Scripts\application\models\shares.coffee" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>
@@ -1380,6 +1382,10 @@
     <Content Include="Scripts\specs\fixtures\readme.txt" />
     <Content Include="Scripts\specs\helpers.js">
       <DependentUpon>helpers.coffee</DependentUpon>
+    </Content>
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js">
+      <DependentUpon>toastr.js</DependentUpon>
     </Content>
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js">
