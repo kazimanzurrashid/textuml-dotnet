@@ -130,6 +130,10 @@ define(function(require) {
       return this.shared;
     };
 
+    Context.prototype.canShareCurrentDocumentUpdate = function() {
+      return this.isCurrentDocumentShared() && this.isCurrentDocumentEditable();
+    };
+
     Context.prototype.saveCurrentDocument = function(callback) {
       var attributes, document,
         _this = this;

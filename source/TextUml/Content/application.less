@@ -6,7 +6,7 @@
 @import "less/layouts.less";
 @import 'less/type.less';
 @import 'less/forms.less';
-@import 'less/font-awesome.less';
+@import 'less/fontawesome/font-awesome.less';
 @import 'less/component-animations.less';
 @import 'less/close.less';
 @import 'less/buttons.less';
@@ -23,6 +23,8 @@
 @import 'codemirror.less';
 @import 'toastr.less';
 @import 'githubribbon.less';
+
+@FontAwesomePath: '/content/font';
 
 .section-content {
   bottom: 0;
@@ -282,7 +284,7 @@ html, body {
   }
 
   .header {
-    font-weight: bold;
+    font-weight: normal;
     margin-bottom: @baseLineHeight / 2;
   }
 }

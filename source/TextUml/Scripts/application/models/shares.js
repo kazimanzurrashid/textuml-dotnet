@@ -39,9 +39,6 @@ define(function(require) {
       return collection.fetch({
         success: function() {
           return callback(collection);
-        },
-        error: function() {
-          return callback(collection);
         }
       });
     };

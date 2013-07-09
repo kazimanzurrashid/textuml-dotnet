@@ -65,6 +65,16 @@ define(function(require) {
       return this.listenTo(events, 'documentChanged', this.onDocumentChanged);
     };
 
+    CodeEditorView.prototype.setContent = function(value) {
+      this.changing = true;
+      this.context.setCurrentDocumentContent(value);
+      this.editor.setValue(value);
+      events.trigger('codeChanged', {
+        code: value
+      });
+      return this.changing = false;
+    };
+
     CodeEditorView.prototype.onExampleSelected = function(e) {
       var code;
       if (!this.context.isCurrentDocumentEditable()) {
@@ -81,13 +91,15 @@ define(function(require) {
 
     CodeEditorView.prototype.onDocumentChanged = function() {
       var code;
+      this.changing = true;
       code = this.context.getCurrentDocumentContent();
       this.editor.setOption('readOnly', !this.context.isCurrentDocumentEditable());
       this.editor.setValue(code);
-      return this.editor.focus();
+      this.editor.focus();
+      return this.changing = false;
     };
 
-    CodeEditorView.prototype.onCodeChanged = function() {
+    CodeEditorView.prototype.onCodeChanged = function(change) {
       var newCode;
       newCode = this.editor.getValue();
       if (newCode === this.oldCode) {
@@ -97,6 +109,11 @@ define(function(require) {
       events.trigger('codeChanged', {
         code: newCode
       });
+      if (!this.changing) {
+        events.trigger('broadcastDocumentContentChange', {
+          content: newCode
+        });
+      }
       return this.oldCode = newCode;
     };
 

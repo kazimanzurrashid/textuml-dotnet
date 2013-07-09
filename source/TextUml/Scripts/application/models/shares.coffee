@@ -20,8 +20,7 @@
       collection = new Shares
       Shares.set documentId, collection
       collection.fetch
-        success   : -> callback collection
-        error     : -> callback collection
+        success: -> callback collection
 
     @set: (documentId, collection) ->
       collection.documentId = documentId

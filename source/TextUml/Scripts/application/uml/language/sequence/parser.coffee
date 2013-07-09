@@ -44,7 +44,8 @@ define (require) ->
       lines = _(input.split NewLine).reject (x) ->
         NewLine.test(x) or not (trim(x) or '').length
 
-      context = new @contextType lines.join '\n'
+      code = lines.join '\n'
+      context = new @contextType code
 
       try
         _(lines).each (line, index) =>
@@ -56,7 +57,11 @@ define (require) ->
             @callbacks.onWarning message
         context.done()
         diagram = context.getDiagram()
-        @callbacks.onComplete if diagram.participants.length then diagram
+
+        @callbacks.onComplete
+          diagram: if diagram.participants.length then diagram else undefined
+          code: code
+
         return true
       catch exception
         @callbacks.onError exception

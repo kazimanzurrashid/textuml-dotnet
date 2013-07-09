@@ -84,14 +84,6 @@
       router.navigate clientUrl('documents', 'new'), true
       $.showInfobar 'You are now signed out.'
 
-    events.on 'userJoined', (e) ->
-      if e.documentId is context.getCurrentDocumentId()
-        toastr.info "#{e.user} has joined."
-
-    events.on 'userLeft', (e) ->
-      if e.documentId is context.getCurrentDocumentId()
-        toastr.info "#{e.user} has left."
-
   createViews = ->
     app.views =
       navigation          : new NavigationView
@@ -112,14 +104,31 @@
       toastr.options = positionClass: 'toast-bottom-right'
       layout.init()
 
-      app.context = context = new Context options
-      app.sharing = sharing = new Sharing { context }
+      context = new Context options
+      sharing = new Sharing { context }
+      router = new Router { context, clientUrl }
+
+      app.context = context
+      app.sharing = sharing
+      app.router = router
+
+      sharing.on 'userJoined', (e) ->
+        return false unless e.documentId is context.getCurrentDocumentId()
+        toastr.info "#{e.user} has joined."
+
+      sharing.on 'documentUpdated', (e) ->
+        return false unless e.documentId is context.getCurrentDocumentId()
+        toastr.info "#{e.user} has updated the code."
+        events.trigger 'documentContentChanged', code: e.content
+
+      sharing.on 'userLeft', (e) ->
+        return false unless e.documentId is context.getCurrentDocumentId()
+        toastr.info "#{e.user} has left."
 
       sharing.start() if options.userSignedIn
       attachEventHandlers()
       createViews()
 
-      app.router = router = new Router { context, clientUrl }
       Backbone.history.start()
 
       $(window).on 'beforeunload', ->

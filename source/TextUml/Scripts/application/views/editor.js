@@ -25,10 +25,10 @@ define(function(require) {
     EditorView.prototype.parserType = Parser;
 
     EditorView.prototype.initialize = function(options) {
-      var callbacks, context;
-      context = options.context;
+      var callbacks;
+      this.context = options.context;
       this.code = new this.codeEditorViewType({
-        context: context
+        context: this.context
       });
       this.output = new this.outputGeneratorViewType;
       callbacks = {
@@ -45,20 +45,34 @@ define(function(require) {
             message: exception.message
           });
         },
-        onComplete: function(diagram) {
-          return events.trigger('parseCompleted', {
-            diagram: diagram
-          });
+        onComplete: function(e) {
+          return events.trigger('parseCompleted', e);
         }
       };
       this.parser = new this.parserType({
         callbacks: callbacks
       });
-      return this.listenTo(events, 'codeChanged', this.onCodeChanged);
+      this.listenTo(events, 'codeChanged', this.onCodeChanged);
+      this.listenTo(events, 'documentContentChanged', this.onDocumentContentChanged);
+      this.codeTitlebar = this.$('#code-section').find('.title-bar');
+      return this.listenTo(events, 'documentChanged', this.onDocumentChanged);
     };
 
     EditorView.prototype.onCodeChanged = function(e) {
       return this.parser.parse(e.code);
+    };
+
+    EditorView.prototype.onDocumentContentChanged = function(e) {
+      return this.code.setContent(e.code);
+    };
+
+    EditorView.prototype.onDocumentChanged = function() {
+      var title;
+      title = 'Code';
+      if (!this.context.isCurrentDocumentEditable()) {
+        title += ' (readonly)';
+      }
+      return this.codeTitlebar.text(title);
     };
 
     return EditorView;

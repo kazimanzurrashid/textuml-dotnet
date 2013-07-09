@@ -41,10 +41,17 @@ define (require) ->
         styleActiveLine   : true
 
       @oldCode = @editor.getValue()
-      @editor.on 'change',  => @onCodeChanged()
+      @editor.on 'change', => @onCodeChanged()
 
       @listenTo events, 'exampleSelected', @onExampleSelected
       @listenTo events, 'documentChanged', @onDocumentChanged
+
+    setContent: (value) ->
+      @changing = true
+      @context.setCurrentDocumentContent value
+      @editor.setValue value
+      events.trigger 'codeChanged', code: value
+      @changing = false
 
     onExampleSelected: (e) ->
       return false unless @context.isCurrentDocumentEditable()
@@ -55,14 +62,18 @@ define (require) ->
       @editor.focus()
 
     onDocumentChanged: ->
+      @changing = true
       code = @context.getCurrentDocumentContent()
       @editor.setOption 'readOnly', not @context.isCurrentDocumentEditable()
       @editor.setValue code
       @editor.focus()
+      @changing = false
 
-    onCodeChanged: ->
+    onCodeChanged: (change) ->
       newCode = @editor.getValue()
       return false if newCode is @oldCode
       @context.setCurrentDocumentContent newCode
-      events.trigger 'codeChanged', { code: newCode }
+      events.trigger 'codeChanged', code: newCode
+      unless @changing
+        events.trigger 'broadcastDocumentContentChange', content: newCode
       @oldCode = newCode

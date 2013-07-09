@@ -33,7 +33,7 @@ define(function(require) {
     }
 
     Parser.prototype.parse = function(input) {
-      var context, diagram, lines,
+      var code, context, diagram, lines,
         _this = this;
       this.callbacks.onStart();
       if (!input) {
@@ -43,7 +43,8 @@ define(function(require) {
       lines = _(input.split(NewLine)).reject(function(x) {
         return NewLine.test(x) || !(trim(x) || '').length;
       });
-      context = new this.contextType(lines.join('\n'));
+      code = lines.join('\n');
+      context = new this.contextType(code);
       try {
         _(lines).each(function(line, index) {
           var handled, message;
@@ -58,7 +59,10 @@ define(function(require) {
         });
         context.done();
         diagram = context.getDiagram();
-        this.callbacks.onComplete(diagram.participants.length ? diagram : void 0);
+        this.callbacks.onComplete({
+          diagram: diagram.participants.length ? diagram : void 0,
+          code: code
+        });
         return true;
       } catch (exception) {
         this.callbacks.onError(exception);

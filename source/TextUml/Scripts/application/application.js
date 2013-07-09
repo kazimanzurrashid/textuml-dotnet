@@ -87,21 +87,11 @@ define(function(require) {
     events.on('signedUp', function() {
       return $.showInfobar('Thank you for signing up, an email with a confirmation ' + 'link has been sent to your email address. Please open the link ' + 'to activate your account.');
     });
-    events.on('signedOut', function() {
+    return events.on('signedOut', function() {
       sharing.stop();
       context.userSignedOut();
       router.navigate(clientUrl('documents', 'new'), true);
       return $.showInfobar('You are now signed out.');
-    });
-    events.on('userJoined', function(e) {
-      if (e.documentId === context.getCurrentDocumentId()) {
-        return toastr.info("" + e.user + " has joined.");
-      }
-    });
-    return events.on('userLeft', function(e) {
-      if (e.documentId === context.getCurrentDocumentId()) {
-        return toastr.info("" + e.user + " has left.");
-      }
     });
   };
   createViews = function() {
@@ -135,19 +125,43 @@ define(function(require) {
         positionClass: 'toast-bottom-right'
       };
       layout.init();
-      app.context = context = new Context(options);
-      app.sharing = sharing = new Sharing({
+      context = new Context(options);
+      sharing = new Sharing({
         context: context
+      });
+      router = new Router({
+        context: context,
+        clientUrl: clientUrl
+      });
+      app.context = context;
+      app.sharing = sharing;
+      app.router = router;
+      sharing.on('userJoined', function(e) {
+        if (e.documentId !== context.getCurrentDocumentId()) {
+          return false;
+        }
+        return toastr.info("" + e.user + " has joined.");
+      });
+      sharing.on('documentUpdated', function(e) {
+        if (e.documentId !== context.getCurrentDocumentId()) {
+          return false;
+        }
+        toastr.info("" + e.user + " has updated the code.");
+        return events.trigger('documentContentChanged', {
+          code: e.content
+        });
+      });
+      sharing.on('userLeft', function(e) {
+        if (e.documentId !== context.getCurrentDocumentId()) {
+          return false;
+        }
+        return toastr.info("" + e.user + " has left.");
       });
       if (options.userSignedIn) {
         sharing.start();
       }
       attachEventHandlers();
       createViews();
-      app.router = router = new Router({
-        context: context,
-        clientUrl: clientUrl
-      });
       Backbone.history.start();
       $(window).on('beforeunload', function() {
         if (context.isCurrentDocumentDirty()) {

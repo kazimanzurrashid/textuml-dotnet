@@ -78,6 +78,9 @@
 
     isCurrentDocumentShared: -> @shared
 
+    canShareCurrentDocumentUpdate: ->
+      @isCurrentDocumentShared() and @isCurrentDocumentEditable()
+
     saveCurrentDocument: (callback) ->
       return false unless @isCurrentDocumentEditable()
 

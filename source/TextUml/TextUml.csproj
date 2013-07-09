@@ -283,16 +283,25 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </Content>
+    <Content Include="Content\githubribbon.less" />
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
     <Content Include="Content\font\FontAwesome.otf" />
-    <Content Include="Content\githubribbon.less" />
     <None Include="Content\jquery.splitter.less">
       <Compile>False</Compile>
       <Minify>False</Minify>
     </None>
     <Content Include="Content\mocha.css" />
+    <Content Include="Content\less\fontawesome\variables.less" />
+    <Content Include="Content\less\fontawesome\path.less" />
+    <Content Include="Content\less\fontawesome\mixins.less" />
+    <Content Include="Content\less\fontawesome\icons.less" />
+    <Content Include="Content\less\fontawesome\font-awesome-ie7.less" />
+    <Content Include="Content\less\fontawesome\font-awesome.less" />
+    <Content Include="Content\less\fontawesome\extras.less" />
+    <Content Include="Content\less\fontawesome\core.less" />
+    <Content Include="Content\less\fontawesome\bootstrap.less" />
     <None Include="Content\toastr.less" />
     <Content Include="Global.asax" />
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
@@ -1065,10 +1074,6 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Content\less\font-awesome-ie7.less">
-      <Compile>False</Compile>
-      <Minify>False</Minify>
-    </Content>
     <Content Include="Content\less\font-awesome.less">
       <Compile>False</Compile>
       <Minify>False</Minify>
@@ -1384,7 +1389,9 @@
       <DependentUpon>helpers.coffee</DependentUpon>
     </Content>
     <Content Include="Scripts\toastr.js" />
-    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\toastr.min.js">
+      <DependentUpon>toastr.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js">
       <DependentUpon>underscore.js</DependentUpon>

@@ -12,8 +12,8 @@ define (require) ->
     parserType                : Parser
 
     initialize: (options) ->
-      context = options.context
-      @code   = new @codeEditorViewType { context }
+      @context = options.context
+      @code   = new @codeEditorViewType context: @context
       @output = new @outputGeneratorViewType
 
       callbacks =
@@ -23,11 +23,23 @@ define (require) ->
           events.trigger 'parseWarning', { message }
         onError: (exception) ->
           events.trigger 'parseError', message: exception.message
-        onComplete: (diagram) ->
-          events.trigger 'parseCompleted', { diagram }
+        onComplete: (e) ->
+          events.trigger 'parseCompleted', e
 
       @parser = new @parserType { callbacks }
 
       @listenTo events, 'codeChanged', @onCodeChanged
+      @listenTo events, 'documentContentChanged', @onDocumentContentChanged
+
+      @codeTitlebar = @$('#code-section').find '.title-bar'
+      @listenTo events, 'documentChanged', @onDocumentChanged
 
     onCodeChanged: (e) -> @parser.parse e.code
+
+    onDocumentContentChanged: (e) -> @code.setContent e.code
+
+    onDocumentChanged: ->
+      title = 'Code'
+      unless @context.isCurrentDocumentEditable()
+        title += ' (readonly)'
+      @codeTitlebar.text title
