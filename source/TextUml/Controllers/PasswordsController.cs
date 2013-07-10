@@ -1,6 +1,7 @@
 ﻿namespace TextUml.Controllers
 {
     using System;
+    using System.Globalization;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -32,7 +33,7 @@
                     ModelState);
             }
 
-            var email = model.Email.ToLowerInvariant();
+            var email = model.Email.ToLower(CultureInfo.CurrentCulture);
             var token = membershipService.ForgotPassword(email);
 
             if (!string.IsNullOrWhiteSpace(token))

@@ -15,69 +15,49 @@ define (require) ->
       super
       @localHistory = []
       @on 'all', =>
-        path = Backbone.history.fragment
-        if @localHistory.length and
-        @localHistory[@localHistory.length - 1] is path
+        fragment = Backbone.history.fragment
+        if @localHistory.length and @localHistory[@localHistory.length - 1] is fragment
           return false
-        @localHistory.push path
-
+        @localHistory.push fragment
+         
     initialize: (options) ->
       @context = options.context
       @clientUrl = options.clientUrl
 
     newDocument: ->
-      @promptForUnsavedChanges =>
-        @context.resetCurrentDocument()
-        events.trigger 'documentChanged'
+      @context.resetCurrentDocument()
+      events.trigger 'documentChanged'
 
     openDocument: (id) ->
-      action = =>
+      @ensureSignedIn =>
         @context.setCurrentDocument id, (document) =>
           unless document
             $.showErrorbar "Document with id <strong>#{id}</strong> " +
               'does not exist.'
-            @previous()
+            @redirecToPrevious()
           events.trigger 'documentChanged'
 
-      @promptForUnsavedChanges =>
-        unless @context.isUserSignedIn()
-          return events.trigger 'showMembership',
-            ok: => action()
-            cancel: => @previous()
-        action()
-
     openDocuments: ->
-      action = =>
+      @ensureSignedIn =>
         @context.resetCurrentDocument()
         events.trigger 'documentChanged'
-        events.trigger 'showDocuments', cancel: => @previous()
+        events.trigger 'showDocuments', cancel: => @redirectToPrevious()
 
-      @promptForUnsavedChanges =>
-        unless @context.isUserSignedIn()
-          return events.trigger 'showMembership',
-            ok: => action()
-            cancel: => @previous()
-        action()
+    ensureSignedIn: (action) ->
+      unless @context.isUserSignedIn()
+        return events.trigger 'showMembership',
+          ok: =>
+            if @context.isUserSignedIn()
+              action()
+            else
+              @redirectToPrevious()
+          cancel: =>
+            @redirectToPrevious()
+      action()
 
-    promptForUnsavedChanges: (callback) ->
-      return false if @implicitRedirect
-      unless @context.isCurrentDocumentDirty()
-        callback()
-        return false
-
-      $.confirm
-        prompt    : 'Your document has unsaved changes, if you navigate away ' +
-                    'your changes will be lost. Click OK to continue, or Cancel to ' +
-                    'stay on the current page.'
-        ok        : -> callback()
-        cancel    : => @previous()
-      true
-
-    previous: ->
+    redirectToPrevious: ->
       if @localHistory.length > 1
         path = @localHistory[@localHistory.length - 2]
       else
         path = @clientUrl 'documents', 'new'
-      @implicitRedirect = true
-      @navigate path
-      @implicitRedirect = false
+      @navigate path, true

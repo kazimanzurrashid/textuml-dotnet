@@ -1,5 +1,6 @@
 ﻿namespace TextUml.Controllers
 {
+    using System.Globalization;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -70,7 +71,7 @@
             }
 
             var statusCode = MembershipCreateStatus.Success;
-            var email = model.Email.ToLowerInvariant();
+            var email = model.Email.ToLower(CultureInfo.CurrentCulture);
             var token = string.Empty;
 
             var requireConfirmation = !IsDebuggingEnabled;

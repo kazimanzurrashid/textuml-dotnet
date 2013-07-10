@@ -163,11 +163,6 @@ define(function(require) {
       attachEventHandlers();
       createViews();
       Backbone.history.start();
-      $(window).on('beforeunload', function() {
-        if (context.isCurrentDocumentDirty()) {
-          return 'Your document has unsaved changes, if you navigate ' + 'away your changes will be lost.';
-        }
-      });
       if (hasClientUrl()) {
         return true;
       }

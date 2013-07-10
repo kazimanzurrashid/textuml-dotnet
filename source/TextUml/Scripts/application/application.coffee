@@ -131,11 +131,6 @@
 
       Backbone.history.start()
 
-      $(window).on 'beforeunload', ->
-        if context.isCurrentDocumentDirty()
-          return 'Your document has unsaved changes, if you navigate ' +
-            'away your changes will be lost.'
-
       return true if hasClientUrl()
       router.navigate clientUrl('documents', 'new'), true
 

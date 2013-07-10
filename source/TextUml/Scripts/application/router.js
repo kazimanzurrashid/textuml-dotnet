@@ -23,12 +23,12 @@ define(function(require) {
       Router.__super__.constructor.apply(this, arguments);
       this.localHistory = [];
       this.on('all', function() {
-        var path;
-        path = Backbone.history.fragment;
-        if (_this.localHistory.length && _this.localHistory[_this.localHistory.length - 1] === path) {
+        var fragment;
+        fragment = Backbone.history.fragment;
+        if (_this.localHistory.length && _this.localHistory[_this.localHistory.length - 1] === fragment) {
           return false;
         }
-        return _this.localHistory.push(path);
+        return _this.localHistory.push(fragment);
       });
     }
 
@@ -38,98 +38,63 @@ define(function(require) {
     };
 
     Router.prototype.newDocument = function() {
-      var _this = this;
-      return this.promptForUnsavedChanges(function() {
-        _this.context.resetCurrentDocument();
-        return events.trigger('documentChanged');
-      });
+      this.context.resetCurrentDocument();
+      return events.trigger('documentChanged');
     };
 
     Router.prototype.openDocument = function(id) {
-      var action,
-        _this = this;
-      action = function() {
+      var _this = this;
+      return this.ensureSignedIn(function() {
         return _this.context.setCurrentDocument(id, function(document) {
           if (!document) {
             $.showErrorbar(("Document with id <strong>" + id + "</strong> ") + 'does not exist.');
-            _this.previous();
+            _this.redirecToPrevious();
           }
           return events.trigger('documentChanged');
         });
-      };
-      return this.promptForUnsavedChanges(function() {
-        if (!_this.context.isUserSignedIn()) {
-          return events.trigger('showMembership', {
-            ok: function() {
-              return action();
-            },
-            cancel: function() {
-              return _this.previous();
-            }
-          });
-        }
-        return action();
       });
     };
 
     Router.prototype.openDocuments = function() {
-      var action,
-        _this = this;
-      action = function() {
+      var _this = this;
+      return this.ensureSignedIn(function() {
         _this.context.resetCurrentDocument();
         events.trigger('documentChanged');
         return events.trigger('showDocuments', {
           cancel: function() {
-            return _this.previous();
+            return _this.redirectToPrevious();
           }
         });
-      };
-      return this.promptForUnsavedChanges(function() {
-        if (!_this.context.isUserSignedIn()) {
-          return events.trigger('showMembership', {
-            ok: function() {
-              return action();
-            },
-            cancel: function() {
-              return _this.previous();
-            }
-          });
-        }
-        return action();
       });
     };
 
-    Router.prototype.promptForUnsavedChanges = function(callback) {
+    Router.prototype.ensureSignedIn = function(action) {
       var _this = this;
-      if (this.implicitRedirect) {
-        return false;
+      if (!this.context.isUserSignedIn()) {
+        return events.trigger('showMembership', {
+          ok: function() {
+            if (_this.context.isUserSignedIn()) {
+              return action();
+            } else {
+              return _this.redirectToPrevious();
+            }
+          },
+          cancel: function() {
+            return _this.redirectToPrevious();
+          }
+        });
       }
-      if (!this.context.isCurrentDocumentDirty()) {
-        callback();
-        return false;
-      }
-      $.confirm({
-        prompt: 'Your document has unsaved changes, if you navigate away ' + 'your changes will be lost. Click OK to continue, or Cancel to ' + 'stay on the current page.',
-        ok: function() {
-          return callback();
-        },
-        cancel: function() {
-          return _this.previous();
-        }
-      });
-      return true;
+      return action();
     };
 
-    Router.prototype.previous = function() {
+    Router.prototype.redirectToPrevious = function() {
       var path;
       if (this.localHistory.length > 1) {
         path = this.localHistory[this.localHistory.length - 2];
       } else {
         path = this.clientUrl('documents', 'new');
       }
-      this.implicitRedirect = true;
-      this.navigate(path);
-      return this.implicitRedirect = false;
+      return this.navigate(path, true);
     };
 
     return Router;

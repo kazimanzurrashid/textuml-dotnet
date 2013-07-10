@@ -56,6 +56,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.Mvc4.3.0.0\lib\net40\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Autofac.Integration.SignalR">
+      <HintPath>..\packages\Autofac.SignalR.3.0.1\lib\net40\Autofac.Integration.SignalR.dll</HintPath>
+    </Reference>
     <Reference Include="Autofac.Integration.WebApi, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Autofac.WebApi.3.0.2\lib\net40\Autofac.Integration.WebApi.dll</HintPath>
@@ -573,7 +576,9 @@
     <Content Include="Scripts\application\models\share.coffee" />
     <Content Include="Content\less\bootswatch.less" />
     <Content Include="Content\less\original_variables.less" />
-    <Content Include="Properties\project.ruleset" />
+    <Content Include="Properties\project.ruleset">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Scripts\application\views\sharedocument.coffee" />
     <Content Include="Scripts\application\models\shares.coffee" />
     <None Include="Scripts\jquery-1.10.1.intellisense.js">

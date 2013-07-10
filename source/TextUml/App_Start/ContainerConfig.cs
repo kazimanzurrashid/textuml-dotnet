@@ -13,14 +13,18 @@
     using Autofac;
     using Autofac.Builder;
     using Autofac.Integration.Mvc;
+    using Autofac.Integration.SignalR;
     using Autofac.Integration.WebApi;
 
     using Postal;
 
     using DataAccess;
-    using Hubs;
     using Properties;
     using Services;
+
+    using MvcResolver = Autofac.Integration.Mvc.AutofacDependencyResolver;
+    using SignalrResolver = Autofac.Integration.SignalR.AutofacDependencyResolver;
+    using WebApiResolver = Autofac.Integration.WebApi.AutofacWebApiDependencyResolver;
 
     public static class ContainerConfig
     {
@@ -29,8 +33,8 @@
             var assemblies = new[] { Assembly.GetExecutingAssembly() };
 
             RegisterMvc(assemblies);
-            RegisterWebApi(assemblies, GlobalConfiguration.Configuration);
-            RegisterSignalr();
+            RegisterWebApi(assemblies);
+            RegisterSignalr(assemblies);
         }
 
         private static void RegisterMvc(Assembly[] assemblies)
@@ -45,15 +49,14 @@
             Register<CookieTempDataProvider>(builder);
 
             var container = builder.Build();
-            var resolver = new AutofacDependencyResolver(container);
+            var resolver = new MvcResolver(container);
 
             DependencyResolver.SetResolver(resolver);
         }
 
-        private static void RegisterWebApi(
-            Assembly[] assemblies,
-            HttpConfiguration configuration)
+        private static void RegisterWebApi(Assembly[] assemblies)
         {
+            var configuration = GlobalConfiguration.Configuration;
             var builder = CreateContainerBuilder();
 
             builder.RegisterWebApiFilterProvider(configuration);
@@ -61,26 +64,25 @@
             builder.RegisterApiControllers(assemblies);
 
             var container = builder.Build();
+            var resolver = new WebApiResolver(container);
 
-            configuration.DependencyResolver =
-                new AutofacWebApiDependencyResolver(container);
+            configuration.DependencyResolver = resolver;
         }
 
-        private static void RegisterSignalr()
+        private static void RegisterSignalr(Assembly[] assemblies)
         {
             var builder = CreateContainerBuilder();
-            var container = builder.Build();
+            builder.RegisterHubs(assemblies);
 
-            GlobalHost.DependencyResolver
-                .Register(
-                    typeof(SharingHub),
-                    () => new SharingHub(container.Resolve<IShareService>()));
+            var container = builder.Build();
+            var resolver = new SignalrResolver(container);
+
+            GlobalHost.DependencyResolver = resolver;
         }
 
         private static ContainerBuilder CreateContainerBuilder()
         {
             var builder = new ContainerBuilder();
-
             var settings = ConfigurationManager.AppSettings;
 
             Register<UrlSafeSecureDataSerializer>(builder)

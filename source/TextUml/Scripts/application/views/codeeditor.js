@@ -68,6 +68,7 @@ define(function(require) {
     CodeEditorView.prototype.setContent = function(value) {
       this.changing = true;
       this.context.setCurrentDocumentContent(value);
+      this.context.markCurrentDocumentClean();
       this.editor.setValue(value);
       events.trigger('codeChanged', {
         code: value
@@ -106,6 +107,7 @@ define(function(require) {
         return false;
       }
       this.context.setCurrentDocumentContent(newCode);
+      this.context.markCurrentDocumentDirty();
       events.trigger('codeChanged', {
         code: newCode
       });

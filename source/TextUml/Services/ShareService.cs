@@ -5,9 +5,8 @@
     using System.Linq;
 
     using DataAccess;
+    using DomainObjects;
     using Models;
-
-    using TextUml.DomainObjects;
 
     public interface IShareService
     {

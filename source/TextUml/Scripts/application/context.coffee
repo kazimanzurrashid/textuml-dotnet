@@ -65,13 +65,6 @@
 
     isCurrentDocumentNew: -> not @id
 
-    isCurrentDocumentDirty: ->
-      return false unless @isCurrentDocumentEditable()
-      return @content if @isCurrentDocumentNew()
-
-      document = @documents.get @id
-      @content isnt document.get 'content'
-
     isCurrentDocumentEditable: -> @editable
 
     isCurrentDocumentOwned: -> @owned
@@ -95,7 +88,8 @@
             callback?()
       else
         document = @documents.get @id
-        document.save attributes, success: -> callback?()
+        document.save attributes,
+          success: -> callback?()
 
     getNewDocumentTitle: ->
       title = @title

@@ -10,7 +10,7 @@ define (require) ->
 
     events:
       'show'                : 'onDiaglogShow'
-      'hidden'              : 'onDiaglogHidden'
+      'hidden'              : 'onDialogHidden'
       'click .btn-primary'  : 'onSubmit'
 
     initialize: (options) ->

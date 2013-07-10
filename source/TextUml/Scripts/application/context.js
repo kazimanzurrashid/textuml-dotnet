@@ -106,18 +106,6 @@ define(function(require) {
       return !this.id;
     };
 
-    Context.prototype.isCurrentDocumentDirty = function() {
-      var document;
-      if (!this.isCurrentDocumentEditable()) {
-        return false;
-      }
-      if (this.isCurrentDocumentNew()) {
-        return this.content;
-      }
-      document = this.documents.get(this.id);
-      return this.content !== document.get('content');
-    };
-
     Context.prototype.isCurrentDocumentEditable = function() {
       return this.editable;
     };

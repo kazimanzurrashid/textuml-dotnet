@@ -21,7 +21,7 @@ define(function(require) {
 
     DocumentBrowserView.prototype.events = {
       'show': 'onDiaglogShow',
-      'hidden': 'onDiaglogHidden',
+      'hidden': 'onDialogHidden',
       'click .btn-primary': 'onSubmit'
     };
 

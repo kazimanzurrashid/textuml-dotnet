@@ -1,6 +1,7 @@
 ﻿namespace TextUml.Hubs
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Globalization;
     using System.Threading.Tasks;
 
@@ -11,6 +12,11 @@
     [Authorize, CLSCompliant(false)]
     public class SharingHub : Hub
     {
+        // For the time being use in memory, for production redis would 
+        // be a better option.
+        private static readonly ConcurrentDictionary<string, string>
+            DocumentContents = new ConcurrentDictionary<string, string>();
+
         private readonly IShareService service;
 
         public SharingHub(IShareService service)
@@ -44,6 +50,14 @@
             await Groups.Add(Context.ConnectionId, id);
 
             Clients.OthersInGroup(id).subscribed(documentId, UserName);
+
+            string content;
+
+            if (DocumentContents.TryGetValue(id, out content))
+            {
+                Clients.OthersInGroup(id)
+                    .updated(documentId, content, UserName);
+            }
         }
 
         public void Update(int documentId, string content)
@@ -54,6 +68,8 @@
             }
 
             var id = documentId.ToString(CultureInfo.CurrentCulture);
+
+            DocumentContents.AddOrUpdate(id, content, (key, value) => content);
 
             Clients.OthersInGroup(id).updated(documentId, content, UserName);
         }
