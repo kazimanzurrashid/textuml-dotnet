@@ -204,7 +204,9 @@
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\ElmahConfig.cs" />
     <Compile Include="App_Start\MembershipConfig.cs" />
-    <Compile Include="App_Start\MiniProfiler.cs" />
+    <Compile Include="App_Start\MiniProfiler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MochaController.cs" />
@@ -1575,6 +1577,9 @@
     <Content Include="Views\Emails\_ViewStart.cshtml" />
     <Content Include="Scripts\jquery-1.10.1.min.map">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\underscore.min.map">
+      <DependentUpon>underscore.js</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

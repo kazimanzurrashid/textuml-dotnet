@@ -128,7 +128,7 @@ define(function(require) {
   $.fn.putFocus = function() {
     var _this = this;
     _(function() {
-      return _this.find(':input').not(':button').not(':checkbox').not(':checkbox').not(':radio').not(':disabled').first().select().focus();
+      return _this.find(':input').not(':button').not(':checkbox').not(':radio').not(':disabled').first().select().focus();
     }).delay(80);
     return this;
   };

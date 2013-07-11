@@ -104,7 +104,6 @@
       @find(':input')
         .not(':button')
         .not(':checkbox')
-        .not(':checkbox')
         .not(':radio')
         .not(':disabled')
         .first()
