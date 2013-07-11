@@ -4,7 +4,7 @@ define (require) ->
   Validation  = require './validation'
 
   class Document extends Backbone.Model
-    urlRoot: '/api/documents'
+    urlRoot: -> '/api/documents'
 
     defaults: ->
       title         : null

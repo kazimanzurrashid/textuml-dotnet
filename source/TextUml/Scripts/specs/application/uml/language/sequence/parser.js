@@ -93,13 +93,15 @@ define(function(require) {
           });
         });
         return describe('valid input', function() {
-          var diagram, originalContextType, spiedOnComplete, stubbedContextType;
+          var code, diagram, originalContextType, spiedOnComplete, stubbedContextType;
           originalContextType = null;
           stubbedContextType = null;
           diagram = null;
           spiedOnComplete = null;
+          code = null;
           before(function() {
             var context;
+            code = 'line1\nline2\nline3';
             diagram = {
               participants: [sinon.stub()]
             };
@@ -123,10 +125,13 @@ define(function(require) {
               }
             });
             parser.handlers = [];
-            return parser.parse('line1\nline2\nline3');
+            return parser.parse(code);
           });
           it('triggers the callback with the parsed diagram', function() {
-            return expect(spiedOnComplete).to.have.been.calledWith(diagram);
+            return expect(spiedOnComplete).to.have.been.calledWith({
+              diagram: diagram,
+              code: code
+            });
           });
           return after(function() {
             return Parser.prototype.contextType = originalContextType;

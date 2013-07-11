@@ -10,8 +10,6 @@ define(function(require) {
         type: 'v',
         outline: true,
         anchorToWindow: true,
-        minLeft: 100,
-        sizeLeft: 183,
         dock: 'left',
         accessKey: 'L',
         cookie: 'side-bar'
@@ -24,8 +22,6 @@ define(function(require) {
         type: 'v',
         outline: true,
         anchorToWindow: true,
-        minLeft: 200,
-        sizeLeft: 291,
         accessKey: 'M',
         cookie: 'main-content'
       });

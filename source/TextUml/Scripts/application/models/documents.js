@@ -23,8 +23,6 @@ define(function(require) {
 
     Documents.prototype.filter = null;
 
-    Documents.prototype.url = '/api/documents';
-
     Documents.prototype.model = Document;
 
     function Documents() {
@@ -38,11 +36,8 @@ define(function(require) {
       return resp[this.resultAttribute];
     };
 
-    Documents.prototype.fetch = function(options) {
+    Documents.prototype.url = function() {
       var orderBy, query;
-      if (options == null) {
-        options = {};
-      }
       query = {
         top: this.pageSize
       };
@@ -61,8 +56,7 @@ define(function(require) {
       if (this.filter) {
         query.filter = this.filter;
       }
-      options.url = (_(this).result('url')) + '?' + $.param(query);
-      return Documents.__super__.fetch.call(this, options);
+      return "/api/documents?" + ($.param(query));
     };
 
     Documents.prototype.fetchOne = function(id, options) {

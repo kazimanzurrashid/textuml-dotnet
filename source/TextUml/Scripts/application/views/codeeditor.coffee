@@ -49,7 +49,6 @@ define (require) ->
     setContent: (value) ->
       @changing = true
       @context.setCurrentDocumentContent value
-      @context.markCurrentDocumentClean()
       @editor.setValue value
       events.trigger 'codeChanged', code: value
       @changing = false
@@ -74,7 +73,6 @@ define (require) ->
       newCode = @editor.getValue()
       return false if newCode is @oldCode
       @context.setCurrentDocumentContent newCode
-      @context.markCurrentDocumentDirty()
       events.trigger 'codeChanged', code: newCode
       unless @changing
         events.trigger 'broadcastDocumentContentChange', content: newCode

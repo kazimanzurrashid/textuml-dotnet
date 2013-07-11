@@ -1362,6 +1362,9 @@
     <Content Include="Scripts\specs\application\views\forgotpassword.js">
       <DependentUpon>forgotpassword.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\specs\application\views\documentlist.js">
+      <DependentUpon>documentlist.coffee</DependentUpon>
+    </Content>
     <Content Include="Scripts\specs\application\views\membership.js">
       <DependentUpon>membership.coffee</DependentUpon>
     </Content>

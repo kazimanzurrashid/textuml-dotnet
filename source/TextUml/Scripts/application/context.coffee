@@ -88,8 +88,7 @@
             callback?()
       else
         document = @documents.get @id
-        document.save attributes,
-          success: -> callback?()
+        document.save attributes, success: -> callback?()
 
     getNewDocumentTitle: ->
       title = @title

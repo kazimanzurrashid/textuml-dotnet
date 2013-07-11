@@ -14,7 +14,8 @@ define(function(require) {
       fixtures.set('<textarea id="code-text-area"></textarea>');
       context = {
         getCurrentDocumentContent: function() {},
-        setCurrentDocumentContent: function(code) {}
+        setCurrentDocumentContent: function(code) {},
+        isCurrentDocumentEditable: function() {}
       };
       spiedListenTo = sinon.spy(CodeEditor.prototype, 'listenTo');
       return view = new CodeEditor({
@@ -43,6 +44,9 @@ define(function(require) {
         };
         stubbedGet = sinon.stub(example, 'get');
         stubbedGet.withArgs('snippet').returns(snippet);
+        sinon.stub(context, 'isCurrentDocumentEditable', function() {
+          return true;
+        });
         return view.onExampleSelected({
           example: example
         });

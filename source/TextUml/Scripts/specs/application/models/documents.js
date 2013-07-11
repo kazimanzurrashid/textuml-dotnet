@@ -107,39 +107,28 @@ define(function(require) {
         return expect(documents.pageCount).to.equal(3);
       });
     });
-    return describe('#fetch', function() {
-      var options, stubbedFetch;
-      stubbedFetch = null;
-      options = null;
-      before(function() {
-        return stubbedFetch = sinon.stub(Backbone.Collection.prototype, 'fetch', function() {});
-      });
+    return describe('#url', function() {
+      var url;
+      url = null;
       beforeEach(function() {
         documents.pageIndex = 3;
         documents.pageSize = 10;
         documents.sortAttribute = 'title';
         documents.sortOrder = SortOrder.descending;
         documents.filter = 'test';
-        documents.url = '/documents';
-        options = {
-          url: ''
-        };
-        return documents.fetch(options);
+        return url = documents.url();
       });
       it('has top in url', function() {
-        return expect(options.url).to.contain('top=10');
+        return expect(url).to.contain('top=10');
       });
       it('has skip in url', function() {
-        return expect(options.url).to.contain('skip=30');
+        return expect(url).to.contain('skip=30');
       });
       it('has orderBy in url', function() {
-        return expect(options.url).to.contain('orderBy=title+desc');
+        return expect(url).to.contain('orderBy=title+desc');
       });
-      it('has filter in url', function() {
-        return expect(options.url).to.contain('filter=test');
-      });
-      return after(function() {
-        return stubbedFetch.restore();
+      return it('has filter in url', function() {
+        return expect(url).to.contain('filter=test');
       });
     });
   });

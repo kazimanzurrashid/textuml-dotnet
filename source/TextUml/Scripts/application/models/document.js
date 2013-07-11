@@ -14,7 +14,9 @@ define(function(require) {
       return Document.__super__.constructor.apply(this, arguments);
     }
 
-    Document.prototype.urlRoot = '/api/documents';
+    Document.prototype.urlRoot = function() {
+      return '/api/documents';
+    };
 
     Document.prototype.defaults = function() {
       return {

@@ -88,8 +88,10 @@
           stubbedContextType      = null
           diagram                 = null
           spiedOnComplete         = null
+          code                    = null
 
           before ->
+            code = 'line1\nline2\nline3'
             diagram =
               participants: [sinon.stub()]
 
@@ -110,10 +112,10 @@
                 onComplete: spiedOnComplete
 
             parser.handlers = []
-            parser.parse 'line1\nline2\nline3'
+            parser.parse code
 
           it 'triggers the callback with the parsed diagram', ->
-            expect(spiedOnComplete).to.have.been.calledWith diagram
+            expect(spiedOnComplete).to.have.been.calledWith { diagram, code }
 
           after -> Parser::contextType = originalContextType
 

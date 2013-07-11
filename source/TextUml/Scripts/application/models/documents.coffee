@@ -11,7 +11,6 @@ define (require) ->
     resultAttribute       : 'data'
     defaultPageSize       : 25
     filter                : null
-    url                   : '/api/documents'
     model                 : Document
 
     constructor: ->
@@ -23,7 +22,7 @@ define (require) ->
       @setCounts resp[@countAttribute]
       resp[@resultAttribute]
 
-    fetch: (options = {}) ->
+    url: ->
       query = top: @pageSize
       query.skip = @pageSize * @pageIndex if @pageIndex
 
@@ -36,8 +35,7 @@ define (require) ->
         query.orderBy = orderBy
 
       query.filter = @filter if @filter
-      options.url = (_(@).result 'url') + '?' + $.param query
-      super options
+      "/api/documents?#{$.param query}"
 
     fetchOne: (id, options) ->
       options = _(options).defaults

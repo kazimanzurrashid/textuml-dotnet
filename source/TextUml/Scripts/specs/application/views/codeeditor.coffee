@@ -14,6 +14,7 @@
       context =
         getCurrentDocumentContent: ->
         setCurrentDocumentContent: (code) ->
+        isCurrentDocumentEditable: ->
 
       spiedListenTo = sinon.spy CodeEditor.prototype, 'listenTo'
       view = new CodeEditor
@@ -38,6 +39,8 @@
         example     = get: (attr) ->
         stubbedGet  = sinon.stub example, 'get'
         stubbedGet.withArgs('snippet').returns snippet
+
+        sinon.stub context, 'isCurrentDocumentEditable', -> true
 
         view.onExampleSelected { example}
 

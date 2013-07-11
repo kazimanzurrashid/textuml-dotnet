@@ -85,12 +85,8 @@
         
       it 'sets #pageCount', -> expect(documents.pageCount).to.equal 3
 
-    describe '#fetch', ->
-      stubbedFetch  = null
-      options       = null
-
-      before ->
-        stubbedFetch = sinon.stub Backbone.Collection.prototype, 'fetch', ->
+    describe '#url', ->
+      url = null
 
       beforeEach ->
           documents.pageIndex         = 3
@@ -98,21 +94,17 @@
           documents.sortAttribute     = 'title'
           documents.sortOrder         = SortOrder.descending
           documents.filter            = 'test'
-          documents.url               = '/documents'
 
-          options = { url: '' };
-          documents.fetch options
+          url = documents.url()
 
       it 'has top in url', ->
-          expect(options.url).to.contain 'top=10'
+          expect(url).to.contain 'top=10'
 
       it 'has skip in url', ->
-          expect(options.url).to.contain 'skip=30'
+          expect(url).to.contain 'skip=30'
 
       it 'has orderBy in url', ->
-          expect(options.url).to.contain 'orderBy=title+desc'
+          expect(url).to.contain 'orderBy=title+desc'
 
       it 'has filter in url', ->
-          expect(options.url).to.contain 'filter=test'
-
-      after -> stubbedFetch.restore()
+          expect(url).to.contain 'filter=test'
