@@ -1,0 +1,1 @@
+..\tools\node TextUml\Scripts\r.js -o TextUml\Scripts\build.js

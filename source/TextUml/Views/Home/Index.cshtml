@@ -21,24 +21,33 @@
 @section Scripts {
   @if (Context.IsDebuggingEnabled) {
     <script src="~/Scripts/jquery-1.10.1.js"></script>
+    <script src="~/Scripts/require.js"></script>
   } else {
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script>
-      if (!window.jQuery) {
-        document.write('<script src="/Scripts/jquery-1.10.1.min.js"><\/script>');
-      }
-    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.6/require.min.js"></script>
   }
-  <script src="~/Scripts/require.js"></script>
   <script>
+    define('jquery', function() {
+      return jQuery;
+    });
     define('preloaded-data', function() {
       return {
         userSignedIn: @Request.IsAuthenticated.ToString().ToLowerInvariant(),
         documents: @Html.Raw(Model.ToJson())
       };
     });
-    require(['@Url.Content("~/Scripts/config.js")'], function() {
-      require(['@Url.Content("~/Scripts/main.js")']); 
-    });
+    @if (Context.IsDebuggingEnabled) {
+      <text>
+        require(['@Url.Content("~/Scripts/config.js")'], function() {
+          require(['@Url.Content("~/Scripts/main.js")']);
+        });
+      </text>
+    } else {
+      <text>
+        require(['@Url.Content("~/Scripts/app.js")'], function(){
+          require(["main.js"]); 
+        });
+      </text>
+    }
   </script>
 }

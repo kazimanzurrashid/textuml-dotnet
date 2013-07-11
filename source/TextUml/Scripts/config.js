@@ -1,8 +1,4 @@
 ﻿
-define('jquery', function() {
-  return jQuery;
-});
-
 require.config({
   baseUrl: '/Scripts',
   paths: {
@@ -17,9 +13,9 @@ require.config({
     codemirror: './codemirror/codemirror',
     codemirrormarkselection: './codemirror/addon/selection/active-line',
     codemirroractiveline: './codemirror/addon/selection/mark-selection',
-    noext: './noext',
     toastr: './toastr',
     signalr: './jquery.signalR-1.1.2',
+    sharinghubproxy: 'application/sharinghubproxy',
     confirm: 'application/lib/confirm',
     flashbar: 'application/lib/flashbar',
     form: 'application/lib/form'
@@ -35,6 +31,7 @@ require.config({
     'jquery.cookie': ['jquery', 'jquery.migrate'],
     'jquery.splitter': ['jquery', 'jquery.migrate', 'jquery.cookie'],
     signalr: ['jquery'],
+    sharinghubproxy: ['jquery', 'signalr'],
     underscore: {
       exports: '_'
     },

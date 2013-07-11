@@ -4,7 +4,7 @@
   Backbone    = require 'backbone'
   events      = require './events'
   require 'signalr'
-  require 'noext!/signalr/hubs'
+  require 'sharinghubproxy'
 
   proxy = $.connection.sharingHub
   BROADCAST_DELAY = 1000 * 3

@@ -360,6 +360,7 @@
     <Content Include="Content\mocha.css" />
     <Content Include="Global.asax" />
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\application\application.js">
       <DependentUpon>application.coffee</DependentUpon>
     </Content>
@@ -423,6 +424,7 @@
     <Content Include="Scripts\application\sharing.js">
       <DependentUpon>sharing.coffee</DependentUpon>
     </Content>
+    <Content Include="Scripts\application\sharinghubproxy.js" />
     <Content Include="Scripts\application\views\documentlistitem.js">
       <DependentUpon>documentlistitem.coffee</DependentUpon>
     </Content>
@@ -614,6 +616,7 @@
     <Content Include="Scripts\bootstrap.min.js">
       <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
+    <Content Include="Scripts\build.js" />
     <Content Include="Scripts\config.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -1152,7 +1155,6 @@
     <Content Include="Scripts\moment.min.js">
       <DependentUpon>moment.js</DependentUpon>
     </Content>
-    <Content Include="Scripts\noext.js" />
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\specs\application\context.js">
