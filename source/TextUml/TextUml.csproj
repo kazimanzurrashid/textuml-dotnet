@@ -640,6 +640,9 @@
     </Content>
     <Content Include="Scripts\application\views\sharedocument.coffee" />
     <Content Include="Scripts\application\models\shares.coffee" />
+    <Content Include="Scripts\app.js.map">
+      <DependentUpon>app.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.1.intellisense.js">
       <DependentUpon>jquery-1.10.1.js</DependentUpon>
     </None>

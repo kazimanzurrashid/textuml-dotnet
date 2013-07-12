@@ -7,5 +7,8 @@
         "preloaded-data": "empty:",
     },
     include: "main.js",
-    excludeShallow: ["jquery", "preloaded-data"]
+    excludeShallow: ["jquery", "preloaded-data"],
+    optimize: "uglify2",
+    generateSourceMaps: true,
+    preserveLicenseComments: false
 })
