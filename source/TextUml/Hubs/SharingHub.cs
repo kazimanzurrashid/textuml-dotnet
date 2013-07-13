@@ -14,8 +14,8 @@
     {
         // For the time being use in memory, for production redis would 
         // be a better option.
-        private static readonly ConcurrentDictionary<string, string>
-            DocumentContents = new ConcurrentDictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, DocumentEntry>
+            DocumentContents = new ConcurrentDictionary<string, DocumentEntry>();
 
         private readonly IShareService service;
 
@@ -51,12 +51,14 @@
 
             Clients.OthersInGroup(id).subscribed(documentId, UserName);
 
-            string content;
+            DocumentEntry entry;
 
-            if (DocumentContents.TryGetValue(id, out content))
+            if (DocumentContents.TryGetValue(id, out entry))
             {
-                Clients.OthersInGroup(id)
-                    .updated(documentId, content, UserName);
+                Clients.Caller.updated(
+                    documentId,
+                    entry.Content,
+                    entry.UpdatedBy);
             }
         }
 
@@ -69,9 +71,18 @@
 
             var id = documentId.ToString(CultureInfo.CurrentCulture);
 
-            DocumentContents.AddOrUpdate(id, content, (key, value) => content);
+            var entry = new DocumentEntry
+                            {
+                                Content = content,
+                                UpdatedBy = UserName
+                            };
 
-            Clients.OthersInGroup(id).updated(documentId, content, UserName);
+            DocumentContents.AddOrUpdate(id, entry, (key, value) => entry);
+
+            Clients.OthersInGroup(id).updated(
+                documentId,
+                entry.Content,
+                entry.UpdatedBy);
         }
 
         public async Task Unsubscribe(int documentId)
@@ -81,6 +92,13 @@
             await Groups.Remove(Context.ConnectionId, id);
 
             Clients.OthersInGroup(id).unsubscribed(documentId, UserName);
+        }
+
+        private sealed class DocumentEntry
+        {
+            public string Content { get; set; }
+
+            public string UpdatedBy { get; set; }
         }
     }
 }
