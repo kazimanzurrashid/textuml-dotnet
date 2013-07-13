@@ -20,5 +20,6 @@ _bin_deployableAssemblies/
 [Aa]pp_[Dd]ata/
 packages/
 TestResults/
+deploy/
 *.orig
 *.db
