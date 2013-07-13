@@ -26,7 +26,8 @@
 
             var user = instance.User;
 
-            return user.Identity.IsAuthenticated &&
+            return (user != null) &&
+                user.Identity.IsAuthenticated &&
                 user.IsInRole(User.Roles.Administrator);
         }
     }
