@@ -7,7 +7,7 @@
   require 'sharinghubproxy'
 
   proxy = $.connection.sharingHub
-  BROADCAST_DELAY = 1000 * 3
+  BROADCAST_DELAY = 1000 * 1
 
   class Sharing
     constructor: (options) ->
