@@ -28,8 +28,11 @@
   @if (Model.Any()) {
     <script src="~/Scripts/require.js"></script>
     <script>
+      define('jquery', function () {
+        return jQuery;
+      });
       require(['./Scripts/config'], function () {
-        require(['noext', 'signalr'], function() {
+        require(['signalr'], function() {
           require([@Html.Raw(string.Join(",\n", Model))], function () {
             mocha.run();
           });
