@@ -2,9 +2,9 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, Helpers, MembershipFormView, events;
+  var Backbone, MembershipFormView, events, helpers;
   Backbone = require('backbone');
-  Helpers = require('./helpers');
+  helpers = require('./helpers');
   events = require('../events');
   require('form');
   return MembershipFormView = (function(_super) {
@@ -23,17 +23,13 @@ define(function(require) {
       'submit': 'onSubmit'
     };
 
-    MembershipFormView.prototype.handleError = function(jqxhr) {
-      throw new Error('Not implemented');
-    };
-
     MembershipFormView.prototype.onSubmit = function(e) {
       var model,
         _this = this;
       e.preventDefault();
       this.$el.hideSummaryError().hideFieldErrors();
       model = new this.modelType;
-      Helpers.subscribeModelInvalidEvent(model, this.$el);
+      helpers.subscribeModelInvalidEvent(model, this.$el);
       return model.save(this.$el.serializeFields(), {
         success: function() {
           return events.trigger(_this.successEvent);

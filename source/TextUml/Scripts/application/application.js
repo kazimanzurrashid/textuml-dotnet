@@ -1,7 +1,8 @@
-﻿var __slice = [].slice;
+var __slice = [].slice;
 
 define(function(require) {
-  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, events, hasClientUrl, layout, router, sharing, toastr;
+  var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, defaultUrl, events, hasClientUrl, layout, router, sharing, toastr;
+
   $ = require('jquery');
   Backbone = require('backbone');
   toastr = require('toastr');
@@ -24,6 +25,7 @@ define(function(require) {
   clientUrlPrefix = '#!/';
   clientUrl = function() {
     var path, segments;
+
     segments = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     path = segments.join('/');
     if (path.length && path.indexOf('/') === 0) {
@@ -31,8 +33,10 @@ define(function(require) {
     }
     return clientUrlPrefix + path;
   };
+  defaultUrl = clientUrl('documents', 'new');
   hasClientUrl = function() {
     var hash;
+
     hash = window.location.hash;
     if (hash.length > clientUrlPrefix.length) {
       return true;
@@ -42,10 +46,14 @@ define(function(require) {
     }
     return true;
   };
-  sharing = null;
   context = null;
   router = null;
+  sharing = null;
   attachEventHandlers = function() {
+    events.on('newDocument', function() {
+      context.resetCurrentDocument();
+      return events.trigger('documentChanged');
+    });
     events.on('saveDocument', function() {
       if (!context.isUserSignedIn()) {
         return events.trigger('showMembership');
@@ -60,6 +68,7 @@ define(function(require) {
     events.on('newDocumentTitleAssigned', function() {
       return context.saveCurrentDocument(function() {
         var url;
+
         $.showInfobar('Your document is successfully saved.');
         url = clientUrl('documents', context.getCurrentDocumentId());
         return router.navigate(url);
@@ -70,12 +79,13 @@ define(function(require) {
     });
     events.on('myAccount', function() {
       var eventName;
+
       eventName = context.isUserSignedIn() ? 'showProfile' : 'showMembership';
       return events.trigger(eventName);
     });
     events.on('signedIn', function() {
-      sharing.start();
       context.userSignedIn();
+      sharing.start();
       return $.showInfobar('You are now signed in.');
     });
     events.on('passwordResetTokenRequested', function() {
@@ -87,11 +97,32 @@ define(function(require) {
     events.on('signedUp', function() {
       return $.showInfobar('Thank you for signing up, an email with a confirmation ' + 'link has been sent to your email address. Please open the link ' + 'to activate your account.');
     });
-    return events.on('signedOut', function() {
-      sharing.stop();
+    events.on('signedOut', function() {
       context.userSignedOut();
-      router.navigate(clientUrl('documents', 'new'), true);
+      sharing.stop();
+      router.navigate(defaultUrl, true);
       return $.showInfobar('You are now signed out.');
+    });
+    sharing.on('userJoined', function(e) {
+      if (e.documentId !== context.getCurrentDocumentId()) {
+        return false;
+      }
+      return toastr.info("" + e.user + " has joined.");
+    });
+    sharing.on('documentUpdated', function(e) {
+      if (e.documentId !== context.getCurrentDocumentId()) {
+        return false;
+      }
+      toastr.info("" + e.user + " has updated the code.");
+      return events.trigger('documentContentChanged', {
+        code: e.content
+      });
+    });
+    return sharing.on('userLeft', function(e) {
+      if (e.documentId !== context.getCurrentDocumentId()) {
+        return false;
+      }
+      return toastr.info("" + e.user + " has left.");
     });
   };
   createViews = function() {
@@ -119,44 +150,22 @@ define(function(require) {
     };
   };
   app = {
-    clientUrl: clientUrl,
     start: function(options) {
       toastr.options = {
         positionClass: 'toast-bottom-right'
       };
       layout.init();
       context = new Context(options);
-      sharing = new Sharing({
-        context: context
-      });
       router = new Router({
         context: context,
-        clientUrl: clientUrl
+        defaultUrl: defaultUrl
+      });
+      sharing = new Sharing({
+        context: context
       });
       app.context = context;
       app.sharing = sharing;
       app.router = router;
-      sharing.on('userJoined', function(e) {
-        if (e.documentId !== context.getCurrentDocumentId()) {
-          return false;
-        }
-        return toastr.info("" + e.user + " has joined.");
-      });
-      sharing.on('documentUpdated', function(e) {
-        if (e.documentId !== context.getCurrentDocumentId()) {
-          return false;
-        }
-        toastr.info("" + e.user + " has updated the code.");
-        return events.trigger('documentContentChanged', {
-          code: e.content
-        });
-      });
-      sharing.on('userLeft', function(e) {
-        if (e.documentId !== context.getCurrentDocumentId()) {
-          return false;
-        }
-        return toastr.info("" + e.user + " has left.");
-      });
       if (options.userSignedIn) {
         sharing.start();
       }
@@ -166,7 +175,7 @@ define(function(require) {
       if (hasClientUrl()) {
         return true;
       }
-      return router.navigate(clientUrl('documents', 'new'), true);
+      return router.navigate(defaultUrl, true);
     }
   };
   window.app = app;

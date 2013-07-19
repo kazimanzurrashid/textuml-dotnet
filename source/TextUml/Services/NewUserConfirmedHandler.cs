@@ -1,13 +1,15 @@
 ﻿namespace TextUml.Services
 {
+    using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using DataAccess;
     using DomainObjects;
 
     public interface INewUserConfirmedHandler
     {
-        void Handle(string email);
+        Task Handle(string email);
     }
 
     public class NewUserConfirmedHandler : INewUserConfirmedHandler
@@ -19,14 +21,14 @@
             this.dataContext = dataContext;
         }
 
-        public void Handle(string email)
+        public async Task Handle(string email)
         {
-            var user = dataContext.Users.First(u => u.Email == email);
+            var user = await dataContext.Users.FirstAsync(u => u.Email == email);
 
-            var invitations = dataContext.Invitations
+            var invitations = await dataContext.Invitations
                 .Where(i => i.Email == user.Email)
                 .Select(i => new { i.DocumentId, i.CanEdit })
-                .ToList();
+                .ToListAsync();
 
             foreach (var share in invitations
                 .Select(invitation =>
@@ -40,7 +42,7 @@
                 dataContext.Shares.Add(share);
             }
 
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }

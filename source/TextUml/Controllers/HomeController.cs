@@ -1,5 +1,6 @@
 ﻿namespace TextUml.Controllers
 {
+    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using Models;
@@ -33,10 +34,10 @@
             }
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
             var model = IsAuthenticated ?
-                documentService.Query(new DocumentsQuery()) :
+                await documentService.Query(new DocumentsQuery()) :
                 new PagedQueryResult<DocumentRead>();
 
             return View(model);

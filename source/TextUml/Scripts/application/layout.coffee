@@ -10,7 +10,7 @@
       anchorToWindow: true
       dock: 'left'
       accessKey: 'L'
-      cookie: 'side-bar'
+      cookie: 'aside'
     .on 'toggleDock resize', ->
       _(() -> $(window).trigger 'resize').defer()
 
@@ -19,4 +19,10 @@
       outline: true
       anchorToWindow: true
       accessKey: 'M'
-      cookie: 'main-content'
+      cookie: 'main'
+
+    $('#editor-container').splitter
+      type: 'h'
+      anchorToWindow: true
+      outline: true
+      cookie: 'output'

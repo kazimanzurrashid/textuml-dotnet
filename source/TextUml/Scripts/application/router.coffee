@@ -1,5 +1,6 @@
 define (require) ->
   $           = require 'jquery'
+  _           = require 'underscore'
   Backbone    = require 'backbone'
   events      = require './events'
   require 'flashbar'
@@ -13,16 +14,16 @@ define (require) ->
 
     constructor: ->
       super
-      @localHistory = []
+      @navigationHistory = []
       @on 'all', =>
-        fragment = Backbone.history.fragment
-        if @localHistory.length and @localHistory[@localHistory.length - 1] is fragment
+        path = Backbone.history.fragment
+        if @navigationHistory.length and _(@navigationHistory).last() is path
           return false
-        @localHistory.push fragment
+        @navigationHistory.push path
          
     initialize: (options) ->
       @context = options.context
-      @clientUrl = options.clientUrl
+      @defaultUrl = options.defaultUrl
 
     newDocument: ->
       @context.resetCurrentDocument()
@@ -56,8 +57,8 @@ define (require) ->
       action()
 
     redirectToPrevious: ->
-      if @localHistory.length > 1
-        path = @localHistory[@localHistory.length - 2]
+      if @navigationHistory.length > 1
+        path = @navigationHistory[@navigationHistory.length - 2]
       else
-        path = @clientUrl 'documents', 'new'
+        path = @defaultUrl
       @navigate path, true

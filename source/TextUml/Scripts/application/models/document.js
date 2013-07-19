@@ -2,10 +2,10 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, Document, Validation, _;
+  var Backbone, Document, validation, _;
   _ = require('underscore');
   Backbone = require('backbone');
-  Validation = require('./validation');
+  validation = require('./validation');
   return Document = (function(_super) {
 
     __extends(Document, _super);
@@ -34,7 +34,7 @@ define(function(require) {
       var errors;
       errors = {};
       if (!attributes.title) {
-        Validation.addError(errors, 'title', 'Title is required.');
+        validation.addError(errors, 'title', 'Title is required.');
       }
       if (_(errors).isEmpty()) {
         return void 0;

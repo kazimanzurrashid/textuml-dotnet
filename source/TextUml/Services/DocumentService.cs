@@ -1,8 +1,10 @@
 ﻿namespace TextUml.Services
 {
     using System;
+    using System.Data.Entity;
     using System.Linq;
     using System.Linq.Dynamic;
+    using System.Threading.Tasks;
 
     using DataAccess;
     using DomainObjects;
@@ -12,15 +14,15 @@
 
     public interface IDocumentService
     {
-        PagedQueryResult<DocumentRead> Query(DocumentsQuery model);
+        Task<PagedQueryResult<DocumentRead>> Query(DocumentsQuery model);
 
-        DocumentRead One(int id, Action notFound);
+        Task<DocumentRead> One(int id, Action notFound);
 
-        DocumentRead Create(DocumentEdit model);
+        Task<DocumentRead> Create(DocumentEdit model);
 
-        DocumentRead Update(int id, DocumentEdit model, Action notFound);
+        Task<DocumentRead> Update(int id, DocumentEdit model, Action notFound);
 
-        void Delete(int id, Action notFound);
+        Task Delete(int id, Action notFound);
     }
 
     public class DocumentService : IDocumentService
@@ -36,7 +38,7 @@
             this.currentUserProvider = currentUserProvider;
         }
 
-        public PagedQueryResult<DocumentRead> Query(DocumentsQuery model)
+        public async Task<PagedQueryResult<DocumentRead>> Query(DocumentsQuery model)
         {
             if (model == null)
             {
@@ -61,13 +63,15 @@
                 documents = documents.Skip(model.Skip);
             }
 
-            var data = documents.Take(model.Top).ToList();
+            var data = await documents.Take(model.Top).ToListAsync();
 
             var count = string.IsNullOrWhiteSpace(model.Filter) ?
-                            dataContext.Documents.LongCount(d =>
+                            // ReSharper disable ImplicitlyCapturedClosure
+                            await dataContext.Documents.LongCountAsync(d =>
+                            // ReSharper restore ImplicitlyCapturedClosure
                                 d.UserId == userId ||
                                 d.Shares.Any(s => s.UserId == userId)) :
-                            dataContext.Documents.LongCount(d =>
+                            await dataContext.Documents.LongCountAsync(d =>
                                 (d.UserId == userId ||
                                 d.Shares.Any(s => s.UserId == userId)) &&
                                 d.Title.Contains(model.Filter));
@@ -75,15 +79,15 @@
             return new PagedQueryResult<DocumentRead>(data, count);
         }
 
-        public DocumentRead One(int id, Action notFound)
+        public async Task<DocumentRead> One(int id, Action notFound)
         {
             if (notFound == null)
             {
                 throw new ArgumentNullException("notFound");
             }
 
-            var document = Query(currentUserProvider.UserId)
-                .FirstOrDefault(d => d.Id == id);
+            var document = await Query(currentUserProvider.UserId)
+                .FirstOrDefaultAsync(d => d.Id == id);
 
             if (document == null)
             {
@@ -93,7 +97,7 @@
             return document;
         }
 
-        public DocumentRead Create(DocumentEdit model)
+        public async Task<DocumentRead> Create(DocumentEdit model)
         {
             if (model == null)
             {
@@ -105,7 +109,7 @@
             document.CreatedAt = document.UpdatedAt = Clock.UtcNow();
 
             dataContext.Documents.Add(document);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
 
             return new DocumentRead
                        {
@@ -120,7 +124,7 @@
                        };
         }
 
-        public DocumentRead Update(int id, DocumentEdit model, Action notFound)
+        public async Task<DocumentRead> Update(int id, DocumentEdit model, Action notFound)
         {
             if (model == null)
             {
@@ -154,9 +158,9 @@
                     owned = false
                 });
 
-            var info = ownedDocumentsQuery
+            var info = await ownedDocumentsQuery
                 .Concat(sharedDocumentsQuery)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (info == null)
             {
@@ -167,7 +171,7 @@
             info.document.Merge(model);
             info.document.UpdatedAt = Clock.UtcNow();
 
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
 
             return new DocumentRead
                        {
@@ -182,15 +186,15 @@
                        };
         }
 
-        public void Delete(int id, Action notFound)
+        public async Task Delete(int id, Action notFound)
         {
             if (notFound == null)
             {
                 throw new ArgumentNullException("notFound");
             }
 
-            var document = dataContext.Documents
-                .FirstOrDefault(d =>
+            var document = await dataContext.Documents
+                .FirstOrDefaultAsync(d =>
                     d.Id == id && d.UserId == currentUserProvider.UserId);
 
             if (document == null)
@@ -200,7 +204,7 @@
             }
 
             dataContext.Documents.Remove(document);
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
 
         private IQueryable<DocumentRead> Query(int userId)

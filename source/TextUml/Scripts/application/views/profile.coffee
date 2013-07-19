@@ -3,7 +3,7 @@ define (require) ->
   Backbone          = require 'backbone'
   ChangePassword    = require '../models/changepassword'
   Session           = require '../models/session'
-  Helpers           = require './helpers'
+  helpers           = require './helpers'
   events            = require '../events'
   require 'bootstrap'
   require 'form'
@@ -40,15 +40,15 @@ define (require) ->
         .hideFieldErrors()
 
       changePassword = new @changePasswordType
-      Helpers.subscribeModelInvalidEvent changePassword, @changePasswordForm
+      helpers.subscribeModelInvalidEvent changePassword, @changePasswordForm
 
       changePassword.save @changePasswordForm.serializeFields(),
         success: =>
           @$el.modal 'hide'
           events.trigger 'passwordChanged'
         error: (_, jqxhr) =>
-          if Helpers.hasModelErrors jqxhr
-            modelErrors = Helpers.getModelErrors jqxhr
+          if helpers.hasModelErrors jqxhr
+            modelErrors = helpers.getModelErrors jqxhr
             if modelErrors
               return @changePasswordForm.showFieldErrors errors: modelErrors
           @changePasswordForm.showSummaryError

@@ -4,7 +4,7 @@
   Backbone    = require 'backbone'
   events      = require './events'
   require 'signalr'
-  require 'sharinghubproxy'
+  require 'hubsproxies'
 
   proxy = $.connection.sharingHub
   BROADCAST_DELAY = 1000 * 1
@@ -27,6 +27,7 @@
     stop: ->
       events.off 'documentChanged'
       events.off 'broadcastDocumentContentChange'
+      $.connection.hub.stop()
 
     onSubscribed: (documentId, user) =>
       @trigger 'userJoined',

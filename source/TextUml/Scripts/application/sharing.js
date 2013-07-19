@@ -7,7 +7,7 @@ define(function(require) {
   Backbone = require('backbone');
   events = require('./events');
   require('signalr');
-  require('sharinghubproxy');
+  require('hubsproxies');
   proxy = $.connection.sharingHub;
   BROADCAST_DELAY = 1000 * 1;
   return Sharing = (function() {
@@ -39,7 +39,8 @@ define(function(require) {
 
     Sharing.prototype.stop = function() {
       events.off('documentChanged');
-      return events.off('broadcastDocumentContentChange');
+      events.off('broadcastDocumentContentChange');
+      return $.connection.hub.stop();
     };
 
     Sharing.prototype.onSubscribed = function(documentId, user) {

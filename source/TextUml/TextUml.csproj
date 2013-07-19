@@ -46,7 +46,7 @@
   <ItemGroup>
     <Reference Include="Autofac, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Autofac.3.1.0\lib\net40\Autofac.dll</HintPath>
+      <HintPath>..\packages\Autofac.3.1.1\lib\net40\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Autofac.Integration.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -68,9 +68,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elmah.MVC.2.1.1\lib\net40\Elmah.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,14 +96,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="MiniProfiler, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MiniProfiler.2.1.0\lib\net40\MiniProfiler.dll</HintPath>
-    </Reference>
-    <Reference Include="MiniProfiler.EntityFramework, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MiniProfiler.EF.2.1.0\lib\net40\MiniProfiler.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -119,21 +114,20 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Linq.Dynamic.1.0.0\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Extensions, Version=2.1.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.13.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.13\lib\net45\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.30506.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.13.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Net.Http.2.1.10\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.13\lib\net45\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -183,10 +177,6 @@
     </Reference>
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
-    <Reference Include="WebActivator, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\WebActivator.1.4.4\lib\net40\WebActivator.dll</HintPath>
-    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.20710.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -200,9 +190,6 @@
     <Compile Include="App_Start\ContainerConfig.cs" />
     <Compile Include="App_Start\ElmahConfig.cs" />
     <Compile Include="App_Start\MembershipConfig.cs" />
-    <Compile Include="App_Start\MiniProfiler.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MochaController.cs" />
@@ -216,7 +203,6 @@
     <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\SupportsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
-    <Compile Include="Extensions\HttpContextExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -235,21 +221,21 @@
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Infrastructure\MailUrlResolver.cs" />
     <Compile Include="Infrastructure\UrlSafeSecureDataSerializer.cs" />
-    <Compile Include="DataAccess\Migrations\201307031524582_UserMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201307031524582_UserMigration.Designer.cs">
-      <DependentUpon>201307031524582_UserMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307181949270_UserMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307181949270_UserMigration.Designer.cs">
+      <DependentUpon>201307181949270_UserMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201307031534598_DocumentMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201307031534598_DocumentMigration.Designer.cs">
-      <DependentUpon>201307031534598_DocumentMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307181950406_DocumentMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307181950406_DocumentMigration.Designer.cs">
+      <DependentUpon>201307181950406_DocumentMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201307031536407_InvitationMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201307031536407_InvitationMigration.Designer.cs">
-      <DependentUpon>201307031536407_InvitationMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307181952163_InvitationMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307181952163_InvitationMigration.Designer.cs">
+      <DependentUpon>201307181952163_InvitationMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAccess\Migrations\201307031542455_ShareMigration.cs" />
-    <Compile Include="DataAccess\Migrations\201307031542455_ShareMigration.Designer.cs">
-      <DependentUpon>201307031542455_ShareMigration.cs</DependentUpon>
+    <Compile Include="DataAccess\Migrations\201307181953265_ShareMigration.cs" />
+    <Compile Include="DataAccess\Migrations\201307181953265_ShareMigration.Designer.cs">
+      <DependentUpon>201307181953265_ShareMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CreateSession.cs" />
@@ -294,7 +280,10 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Content\githubribbon.less" />
+    <Content Include="Content\githubribbon.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
     <Content Include="Content\font\fontawesome-webfont.woff" />
     <Content Include="Content\font\fontawesome-webfont.ttf" />
     <Content Include="Content\font\fontawesome-webfont.eot" />
@@ -303,56 +292,206 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </None>
-    <Content Include="Content\less\fontawesome\variables.less" />
-    <Content Include="Content\less\fontawesome\path.less" />
-    <Content Include="Content\less\fontawesome\mixins.less" />
-    <Content Include="Content\less\fontawesome\icons.less" />
-    <Content Include="Content\less\fontawesome\font-awesome-ie7.less" />
-    <Content Include="Content\less\fontawesome\font-awesome.less" />
-    <Content Include="Content\less\fontawesome\extras.less" />
-    <Content Include="Content\less\fontawesome\core.less" />
-    <Content Include="Content\less\fontawesome\bootstrap.less" />
-    <Content Include="Content\less\wells.less" />
-    <Content Include="Content\less\utilities.less" />
-    <Content Include="Content\less\type.less" />
-    <Content Include="Content\less\tooltip.less" />
-    <Content Include="Content\less\thumbnails.less" />
-    <Content Include="Content\less\tables.less" />
-    <Content Include="Content\less\sprites.less" />
-    <Content Include="Content\less\scaffolding.less" />
-    <Content Include="Content\less\responsive-utilities.less" />
-    <Content Include="Content\less\responsive-navbar.less" />
-    <Content Include="Content\less\responsive-768px-979px.less" />
-    <Content Include="Content\less\responsive-767px-max.less" />
-    <Content Include="Content\less\responsive-1200px-min.less" />
-    <Content Include="Content\less\responsive.less" />
-    <Content Include="Content\less\reset.less" />
-    <Content Include="Content\less\progress-bars.less" />
-    <Content Include="Content\less\popovers.less" />
-    <Content Include="Content\less\pagination.less" />
-    <Content Include="Content\less\pager.less" />
-    <Content Include="Content\less\navs.less" />
-    <Content Include="Content\less\navbar.less" />
-    <Content Include="Content\less\modals.less" />
-    <Content Include="Content\less\mixins.less" />
-    <Content Include="Content\less\media.less" />
-    <Content Include="Content\less\layouts.less" />
-    <Content Include="Content\less\labels-badges.less" />
-    <Content Include="Content\less\hero-unit.less" />
-    <Content Include="Content\less\grid.less" />
-    <Content Include="Content\less\forms.less" />
-    <Content Include="Content\less\dropdowns.less" />
-    <Content Include="Content\less\component-animations.less" />
-    <Content Include="Content\less\code.less" />
-    <Content Include="Content\less\close.less" />
-    <Content Include="Content\less\carousel.less" />
-    <Content Include="Content\less\buttons.less" />
-    <Content Include="Content\less\button-groups.less" />
-    <Content Include="Content\less\breadcrumbs.less" />
-    <Content Include="Content\less\bootstrap.less" />
-    <Content Include="Content\less\alerts.less" />
-    <Content Include="Content\less\accordion.less" />
-    <None Include="Content\toastr.less" />
+    <Content Include="Content\less\fontawesome\variables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\path.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\mixins.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\icons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\font-awesome-ie7.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\font-awesome.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\extras.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\core.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\fontawesome\bootstrap.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\wells.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\type.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tooltip.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\thumbnails.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\tables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\sprites.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\scaffolding.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-utilities.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-768px-979px.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-767px-max.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive-1200px-min.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\responsive.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\reset.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\progress-bars.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\popovers.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pagination.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\pager.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\navbar.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\modals.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\mixins.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\media.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\layouts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\labels-badges.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\hero-unit.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\grid.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\forms.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\dropdowns.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\component-animations.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\code.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\close.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\carousel.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\buttons.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\button-groups.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\breadcrumbs.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\bootstrap.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\alerts.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\accordion.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <None Include="Content\toastr.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </None>
     <Content Include="Content\mocha.css" />
     <Content Include="Global.asax" />
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
@@ -420,7 +559,7 @@
     <Content Include="Scripts\application\sharing.js">
       <DependentUpon>sharing.coffee</DependentUpon>
     </Content>
-    <Content Include="Scripts\application\sharinghubproxy.js" />
+    <Content Include="Scripts\hubsproxies.js" />
     <Content Include="Scripts\application\views\documentlistitem.js">
       <DependentUpon>documentlistitem.coffee</DependentUpon>
     </Content>
@@ -628,14 +767,35 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\application\models\share.coffee" />
-    <Content Include="Content\less\bootswatch.less" />
-    <Content Include="Content\less\original_variables.less" />
+    <Content Include="Scripts\application\models\share.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Content\less\bootswatch.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Content\less\original_variables.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </Content>
     <Content Include="Properties\project.ruleset">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\application\views\sharedocument.coffee" />
-    <Content Include="Scripts\application\models\shares.coffee" />
+    <Content Include="Scripts\application\views\sharedocument.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Scripts\application\models\shares.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <Content Include="Scripts\app.js.map">
       <DependentUpon>app.js</DependentUpon>
     </Content>
@@ -1572,7 +1732,12 @@
       <Bare>True</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Scripts\specs\application\views\documentlist.coffee" />
+    <Content Include="Scripts\specs\application\views\documentlist.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>True</Bare>
+      <Iced>False</Iced>
+    </Content>
     <Content Include="Views\ClientViews\DocumentShare.cshtml" />
     <Content Include="Views\Shared\GitHubRibbon.cshtml" />
     <Content Include="Views\Emails\_ViewStart.cshtml" />
@@ -1594,7 +1759,7 @@
   <ItemGroup>
     <Content Include="Content\application.less">
       <Compile>True</Compile>
-      <Minify>False</Minify>
+      <Minify>True</Minify>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -1657,17 +1822,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DataAccess\Migrations\201307031524582_UserMigration.resx">
-      <DependentUpon>201307031524582_UserMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307181949270_UserMigration.resx">
+      <DependentUpon>201307181949270_UserMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201307031534598_DocumentMigration.resx">
-      <DependentUpon>201307031534598_DocumentMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307181950406_DocumentMigration.resx">
+      <DependentUpon>201307181950406_DocumentMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201307031536407_InvitationMigration.resx">
-      <DependentUpon>201307031536407_InvitationMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307181952163_InvitationMigration.resx">
+      <DependentUpon>201307181952163_InvitationMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataAccess\Migrations\201307031542455_ShareMigration.resx">
-      <DependentUpon>201307031542455_ShareMigration.cs</DependentUpon>
+    <EmbeddedResource Include="DataAccess\Migrations\201307181953265_ShareMigration.resx">
+      <DependentUpon>201307181953265_ShareMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

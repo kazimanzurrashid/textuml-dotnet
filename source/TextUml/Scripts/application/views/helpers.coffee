@@ -4,16 +4,10 @@ define (require) ->
   moment    = require 'moment'
   require 'form'
 
-  difference = ->
-    offset = new Date().getTimezoneOffset()
-    if offset > 0 then -offset else Math.abs offset
-
-  inLocalTime = (date) -> moment(date).add('m', difference())
-
-  formatAsRelativeTime: (date) -> inLocalTime(date).fromNow()
+  formatAsRelativeTime: (date) -> moment(date).fromNow()
 
   formatAsHumanizeTime: (date) ->
-    inLocalTime(date).format 'dddd, MMMM Do YYYY, h:mm a'
+    moment(date).format 'dddd, MMMM Do YYYY, h:mm a'
 
   hasModelErrors: (jqxhr) -> jqxhr.status is 400
   

@@ -42,6 +42,10 @@
 
 html, body {
   overflow: hidden;
+
+  [class^="icon-"], [class*=" icon-"] {
+    vertical-align: baseline;
+  }
 }
 
 .flash-bar {
@@ -133,6 +137,7 @@ html, body {
 
 #code-section {
   bottom: 15%;
+  height: 85%;
   top: 0;
 }
 
@@ -143,7 +148,6 @@ html, body {
 
 #output-text-area {
   background-color: @inputBackground;
-  color: @grayLight;
   cursor: text;
   font-size: .85em;
 }

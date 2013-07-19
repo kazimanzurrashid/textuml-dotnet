@@ -12,7 +12,7 @@ namespace TextUml.DataAccess.Migrations
                 {
                     Id = c.Int(false, true),
                     Title = c.String(false, 128),
-                    Content = c.String(true, isMaxLength: true),
+                    Content = c.String(),
                     CreatedAt = c.DateTime(false),
                     UpdatedAt = c.DateTime(false),
                     UserId = c.Int(false)

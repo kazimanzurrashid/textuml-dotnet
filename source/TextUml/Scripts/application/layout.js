@@ -12,18 +12,24 @@ define(function(require) {
         anchorToWindow: true,
         dock: 'left',
         accessKey: 'L',
-        cookie: 'side-bar'
+        cookie: 'aside'
       }).on('toggleDock resize', function() {
         return _(function() {
           return $(window).trigger('resize');
         }).defer();
       });
-      return $('#main').splitter({
+      $('#main').splitter({
         type: 'v',
         outline: true,
         anchorToWindow: true,
         accessKey: 'M',
-        cookie: 'main-content'
+        cookie: 'main'
+      });
+      return $('#editor-container').splitter({
+        type: 'h',
+        anchorToWindow: true,
+        outline: true,
+        cookie: 'output'
       });
     }
   };

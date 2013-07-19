@@ -2,12 +2,12 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, ChangePassword, Helpers, ProfileView, Session, events;
+  var $, Backbone, ChangePassword, ProfileView, Session, events, helpers;
   $ = require('jquery');
   Backbone = require('backbone');
   ChangePassword = require('../models/changepassword');
   Session = require('../models/session');
-  Helpers = require('./helpers');
+  helpers = require('./helpers');
   events = require('../events');
   require('bootstrap');
   require('form');
@@ -55,7 +55,7 @@ define(function(require) {
       e.preventDefault();
       this.changePasswordForm.hideSummaryError().hideFieldErrors();
       changePassword = new this.changePasswordType;
-      Helpers.subscribeModelInvalidEvent(changePassword, this.changePasswordForm);
+      helpers.subscribeModelInvalidEvent(changePassword, this.changePasswordForm);
       return changePassword.save(this.changePasswordForm.serializeFields(), {
         success: function() {
           _this.$el.modal('hide');
@@ -63,8 +63,8 @@ define(function(require) {
         },
         error: function(_, jqxhr) {
           var modelErrors;
-          if (Helpers.hasModelErrors(jqxhr)) {
-            modelErrors = Helpers.getModelErrors(jqxhr);
+          if (helpers.hasModelErrors(jqxhr)) {
+            modelErrors = helpers.getModelErrors(jqxhr);
             if (modelErrors) {
               return _this.changePasswordForm.showFieldErrors({
                 errors: modelErrors

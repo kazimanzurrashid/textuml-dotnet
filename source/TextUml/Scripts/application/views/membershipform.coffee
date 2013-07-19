@@ -1,6 +1,6 @@
 ﻿define (require) ->
   Backbone    = require 'backbone'
-  Helpers     = require './helpers'
+  helpers     = require './helpers'
   events      = require '../events'
   require 'form'
 
@@ -11,14 +11,12 @@
     events:
       'submit': 'onSubmit'
 
-    handleError: (jqxhr) -> throw new Error 'Not implemented'
-
     onSubmit: (e) ->
       e.preventDefault()
       @$el.hideSummaryError().hideFieldErrors()
 
       model = new @modelType
-      Helpers.subscribeModelInvalidEvent model, @$el
+      helpers.subscribeModelInvalidEvent model, @$el
 
       model.save @$el.serializeFields(),
         success: => events.trigger @successEvent

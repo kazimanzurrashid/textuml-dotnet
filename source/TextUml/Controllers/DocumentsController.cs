@@ -3,6 +3,7 @@
     using System;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using Models;
@@ -18,7 +19,7 @@
             this.service = service;
         }
 
-        public HttpResponseMessage Get([FromUri]DocumentsQuery model)
+        public async Task<HttpResponseMessage> Get([FromUri]DocumentsQuery model)
         {
             if (!ModelState.IsValid)
             {
@@ -27,14 +28,14 @@
                     ModelState);
             }
 
-            var result = service.Query(model);
+            var result = await service.Query(model);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
-        public HttpResponseMessage Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
         {
-            var result = service.One(
+            var result = await service.One(
                 id,
                 () =>
                     {
@@ -45,7 +46,7 @@
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
-        public HttpResponseMessage Post(DocumentEdit model)
+        public async Task<HttpResponseMessage> Post(DocumentEdit model)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +55,7 @@
                     ModelState);
             }
 
-            var result = service.Create(model);
+            var result = await service.Create(model);
 
             HttpResponseMessage response = null;
 
@@ -84,7 +85,7 @@
             }
         }
 
-        public HttpResponseMessage Put(int id, DocumentEdit model)
+        public async Task<HttpResponseMessage> Put(int id, DocumentEdit model)
         {
             if (!ModelState.IsValid)
             {
@@ -93,7 +94,7 @@
                     ModelState);
             }
 
-            var result = service.Update(
+            var result = await service.Update(
                 id,
                 model,
                 () =>
@@ -105,9 +106,9 @@
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
-        public HttpResponseMessage Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
-            service.Delete(
+            await service.Delete(
                 id,
                 () =>
                 {

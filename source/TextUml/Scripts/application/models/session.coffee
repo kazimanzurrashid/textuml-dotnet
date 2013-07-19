@@ -1,7 +1,7 @@
 define (require) ->
   _           = require 'underscore'
   Backbone    = require 'backbone'
-  Validation  = require './validation'
+  validation  = require './validation'
 
   class Session extends Backbone.Model
     url: '/api/sessions'
@@ -15,9 +15,9 @@ define (require) ->
       errors = {}
 
       unless attributes.email
-        Validation.addError errors, 'email', 'Email is required.'
+        validation.addError errors, 'email', 'Email is required.'
 
       unless attributes.password
-        Validation.addError errors, 'password', 'Password is required.'
+        validation.addError errors, 'password', 'Password is required.'
 
       if _(errors).isEmpty() then undefined else errors

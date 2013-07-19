@@ -12,7 +12,7 @@
     [Authorize, CLSCompliant(false)]
     public class SharingHub : Hub
     {
-        // For the time being use in memory, for production redis would 
+        // For the time being use in memory hash, for production redis would 
         // be a better option.
         private static readonly ConcurrentDictionary<string, DocumentEntry>
             DocumentContents = new ConcurrentDictionary<string, DocumentEntry>();
@@ -40,7 +40,9 @@
 
         public async Task Subscribe(int documentId)
         {
-            if (!service.CanView(documentId))
+            var canView = await service.CanView(documentId);
+
+            if (!canView)
             {
                 return;
             }
@@ -62,9 +64,11 @@
             }
         }
 
-        public void Update(int documentId, string content)
+        public async Task Update(int documentId, string content)
         {
-            if (!service.CanEdit(documentId))
+            var canEdit = await service.CanEdit(documentId);
+
+            if (!canEdit)
             {
                 return;
             }

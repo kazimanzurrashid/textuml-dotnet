@@ -1,7 +1,7 @@
 ﻿define (require) ->
   _           = require 'underscore'
   Backbone    = require 'backbone'
-  Validation  = require './validation'
+  validation  = require './validation'
 
   class ChangePassword extends Backbone.Model
     url: -> '/api/passwords/change'
@@ -14,22 +14,22 @@
     validate: (attributes) ->
       errors = {}
       unless attributes.oldPassword
-        Validation.addError errors, 'oldPassword', 'Old password is required.'
+        validation.addError errors, 'oldPassword', 'Old password is required.'
 
       if attributes.newPassword
-        unless Validation.isValidPasswordLength attributes.newPassword
-          Validation.addError errors, 'newPassword', 'New password length ' +
+        unless validation.isValidPasswordLength attributes.newPassword
+          validation.addError errors, 'newPassword', 'New password length ' +
             'must be between 6 to 64 characters.'
       else
-        Validation.addError errors, 'newPassword', 'New password is required.'
+        validation.addError errors, 'newPassword', 'New password is required.'
 
       if attributes.confirmPassword
         if attributes.newPassword and
         attributes.confirmPassword isnt attributes.newPassword
-          Validation.addError errors, 'confirmPassword', 'New password and ' +
+          validation.addError errors, 'confirmPassword', 'New password and ' +
             'confirmation password do not match.'
       else
-        Validation.addError errors, 'confirmPassword', 'Confirm password is ' +
+        validation.addError errors, 'confirmPassword', 'Confirm password is ' +
           'required.'
 
       if _(errors).isEmpty() then undefined else errors

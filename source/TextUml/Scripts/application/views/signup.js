@@ -2,10 +2,10 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Helpers, MembershipFormmView, SignUpView, User;
+  var MembershipFormmView, SignUpView, User, helpers;
   MembershipFormmView = require('./membershipform');
   User = require('../models/user');
-  Helpers = require('./helpers');
+  helpers = require('./helpers');
   SignUpView = (function(_super) {
 
     __extends(SignUpView, _super);
@@ -18,8 +18,8 @@ define(function(require) {
 
     SignUpView.prototype.handleError = function(jqxhr) {
       var modelErrors;
-      if (Helpers.hasModelErrors(jqxhr)) {
-        modelErrors = Helpers.getModelErrors(jqxhr);
+      if (helpers.hasModelErrors(jqxhr)) {
+        modelErrors = helpers.getModelErrors(jqxhr);
         if (modelErrors) {
           return this.$el.showFieldErrors({
             errors: modelErrors

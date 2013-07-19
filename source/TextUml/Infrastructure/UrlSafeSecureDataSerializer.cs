@@ -90,9 +90,7 @@
         {
             using (var crypto = CreateCrypto())
             {
-                using (var encryptor = crypto.CreateEncryptor(
-                    crypto.Key,
-                    crypto.IV))
+                using (var encryptor = crypto.CreateEncryptor())
                 {
                     MemoryStream plainStream = null;
                     CryptoStream cryptoStream = null;
@@ -109,6 +107,11 @@
                         writer = new StreamWriter(cryptoStream);
                         writer.Write(plain);
                         writer.Flush();
+
+                        if (!cryptoStream.HasFlushedFinalBlock)
+                        {
+                            cryptoStream.FlushFinalBlock();
+                        }
 
                         var encrypted = Convert.ToBase64String(
                             plainStream.ToArray());
@@ -146,9 +149,7 @@
 
             using (var crypto = CreateCrypto())
             {
-                using (var decryptor = crypto.CreateDecryptor(
-                    crypto.Key,
-                    crypto.IV))
+                using (var decryptor = crypto.CreateDecryptor())
                 {
                     MemoryStream plainStream = null;
                     CryptoStream cryptoStream = null;
@@ -157,7 +158,10 @@
                     try
                     {
                         plainStream = new MemoryStream(data);
-                        cryptoStream = new CryptoStream(plainStream, decryptor, CryptoStreamMode.Read);
+                        cryptoStream = new CryptoStream(
+                            plainStream,
+                            decryptor,
+                            CryptoStreamMode.Read);
                         reader = new StreamReader(cryptoStream);
 
                         var plain = reader.ReadToEnd();
@@ -197,7 +201,6 @@
             {
                 crypto.Key = key;
                 crypto.IV = vector;
-                crypto.Padding = PaddingMode.None;
             }
             catch
             {

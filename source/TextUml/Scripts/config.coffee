@@ -14,7 +14,7 @@
     codemirroractiveline          : './codemirror/addon/selection/mark-selection'
     toastr                        : './toastr'
     signalr                       : './jquery.signalR-1.1.2'
-    sharinghubproxy               : 'application/sharinghubproxy'
+    hubsproxies                   : './hubsproxies'
     confirm                       : 'application/lib/confirm'
     flashbar                      : 'application/lib/flashbar'
     form                          : 'application/lib/form'
@@ -26,7 +26,7 @@
     'jquery.cookie': ['jquery', 'jquery.migrate']
     'jquery.splitter': ['jquery', 'jquery.migrate', 'jquery.cookie']
     signalr: ['jquery']
-    sharinghubproxy: ['jquery', 'signalr']
+    hubsproxies: ['jquery', 'signalr']
     underscore:
       exports: '_'
     backbone:

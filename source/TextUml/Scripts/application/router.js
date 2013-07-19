@@ -1,15 +1,16 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, Router, events;
+  var $, Backbone, Router, events, _;
+
   $ = require('jquery');
+  _ = require('underscore');
   Backbone = require('backbone');
   events = require('./events');
   require('flashbar');
   require('confirm');
   return Router = (function(_super) {
-
     __extends(Router, _super);
 
     Router.prototype.routes = {
@@ -20,21 +21,23 @@ define(function(require) {
 
     function Router() {
       var _this = this;
+
       Router.__super__.constructor.apply(this, arguments);
-      this.localHistory = [];
+      this.navigationHistory = [];
       this.on('all', function() {
-        var fragment;
-        fragment = Backbone.history.fragment;
-        if (_this.localHistory.length && _this.localHistory[_this.localHistory.length - 1] === fragment) {
+        var path;
+
+        path = Backbone.history.fragment;
+        if (_this.navigationHistory.length && _(_this.navigationHistory).last() === path) {
           return false;
         }
-        return _this.localHistory.push(fragment);
+        return _this.navigationHistory.push(path);
       });
     }
 
     Router.prototype.initialize = function(options) {
       this.context = options.context;
-      return this.clientUrl = options.clientUrl;
+      return this.defaultUrl = options.defaultUrl;
     };
 
     Router.prototype.newDocument = function() {
@@ -44,6 +47,7 @@ define(function(require) {
 
     Router.prototype.openDocument = function(id) {
       var _this = this;
+
       return this.ensureSignedIn(function() {
         return _this.context.setCurrentDocument(id, function(document) {
           if (!document) {
@@ -57,6 +61,7 @@ define(function(require) {
 
     Router.prototype.openDocuments = function() {
       var _this = this;
+
       return this.ensureSignedIn(function() {
         _this.context.resetCurrentDocument();
         events.trigger('documentChanged');
@@ -70,6 +75,7 @@ define(function(require) {
 
     Router.prototype.ensureSignedIn = function(action) {
       var _this = this;
+
       if (!this.context.isUserSignedIn()) {
         return events.trigger('showMembership', {
           ok: function() {
@@ -89,10 +95,11 @@ define(function(require) {
 
     Router.prototype.redirectToPrevious = function() {
       var path;
-      if (this.localHistory.length > 1) {
-        path = this.localHistory[this.localHistory.length - 2];
+
+      if (this.navigationHistory.length > 1) {
+        path = this.navigationHistory[this.navigationHistory.length - 2];
       } else {
-        path = this.clientUrl('documents', 'new');
+        path = this.defaultUrl;
       }
       return this.navigate(path, true);
     };

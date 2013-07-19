@@ -1,13 +1,13 @@
 define (require) ->
   MembershipFormmView   = require './membershipform'
   Session               = require '../models/session'
-  Helpers               = require './helpers'
+  helpers               = require './helpers'
 
   class SignInView extends MembershipFormmView
     el: '#sign-in-form'
 
     handleError: (jqxhr) ->
-      message = if Helpers.hasModelErrors jqxhr
+      message = if helpers.hasModelErrors jqxhr
           'Invalid credentials.'
         else
           'An unexpected error has occurred while signing in.'

@@ -1,7 +1,7 @@
 ﻿define (require) ->
   _           = require 'underscore'
   Backbone    = require 'backbone'
-  Validation  = require './validation'
+  validation  = require './validation'
 
   class Share extends Backbone.Model
     defaults: ->
@@ -12,9 +12,9 @@
       errors = {}
 
       if attributes.email
-        unless Validation.isValidEmailFormat attributes.email
-          Validation.addError errors, 'email', 'Invalid email format.'
+        unless validation.isValidEmailFormat attributes.email
+          validation.addError errors, 'email', 'Invalid email format.'
       else
-        Validation.addError errors, 'email', 'Email is required.'
+        validation.addError errors, 'email', 'Email is required.'
 
       if _(errors).isEmpty() then undefined else errors

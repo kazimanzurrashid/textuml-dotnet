@@ -1,21 +1,24 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, Helpers, Share, ShareDocumentView, Shares, events, _;
+  var $, Backbone, Share, ShareDocumentView, Shares, events, helpers, _, _ref;
+
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
-  Helpers = require('./helpers');
   Share = require('../models/share');
   Shares = require('../models/shares');
   events = require('../events');
+  helpers = require('./helpers');
+  require('bootstrap');
+  require('form');
   return ShareDocumentView = (function(_super) {
-
     __extends(ShareDocumentView, _super);
 
     function ShareDocumentView() {
-      return ShareDocumentView.__super__.constructor.apply(this, arguments);
+      _ref = ShareDocumentView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     ShareDocumentView.prototype.el = '#document-share-dialog';
@@ -39,6 +42,7 @@ define(function(require) {
 
     ShareDocumentView.prototype.render = function() {
       var _this = this;
+
       this.container.empty();
       this.collection.each(function(model) {
         return $(_this.template(model.toJSON())).appendTo(_this.container);
@@ -52,10 +56,11 @@ define(function(require) {
 
     ShareDocumentView.prototype.onAdd = function(e) {
       var form, share;
+
       e.preventDefault();
       form = $(e.currentTarget);
       share = new Share;
-      Helpers.subscribeModelInvalidEvent(share, form);
+      helpers.subscribeModelInvalidEvent(share, form);
       if (!share.set(form.serializeFields(), {
         validate: true
       })) {
@@ -75,6 +80,7 @@ define(function(require) {
     ShareDocumentView.prototype.onSave = function(e) {
       var records, valid,
         _this = this;
+
       e.preventDefault();
       records = [];
       this.container.find('.edit-share').each(function() {
@@ -84,7 +90,7 @@ define(function(require) {
         });
       });
       valid = _(records).chain().map(function(r) {
-        Helpers.subscribeModelInvalidEvent(r.model, r.form);
+        helpers.subscribeModelInvalidEvent(r.model, r.form);
         return r.model.set(r.form.serializeFields(), {
           validate: true
         });
@@ -107,6 +113,7 @@ define(function(require) {
 
     ShareDocumentView.prototype.onShare = function() {
       var _this = this;
+
       if (!this.context.isUserSignedIn()) {
         return events.trigger('showMembership');
       }
@@ -114,12 +121,15 @@ define(function(require) {
         return events.trigger('showNewDocumentTitle');
       }
       if (!this.context.isCurrentDocumentOwned()) {
-        return $.showErrorbar('Only document owner can share a document.');
+        return $.showErrorbar('Only document owner is allowed to share document.');
       }
-      return Shares.get(this.context.getCurrentDocumentId(), function(collection) {
-        _this.collection = collection;
-        _this.render();
-        return _this.$el.modal('show');
+      this.collection = new Shares;
+      this.collection.documentId = this.context.getCurrentDocumentId();
+      return this.collection.fetch({
+        success: function() {
+          _this.render();
+          return _this.$el.modal('show');
+        }
       });
     };
 

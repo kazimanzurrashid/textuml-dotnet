@@ -1,6 +1,7 @@
 ﻿namespace TextUml.Controllers
 {
     using System;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using Infrastructure;
@@ -41,7 +42,7 @@
         }
 
         [HttpGet]
-        public ActionResult ConfirmUser(string token)
+        public async Task<ActionResult> ConfirmUser(string token)
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -55,7 +56,7 @@
                 userConfirmationToken.Email,
                 userConfirmationToken.Token))
             {
-                newUserConfirmedHandler.Handle(userConfirmationToken.Email);
+                await newUserConfirmedHandler.Handle(userConfirmationToken.Email);
                 Flash[FlashMessageType.Success] = "Your account is now " +
                     "successfully verified.";
             }

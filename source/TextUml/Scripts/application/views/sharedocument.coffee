@@ -2,10 +2,12 @@
   $           = require 'jquery'
   _           = require 'underscore'
   Backbone    = require 'backbone'
-  Helpers     = require './helpers'
   Share       = require '../models/share'
   Shares      = require '../models/shares'
   events      = require '../events'
+  helpers     = require './helpers'
+  require 'bootstrap'
+  require 'form'
 
   class ShareDocumentView extends Backbone.View
     el: '#document-share-dialog'
@@ -37,7 +39,7 @@
       e.preventDefault()
       form = $ e.currentTarget
       share = new Share
-      Helpers.subscribeModelInvalidEvent share, form
+      helpers.subscribeModelInvalidEvent share, form
       return false unless share.set form.serializeFields(), validate: true
       $(@template share.toJSON())
         .hide()
@@ -59,7 +61,7 @@
       valid = _(records)
         .chain()
         .map (r) ->
-          Helpers.subscribeModelInvalidEvent r.model, r.form
+          helpers.subscribeModelInvalidEvent r.model, r.form
           r.model.set r.form.serializeFields(), validate: true
         .all()
         .value()
@@ -67,8 +69,7 @@
       return false unless valid
       @collection.reset silent: true
       @collection.set _(records).map (r) -> r.model
-      @collection.update
-        success: => @$el.modal 'hide'
+      @collection.update success: => @$el.modal 'hide'
 
     onShare: ->
       unless @context.isUserSignedIn()
@@ -78,9 +79,11 @@
         return events.trigger 'showNewDocumentTitle'
 
       unless @context.isCurrentDocumentOwned()
-        return $.showErrorbar 'Only document owner can share a document.'
+        return $.showErrorbar 'Only document owner is allowed to share document.'
 
-      Shares.get @context.getCurrentDocumentId(), (collection) =>
-        @collection = collection
-        @render()
-        @$el.modal 'show'
+      @collection = new Shares
+      @collection.documentId = @context.getCurrentDocumentId()
+      @collection.fetch
+        success: =>
+          @render()
+          @$el.modal 'show'

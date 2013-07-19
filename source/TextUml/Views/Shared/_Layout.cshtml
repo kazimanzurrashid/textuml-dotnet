@@ -1,6 +1,4 @@
-﻿@using TextUml.Extensions
-@using StackExchange.Profiling
-@functions {
+﻿@functions {
   string PageTitle() {
     
     var title = ViewBag.Title ?? string.Empty;
@@ -17,9 +15,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  @if (Context.CanProfile()) {
-    this.InitClientTimings();
-  }
   @Html.Partial("Head")
   @RenderSection("Scripts", false)
   <title>@Html.Raw(PageTitle())</title>
@@ -30,8 +25,5 @@
   @RenderBody()
   @Html.Partial("Footer")
   @Html.Partial("GitHubRibbon")
-  @if (Context.CanProfile()) {
-    @MiniProfiler.RenderIncludes(RenderPosition.Right)
-  }
 </body>
 </html>

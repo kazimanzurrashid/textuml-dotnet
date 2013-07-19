@@ -1,5 +1,5 @@
 define (require) ->
-  Validation    = require '../../../application/models/validation'
+  validation    = require '../../../application/models/validation'
   repeatString  = require('../../helpers').repeatString
 
   describe 'models/validation', ->
@@ -8,28 +8,28 @@ define (require) ->
 
       describe 'valid', ->
         it 'returns true', ->
-          expect(Validation.isValidEmailFormat 'user@example.com').to.be.ok
+          expect(validation.isValidEmailFormat 'user@example.com').to.be.ok
 
       describe 'invalid', ->
         it 'returns false', ->
-          expect(Validation.isValidEmailFormat 'foo-bar').not.to.be.ok
+          expect(validation.isValidEmailFormat 'foo-bar').not.to.be.ok
 
     describe '.isValidPasswordLength', ->
 
       describe 'valid', ->
         it 'returns true', ->
-          expect(Validation.isValidPasswordLength '$ecre8').to.be.ok
+          expect(validation.isValidPasswordLength '$ecre8').to.be.ok
 
       describe 'invalid', ->
 
         describe 'less than six characters', ->
           it 'returns false', ->
-            expect(Validation.isValidPasswordLength(repeatString 5))
+            expect(validation.isValidPasswordLength(repeatString 5))
               .not.to.be.ok
 
         describe 'more than sixty four characters', ->
           it 'returns false', ->
-            expect(Validation.isValidPasswordLength(repeatString 65))
+            expect(validation.isValidPasswordLength(repeatString 65))
               .not.to.be.ok
 
     describe '.addError', ->
@@ -37,7 +37,7 @@ define (require) ->
 
       beforeEach ->
         errors = {}
-        Validation.addError errors, 'name', 'Name is required.'
+        validation.addError errors, 'name', 'Name is required.'
 
       it 'creates new attribute', -> expect(errors).to.include.key 'name'
 

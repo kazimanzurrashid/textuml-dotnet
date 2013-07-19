@@ -1,37 +1,27 @@
-﻿
 define(function(require) {
-  var $, difference, inLocalTime, moment, _;
+  var $, moment, _;
+
   $ = require('jquery');
   _ = require('underscore');
   moment = require('moment');
   require('form');
-  difference = function() {
-    var offset;
-    offset = new Date().getTimezoneOffset();
-    if (offset > 0) {
-      return -offset;
-    } else {
-      return Math.abs(offset);
-    }
-  };
-  inLocalTime = function(date) {
-    return moment(date).add('m', difference());
-  };
   return {
     formatAsRelativeTime: function(date) {
-      return inLocalTime(date).fromNow();
+      return moment(date).fromNow();
     },
     formatAsHumanizeTime: function(date) {
-      return inLocalTime(date).format('dddd, MMMM Do YYYY, h:mm a');
+      return moment(date).format('dddd, MMMM Do YYYY, h:mm a');
     },
     hasModelErrors: function(jqxhr) {
       return jqxhr.status === 400;
     },
     getModelErrors: function(jqxhr) {
-      var modelStateProperty, response;
+      var e, modelStateProperty, response;
+
       try {
         response = $.parseJSON(jqxhr.responseText);
-      } catch (e) {
+      } catch (_error) {
+        e = _error;
         response = null;
       }
       if (response) {

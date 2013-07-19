@@ -24,14 +24,7 @@
             {
                 var now = DateTime.UtcNow;
 
-                return new DateTime(
-                    now.Year,
-                    now.Month,
-                    now.Day,
-                    now.Hour,
-                    now.Minute,
-                    now.Second,
-                    DateTimeKind.Unspecified);
+                return now;
             };
         }
     }

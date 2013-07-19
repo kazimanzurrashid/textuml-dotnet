@@ -26,17 +26,23 @@
     path = path.substring(1) if path.length and path.indexOf('/') is 0
     clientUrlPrefix + path
 
+  defaultUrl = clientUrl 'documents', 'new'
+
   hasClientUrl = ->
     hash = window.location.hash
     return true if hash.length > clientUrlPrefix.length
     return false if clientUrlPrefix.indexOf(hash) is 0
     true
 
-  sharing   = null
   context   = null
   router    = null
+  sharing   = null
 
   attachEventHandlers = ->
+    events.on 'newDocument', ->
+      context.resetCurrentDocument()
+      events.trigger 'documentChanged'
+
     events.on 'saveDocument', ->
       unless context.isUserSignedIn()
         return events.trigger 'showMembership'
@@ -62,8 +68,8 @@
       events.trigger eventName
 
     events.on 'signedIn', ->
-      sharing.start()
       context.userSignedIn()
+      sharing.start()
       $.showInfobar 'You are now signed in.'
 
     events.on 'passwordResetTokenRequested', ->
@@ -79,10 +85,23 @@
         'to activate your account.'
 
     events.on 'signedOut', ->
-      sharing.stop()
       context.userSignedOut()
-      router.navigate clientUrl('documents', 'new'), true
+      sharing.stop()
+      router.navigate defaultUrl, true
       $.showInfobar 'You are now signed out.'
+
+    sharing.on 'userJoined', (e) ->
+      return false unless e.documentId is context.getCurrentDocumentId()
+      toastr.info "#{e.user} has joined."
+
+    sharing.on 'documentUpdated', (e) ->
+      return false unless e.documentId is context.getCurrentDocumentId()
+      toastr.info "#{e.user} has updated the code."
+      events.trigger 'documentContentChanged', code: e.content
+
+    sharing.on 'userLeft', (e) ->
+      return false unless e.documentId is context.getCurrentDocumentId()
+      toastr.info "#{e.user} has left."
 
   createViews = ->
     app.views =
@@ -98,32 +117,17 @@
       shareDocumentView   : new ShareDocumentView { context }
 
   app =
-    clientUrl: clientUrl
-
     start: (options) ->
       toastr.options = positionClass: 'toast-bottom-right'
       layout.init()
 
-      context = new Context options
-      sharing = new Sharing { context }
-      router = new Router { context, clientUrl }
+      context     = new Context options
+      router      = new Router { context, defaultUrl }
+      sharing     = new Sharing { context }
 
       app.context = context
       app.sharing = sharing
       app.router = router
-
-      sharing.on 'userJoined', (e) ->
-        return false unless e.documentId is context.getCurrentDocumentId()
-        toastr.info "#{e.user} has joined."
-
-      sharing.on 'documentUpdated', (e) ->
-        return false unless e.documentId is context.getCurrentDocumentId()
-        toastr.info "#{e.user} has updated the code."
-        events.trigger 'documentContentChanged', code: e.content
-
-      sharing.on 'userLeft', (e) ->
-        return false unless e.documentId is context.getCurrentDocumentId()
-        toastr.info "#{e.user} has left."
 
       sharing.start() if options.userSignedIn
       attachEventHandlers()
@@ -132,7 +136,7 @@
       Backbone.history.start()
 
       return true if hasClientUrl()
-      router.navigate clientUrl('documents', 'new'), true
+      router.navigate defaultUrl, true
 
   window.app = app
   app

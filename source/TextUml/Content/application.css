@@ -1,4 +1,4 @@
-﻿@import url('//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700');
+@import url('//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700');
 .clearfix {
   *zoom: 1;
 }
@@ -395,7 +395,7 @@ a:focus {
 }
 .row-fluid .span3 {
   width: 23.404255319148934%;
-  *width: 23.351063829787232%;
+  *width: 23.351063829787233%;
 }
 .row-fluid .span2 {
   width: 14.893617021276595%;
@@ -406,35 +406,35 @@ a:focus {
   *width: 6.329787234042553%;
 }
 .row-fluid .offset12 {
-  margin-left: 104.25531914893616%;
+  margin-left: 104.25531914893617%;
   *margin-left: 104.14893617021275%;
 }
 .row-fluid .offset12:first-child {
   margin-left: 102.12765957446808%;
-  *margin-left: 102.02127659574466%;
+  *margin-left: 102.02127659574467%;
 }
 .row-fluid .offset11 {
   margin-left: 95.74468085106382%;
   *margin-left: 95.6382978723404%;
 }
 .row-fluid .offset11:first-child {
-  margin-left: 93.61702127659573%;
+  margin-left: 93.61702127659574%;
   *margin-left: 93.51063829787232%;
 }
 .row-fluid .offset10 {
-  margin-left: 87.23404255319148%;
+  margin-left: 87.23404255319149%;
   *margin-left: 87.12765957446807%;
 }
 .row-fluid .offset10:first-child {
   margin-left: 85.1063829787234%;
-  *margin-left: 84.99999999999998%;
+  *margin-left: 84.99999999999999%;
 }
 .row-fluid .offset9 {
   margin-left: 78.72340425531914%;
   *margin-left: 78.61702127659572%;
 }
 .row-fluid .offset9:first-child {
-  margin-left: 76.59574468085105%;
+  margin-left: 76.59574468085106%;
   *margin-left: 76.48936170212764%;
 }
 .row-fluid .offset8 {
@@ -458,7 +458,7 @@ a:focus {
   *margin-left: 53.085106382978715%;
 }
 .row-fluid .offset6:first-child {
-  margin-left: 51.063829787234034%;
+  margin-left: 51.063829787234035%;
   *margin-left: 50.95744680851063%;
 }
 .row-fluid .offset5 {
@@ -499,7 +499,7 @@ a:focus {
 }
 .row-fluid .offset1:first-child {
   margin-left: 8.51063829787234%;
-  *margin-left: 8.404255319148937%;
+  *margin-left: 8.404255319148938%;
 }
 [class*="span"].hide,
 .row-fluid [class*="span"].hide {
@@ -1703,7 +1703,7 @@ legend + .control-group {
 /* makes the font 33% larger relative to the icon container */
 .icon-large:before {
   vertical-align: -10%;
-  font-size: 1.3333333333333332em;
+  font-size: 1.3333333333333333em;
 }
 /* makes sure icons active on rollover in links */
 a [class^="icon-"],
@@ -6049,6 +6049,12 @@ html,
 body {
   overflow: hidden;
 }
+html [class^="icon-"],
+body [class^="icon-"],
+html [class*=" icon-"],
+body [class*=" icon-"] {
+  vertical-align: baseline;
+}
 .flash-bar {
   margin-bottom: 0;
 }
@@ -6134,6 +6140,7 @@ body {
 }
 #code-section {
   bottom: 15%;
+  height: 85%;
   top: 0;
 }
 #output-section {
@@ -6142,7 +6149,6 @@ body {
 }
 #output-text-area {
   background-color: #ffffff;
-  color: #dfdfdf;
   cursor: text;
   font-size: .85em;
 }

@@ -2,10 +2,10 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, DocumentListItemView, Helpers, _;
+  var Backbone, DocumentListItemView, helpers, _;
   _ = require('underscore');
   Backbone = require('backbone');
-  Helpers = require('./helpers');
+  helpers = require('./helpers');
   return DocumentListItemView = (function(_super) {
 
     __extends(DocumentListItemView, _super);
@@ -19,17 +19,17 @@ define(function(require) {
     DocumentListItemView.prototype.initialize = function(options) {
       this.template = options.template;
       this.listenTo(this.model, 'change', this.render);
-      return this.listenTo(this.model, 'remove destroy', this.remove);
+      return this.listenTo(this.model, 'destroy', this.remove);
     };
 
     DocumentListItemView.prototype.render = function() {
       var attributes;
       attributes = _(this.model.toJSON()).extend({
         lastUpdatedInRelativeTime: function() {
-          return Helpers.formatAsRelativeTime(this.updatedAt);
+          return helpers.formatAsRelativeTime(this.updatedAt);
         },
         lastUpdatedInHumanizeTime: function() {
-          return Helpers.formatAsHumanizeTime(this.updatedAt);
+          return helpers.formatAsHumanizeTime(this.updatedAt);
         }
       });
       this.$el.html(this.template(attributes));

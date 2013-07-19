@@ -1,17 +1,18 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, Share, Validation, _;
+  var Backbone, Share, validation, _, _ref;
+
   _ = require('underscore');
   Backbone = require('backbone');
-  Validation = require('./validation');
+  validation = require('./validation');
   return Share = (function(_super) {
-
     __extends(Share, _super);
 
     function Share() {
-      return Share.__super__.constructor.apply(this, arguments);
+      _ref = Share.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     Share.prototype.defaults = function() {
@@ -23,13 +24,14 @@ define(function(require) {
 
     Share.prototype.validate = function(attributes) {
       var errors;
+
       errors = {};
       if (attributes.email) {
-        if (!Validation.isValidEmailFormat(attributes.email)) {
-          Validation.addError(errors, 'email', 'Invalid email format.');
+        if (!validation.isValidEmailFormat(attributes.email)) {
+          validation.addError(errors, 'email', 'Invalid email format.');
         }
       } else {
-        Validation.addError(errors, 'email', 'Email is required.');
+        validation.addError(errors, 'email', 'Email is required.');
       }
       if (_(errors).isEmpty()) {
         return void 0;

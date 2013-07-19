@@ -159,6 +159,8 @@ namespace TextUml.Extensions
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
             return settings;
         }
     }

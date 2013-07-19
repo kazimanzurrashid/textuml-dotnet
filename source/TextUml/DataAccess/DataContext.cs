@@ -1,6 +1,7 @@
 ﻿namespace TextUml.DataAccess
 {
     using System.Data.Entity;
+    using System.Threading.Tasks;
 
     using DomainObjects;
 
@@ -14,7 +15,7 @@
 
         IDbSet<Share> Shares { get; }
 
-        int SaveChanges();
+        Task<int> SaveChangesAsync();
     }
 
     public class DataContext : DbContext, IDataContext

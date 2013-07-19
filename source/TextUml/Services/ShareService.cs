@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Entity;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using DataAccess;
     using DomainObjects;
@@ -10,16 +12,16 @@
 
     public interface IShareService
     {
-        IEnumerable<ShareRead> Query(int documentId);
+        Task<IEnumerable<ShareRead>> Query(int documentId);
 
-        void Update(
+        Task Update(
             int documentId,
             IEnumerable<ShareEdit> models,
             Action notFound);
 
-        bool CanView(int documentId);
+        Task<bool> CanView(int documentId);
 
-        bool CanEdit(int documentId);
+        Task<bool> CanEdit(int documentId);
     }
 
     public class ShareService : IShareService
@@ -35,9 +37,9 @@
             this.currentUserProvider = currentUserProvider;
         }
 
-        public IEnumerable<ShareRead> Query(int documentId)
+        public async Task<IEnumerable<ShareRead>> Query(int documentId)
         {
-            return dataContext.Invitations
+            var result = await dataContext.Invitations
                 .Where(i =>
                     i.DocumentId == documentId &&
                     i.Document.UserId == currentUserProvider.UserId)
@@ -48,10 +50,12 @@
                                      CanEdit = i.CanEdit
                                  })
                 .OrderBy(i => i.Email)
-                .ToList();
+                .ToListAsync();
+
+            return result;
         } 
 
-        public void Update(
+        public async Task Update(
             int documentId,
             IEnumerable<ShareEdit> models,
             Action notFound)
@@ -66,8 +70,8 @@
                 throw new ArgumentNullException("notFound");
             }
 
-            var document = dataContext.Documents
-                .FirstOrDefault(d =>
+            var document = await dataContext.Documents
+                .FirstOrDefaultAsync(d =>
                     d.Id == documentId &&
                     d.UserId == currentUserProvider.UserId);
 
@@ -81,21 +85,21 @@
             var invitationEmails = newInvitations.Select(m => m.Email)
                 .ToList();
 
-            var allInvitations = UpdateInvitations(
+            var allInvitations = await UpdateInvitations(
                 documentId,
                 invitationEmails,
                 newInvitations);
 
-            UpdateShares(documentId, invitationEmails, allInvitations);
+            await UpdateShares(documentId, invitationEmails, allInvitations);
 
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
 
-        public bool CanView(int documentId)
+        public async Task<bool> CanView(int documentId)
         {
             var userId = currentUserProvider.UserId;
 
-            var result = dataContext.Shares.Any(s =>
+            var result = await dataContext.Shares.AnyAsync(s =>
                 (s.DocumentId == documentId &&
                 s.Document.UserId == userId) ||
                 (s.DocumentId == documentId &&
@@ -104,11 +108,11 @@
             return result;
         }
 
-        public bool CanEdit(int documentId)
+        public async Task<bool> CanEdit(int documentId)
         {
             var userId = currentUserProvider.UserId;
 
-            var result = dataContext.Shares.Any(s =>
+            var result = await dataContext.Shares.AnyAsync(s =>
                 (s.DocumentId == documentId &&
                 s.Document.UserId == userId) ||
                 (s.DocumentId == documentId &&
@@ -118,14 +122,14 @@
             return result;
         }
 
-        private IEnumerable<Invitation> UpdateInvitations(
+        private async Task<IEnumerable<Invitation>> UpdateInvitations(
             int documentId,
             IEnumerable<string> invitationEmails,
             IEnumerable<ShareEdit> newInvitations)
         {
-            var existingInvitations = dataContext.Invitations
+            var existingInvitations = await dataContext.Invitations
                 .Where(i => i.DocumentId == documentId)
-                .ToList();
+                .ToListAsync();
 
             var invitationsToDelete = existingInvitations.Where(ei =>
                     !invitationEmails.Contains(
@@ -164,15 +168,15 @@
             return allInvitations;
         }
 
-        private void UpdateShares(
+        private async Task UpdateShares(
             int documentId,
             IEnumerable<string> invitationEmails,
             IEnumerable<Invitation> allInvitations)
         {
-            var existingShares = dataContext.Shares
+            var existingShares = await dataContext.Shares
                 .Where(s => s.DocumentId == documentId)
                 .Select(s => new { share = s, userEmail = s.User.Email })
-                .ToList();
+                .ToListAsync();
 
             var sharesToDelete = existingShares.Where(es => 
                 !invitationEmails.Contains(
@@ -184,11 +188,11 @@
                 dataContext.Shares.Remove(es.share);
             }
 
-            foreach (var invation in allInvitations)
+            foreach (var invitation in allInvitations)
             {
                 var share = existingShares
                     .Where(es => 
-                        invation.Email.Equals(
+                        invitation.Email.Equals(
                             es.userEmail,
                             StringComparison.OrdinalIgnoreCase))
                     .Select(es => es.share)
@@ -196,8 +200,10 @@
 
                 if (share == null)
                 {
-                    var user = dataContext.Users
-                        .FirstOrDefault(u => u.Email == invation.Email);
+                    var invitationEmail = invitation.Email;
+
+                    var user = await dataContext.Users
+                        .FirstOrDefaultAsync(u => u.Email == invitationEmail);
 
                     if (user == null)
                     {
@@ -213,7 +219,7 @@
                     dataContext.Shares.Add(share);
                 }
 
-                share.CanEdit = invation.CanEdit;
+                share.CanEdit = invitation.CanEdit;
             }
         }
     }

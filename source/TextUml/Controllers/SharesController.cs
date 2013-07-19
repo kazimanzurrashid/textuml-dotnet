@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using Models;
@@ -18,16 +19,18 @@
             this.service = service;
         }
 
-        public HttpResponseMessage Get(int id)
+        public async Task<HttpResponseMessage> Get(int id)
         {
-            var result = service.Query(id);
+            var result = await service.Query(id);
 
             return Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
-        public HttpResponseMessage Put(int id, IEnumerable<ShareEdit> models)
+        public async Task<HttpResponseMessage> Put(
+            int id,
+            IEnumerable<ShareEdit> models)
         {
-            service.Update(
+            await service.Update(
                 id,
                 models,
                 () =>

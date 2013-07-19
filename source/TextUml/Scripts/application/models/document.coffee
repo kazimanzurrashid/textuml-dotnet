@@ -1,7 +1,7 @@
 define (require) ->
   _           = require 'underscore'
   Backbone    = require 'backbone'
-  Validation  = require './validation'
+  validation  = require './validation'
 
   class Document extends Backbone.Model
     urlRoot: -> '/api/documents'
@@ -18,6 +18,6 @@ define (require) ->
     validate: (attributes) ->
       errors = {}
       unless attributes.title
-        Validation.addError errors, 'title', 'Title is required.'
+        validation.addError errors, 'title', 'Title is required.'
 
       if _(errors).isEmpty() then undefined else errors

@@ -4,7 +4,7 @@
     out: "app.js",
     paths: {
         jquery: "empty:",
-        "preloaded-data": "empty:",
+        "preloaded-data": "empty:"
     },
     include: "main.js",
     excludeShallow: ["jquery", "preloaded-data"],
