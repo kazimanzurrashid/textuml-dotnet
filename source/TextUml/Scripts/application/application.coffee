@@ -90,6 +90,13 @@
       router.navigate defaultUrl, true
       $.showInfobar 'You are now signed out.'
 
+    events.on 'documentSharing', (e) ->
+      document = context.documents.get e.id
+      document.set 'shared', e.shared
+      type = if e.shared then 'shared' else 'unshared'
+      message = "You have #{type} <strong>#{document.get 'title'}</strong>."
+      $.showInfobar message
+
     sharing.on 'userJoined', (e) ->
       return false unless e.documentId is context.getCurrentDocumentId()
       toastr.info "#{e.user} has joined."

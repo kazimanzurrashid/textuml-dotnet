@@ -1,8 +1,7 @@
-var __slice = [].slice;
+﻿var __slice = [].slice;
 
 define(function(require) {
   var $, Backbone, CanvasView, Context, DocumentBrowserView, DocumentTitleView, EditorView, ExampleListView, ExportedDocumentView, MembershipView, NavigationView, ProfileView, Router, ShareDocumentView, Sharing, app, attachEventHandlers, clientUrl, clientUrlPrefix, context, createViews, defaultUrl, events, hasClientUrl, layout, router, sharing, toastr;
-
   $ = require('jquery');
   Backbone = require('backbone');
   toastr = require('toastr');
@@ -25,7 +24,6 @@ define(function(require) {
   clientUrlPrefix = '#!/';
   clientUrl = function() {
     var path, segments;
-
     segments = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     path = segments.join('/');
     if (path.length && path.indexOf('/') === 0) {
@@ -36,7 +34,6 @@ define(function(require) {
   defaultUrl = clientUrl('documents', 'new');
   hasClientUrl = function() {
     var hash;
-
     hash = window.location.hash;
     if (hash.length > clientUrlPrefix.length) {
       return true;
@@ -68,7 +65,6 @@ define(function(require) {
     events.on('newDocumentTitleAssigned', function() {
       return context.saveCurrentDocument(function() {
         var url;
-
         $.showInfobar('Your document is successfully saved.');
         url = clientUrl('documents', context.getCurrentDocumentId());
         return router.navigate(url);
@@ -79,7 +75,6 @@ define(function(require) {
     });
     events.on('myAccount', function() {
       var eventName;
-
       eventName = context.isUserSignedIn() ? 'showProfile' : 'showMembership';
       return events.trigger(eventName);
     });
@@ -102,6 +97,14 @@ define(function(require) {
       sharing.stop();
       router.navigate(defaultUrl, true);
       return $.showInfobar('You are now signed out.');
+    });
+    events.on('documentSharing', function(e) {
+      var document, message, type;
+      document = context.documents.get(e.id);
+      document.set('shared', e.shared);
+      type = e.shared ? 'shared' : 'unshared';
+      message = "You have " + type + " <strong>" + (document.get('title')) + "</strong>.";
+      return $.showInfobar(message);
     });
     sharing.on('userJoined', function(e) {
       if (e.documentId !== context.getCurrentDocumentId()) {

@@ -71,6 +71,9 @@
       @collection.set _(records).map (r) -> r.model
       @collection.update success: =>
         @$el.modal 'hide'
+        events.trigger 'documentSharing',
+          id: @context.getCurrentDocumentId(),
+          shared: not @collection.isEmpty()
 
     onShare: ->
       unless @context.isUserSignedIn()
