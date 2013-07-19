@@ -1,9 +1,8 @@
-var __hasProp = {}.hasOwnProperty,
+﻿var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var $, Backbone, Share, ShareDocumentView, Shares, events, helpers, _, _ref;
-
+  var $, Backbone, Share, ShareDocumentView, Shares, events, helpers, _;
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
@@ -14,11 +13,11 @@ define(function(require) {
   require('bootstrap');
   require('form');
   return ShareDocumentView = (function(_super) {
+
     __extends(ShareDocumentView, _super);
 
     function ShareDocumentView() {
-      _ref = ShareDocumentView.__super__.constructor.apply(this, arguments);
-      return _ref;
+      return ShareDocumentView.__super__.constructor.apply(this, arguments);
     }
 
     ShareDocumentView.prototype.el = '#document-share-dialog';
@@ -42,7 +41,6 @@ define(function(require) {
 
     ShareDocumentView.prototype.render = function() {
       var _this = this;
-
       this.container.empty();
       this.collection.each(function(model) {
         return $(_this.template(model.toJSON())).appendTo(_this.container);
@@ -56,7 +54,6 @@ define(function(require) {
 
     ShareDocumentView.prototype.onAdd = function(e) {
       var form, share;
-
       e.preventDefault();
       form = $(e.currentTarget);
       share = new Share;
@@ -80,7 +77,6 @@ define(function(require) {
     ShareDocumentView.prototype.onSave = function(e) {
       var records, valid,
         _this = this;
-
       e.preventDefault();
       records = [];
       this.container.find('.edit-share').each(function() {
@@ -113,7 +109,6 @@ define(function(require) {
 
     ShareDocumentView.prototype.onShare = function() {
       var _this = this;
-
       if (!this.context.isUserSignedIn()) {
         return events.trigger('showMembership');
       }
@@ -121,7 +116,7 @@ define(function(require) {
         return events.trigger('showNewDocumentTitle');
       }
       if (!this.context.isCurrentDocumentOwned()) {
-        return $.showErrorbar('Only document owner is allowed to share document.');
+        return $.showErrorbar('Only document owner is allowed to share.');
       }
       this.collection = new Shares;
       this.collection.documentId = this.context.getCurrentDocumentId();

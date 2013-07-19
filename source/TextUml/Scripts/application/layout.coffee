@@ -25,4 +25,5 @@
       type: 'h'
       anchorToWindow: true
       outline: true
+      accessKey: 'B'
       cookie: 'output'

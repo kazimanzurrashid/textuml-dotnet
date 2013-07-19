@@ -21,7 +21,6 @@ define (require) ->
       @listContainer        = @$ '.list-container'
       @list                 = @listContainer.find '> ul'
       @children             = []
-      @selectedId           = undefined
       @itemTemplate         = _(@$('#document-item-template').html()).template()
       @editItemTemplate     = _(@$('#document-edit-item-template').html()).template()
 

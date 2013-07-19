@@ -29,6 +29,7 @@ define(function(require) {
         type: 'h',
         anchorToWindow: true,
         outline: true,
+        accessKey: 'B',
         cookie: 'output'
       });
     }

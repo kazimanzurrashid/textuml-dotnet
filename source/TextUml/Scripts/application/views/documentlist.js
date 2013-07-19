@@ -34,7 +34,6 @@ define(function(require) {
       this.listContainer = this.$('.list-container');
       this.list = this.listContainer.find('> ul');
       this.children = [];
-      this.selectedId = void 0;
       this.itemTemplate = _(this.$('#document-item-template').html()).template();
       this.editItemTemplate = _(this.$('#document-edit-item-template').html()).template();
       this.listenTo(this.collection, 'reset sort', this.render);

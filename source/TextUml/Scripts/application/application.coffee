@@ -77,7 +77,7 @@
         'your email address. Please open the link to reset your password.'
 
     events.on 'passwordChanged', ->
-      $.showInfobar 'You have changed your password successfully.'
+      $.showInfobar 'Your password is successfully changed.'
 
     events.on 'signedUp', ->
       $.showInfobar 'Thank you for signing up, an email with a confirmation ' +

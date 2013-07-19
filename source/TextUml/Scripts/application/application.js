@@ -92,7 +92,7 @@ define(function(require) {
       return $.showInfobar('An email with a password reset link has been sent to ' + 'your email address. Please open the link to reset your password.');
     });
     events.on('passwordChanged', function() {
-      return $.showInfobar('You have changed your password successfully.');
+      return $.showInfobar('Your password is successfully changed.');
     });
     events.on('signedUp', function() {
       return $.showInfobar('Thank you for signing up, an email with a confirmation ' + 'link has been sent to your email address. Please open the link ' + 'to activate your account.');

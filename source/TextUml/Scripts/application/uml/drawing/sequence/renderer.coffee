@@ -82,6 +82,6 @@ define (require) ->
     serialize: ->
       unless @surface?.getChildren().length
         throw new Error 'You cannot export a blank document, add some ' +
-          'shapes prior exporting.'
+          'code prior exporting.'
       url = @surface.getChildren()[0].toDataURL()
       url

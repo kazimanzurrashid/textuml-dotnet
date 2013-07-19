@@ -1,6 +1,6 @@
-﻿
 define(function(require) {
   var $, CompositeModel, Condition, ConditionModel, Context, Factory, Group, GroupModel, Kinetic, Lifeline, Message, MessageModel, Participant, Renderer, Title, _;
+
   $ = require('jquery');
   _ = require('underscore');
   Kinetic = require('kinetic');
@@ -17,9 +17,9 @@ define(function(require) {
   GroupModel = require('../../models/sequence/group');
   MessageModel = require('../../models/sequence/message');
   return Renderer = (function() {
-
     function Renderer(id) {
       var element;
+
       this.id = id != null ? id : 'canvas';
       element = $('#' + this.id);
       this.container = element.parent();
@@ -48,6 +48,7 @@ define(function(require) {
 
     Renderer.prototype.render = function(diagram) {
       var context, currentNestingLevel, layer;
+
       this.reset();
       if (!diagram || !diagram.participants.length) {
         return false;
@@ -60,6 +61,7 @@ define(function(require) {
       currentNestingLevel = 0;
       _(diagram.commands).each(function(model) {
         var shape;
+
         shape = null;
         if (model instanceof CompositeModel) {
           currentNestingLevel += 1;
@@ -98,8 +100,9 @@ define(function(require) {
 
     Renderer.prototype.serialize = function() {
       var url, _ref;
+
       if (!((_ref = this.surface) != null ? _ref.getChildren().length : void 0)) {
-        throw new Error('You cannot export a blank document, add some ' + 'shapes prior exporting.');
+        throw new Error('You cannot export a blank document, add some ' + 'code prior exporting.');
       }
       url = this.surface.getChildren()[0].toDataURL();
       return url;

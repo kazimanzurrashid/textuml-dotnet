@@ -69,7 +69,8 @@
       return false unless valid
       @collection.reset silent: true
       @collection.set _(records).map (r) -> r.model
-      @collection.update success: => @$el.modal 'hide'
+      @collection.update success: =>
+        @$el.modal 'hide'
 
     onShare: ->
       unless @context.isUserSignedIn()
@@ -79,7 +80,7 @@
         return events.trigger 'showNewDocumentTitle'
 
       unless @context.isCurrentDocumentOwned()
-        return $.showErrorbar 'Only document owner is allowed to share document.'
+        return $.showErrorbar 'Only document owner is allowed to share.'
 
       @collection = new Shares
       @collection.documentId = @context.getCurrentDocumentId()
