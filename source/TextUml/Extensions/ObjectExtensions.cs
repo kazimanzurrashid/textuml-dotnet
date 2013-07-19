@@ -156,10 +156,9 @@ namespace TextUml.Extensions
         {
             var settings = new JsonSerializerSettings
             {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                DateTimeZoneHandling = DateTimeZoneHandling.Utc
             };
-
-            settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
             return settings;
         }

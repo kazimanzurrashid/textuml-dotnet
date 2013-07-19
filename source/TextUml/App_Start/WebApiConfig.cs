@@ -3,6 +3,7 @@
     using System;
     using System.Web.Http;
 
+    using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
     public static class WebApiConfig
@@ -14,10 +15,10 @@
                 throw new ArgumentNullException("config");
             }
 
-            config.Formatters
-                .JsonFormatter
-                .SerializerSettings
-                .ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var serializerSettings = config.Formatters.JsonFormatter.SerializerSettings;
+            serializerSettings.ContractResolver = 
+                new CamelCasePropertyNamesContractResolver();
+            serializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
             config.Routes.MapHttpRoute(
                 "PasswordsRpcApi",
