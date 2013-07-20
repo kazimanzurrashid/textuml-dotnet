@@ -20,13 +20,12 @@
 
     start: ->
       $.connection.hub.start().done =>
-        events.on 'documentChanged', @onDocumentChanged
-        events.on 'broadcastDocumentContentChange',
+        @listenTo events, 'documentChanged', @onDocumentChanged
+        @listenTo events, 'broadcastDocumentContentChange',
           _(@onBroadcast).debounce BROADCAST_DELAY
 
     stop: ->
-      events.off 'documentChanged'
-      events.off 'broadcastDocumentContentChange'
+      @stopListening events
       $.connection.hub.stop()
 
     onSubscribed: (documentId, user) =>

@@ -1,7 +1,8 @@
-﻿var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 define(function(require) {
   var $, BROADCAST_DELAY, Backbone, Sharing, events, proxy, _;
+
   $ = require('jquery');
   _ = require('underscore');
   Backbone = require('backbone');
@@ -11,18 +12,12 @@ define(function(require) {
   proxy = $.connection.sharingHub;
   BROADCAST_DELAY = 1000 * 1;
   return Sharing = (function() {
-
     function Sharing(options) {
       this.onBroadcast = __bind(this.onBroadcast, this);
-
       this.onDocumentChanged = __bind(this.onDocumentChanged, this);
-
       this.onUnsubscribed = __bind(this.onUnsubscribed, this);
-
       this.onUpdated = __bind(this.onUpdated, this);
-
-      this.onSubscribed = __bind(this.onSubscribed, this);
-      _(this).extend(Backbone.Events);
+      this.onSubscribed = __bind(this.onSubscribed, this);      _(this).extend(Backbone.Events);
       this.context = options.context;
       proxy.client.subscribed = this.onSubscribed;
       proxy.client.updated = this.onUpdated;
@@ -31,15 +26,15 @@ define(function(require) {
 
     Sharing.prototype.start = function() {
       var _this = this;
+
       return $.connection.hub.start().done(function() {
-        events.on('documentChanged', _this.onDocumentChanged);
-        return events.on('broadcastDocumentContentChange', _(_this.onBroadcast).debounce(BROADCAST_DELAY));
+        _this.listenTo(events, 'documentChanged', _this.onDocumentChanged);
+        return _this.listenTo(events, 'broadcastDocumentContentChange', _(_this.onBroadcast).debounce(BROADCAST_DELAY));
       });
     };
 
     Sharing.prototype.stop = function() {
-      events.off('documentChanged');
-      events.off('broadcastDocumentContentChange');
+      this.stopListening(events);
       return $.connection.hub.stop();
     };
 
@@ -68,6 +63,7 @@ define(function(require) {
     Sharing.prototype.onDocumentChanged = function() {
       var id,
         _this = this;
+
       id = this.documentId;
       if (id) {
         proxy.server.unsubscribe(id).done(function() {

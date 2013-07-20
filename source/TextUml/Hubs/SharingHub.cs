@@ -51,11 +51,14 @@
 
             await Groups.Add(Context.ConnectionId, id);
 
-            Clients.OthersInGroup(id).subscribed(documentId, UserName);
+            var userName = UserName;
+
+            Clients.OthersInGroup(id).subscribed(documentId, userName);
 
             DocumentEntry entry;
 
-            if (DocumentContents.TryGetValue(id, out entry))
+            if (DocumentContents.TryGetValue(id, out entry) &&
+                !userName.Equals(entry.UpdatedBy))
             {
                 Clients.Caller.updated(
                     documentId,
