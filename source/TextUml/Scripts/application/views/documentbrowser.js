@@ -2,7 +2,8 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, DocumentBrowserView, DocumentListView, events;
+  var Backbone, DocumentBrowserView, DocumentListView, events, _;
+  _ = require('underscore');
   Backbone = require('backbone');
   DocumentListView = require('./documentlist');
   events = require('../events');
@@ -39,7 +40,7 @@ define(function(require) {
     };
 
     DocumentBrowserView.prototype.onShowDocuments = function(e) {
-      this.cancel = e.cancel;
+      this.cancel = e && _(e.cancel).isFunction() ? e.cancel : void 0;
       return this.$el.modal('show');
     };
 

@@ -1,4 +1,5 @@
 define (require) ->
+  _                 = require 'underscore'
   Backbone          = require 'backbone'
   DocumentListView  = require './documentlist'
   events            = require '../events'
@@ -24,7 +25,7 @@ define (require) ->
       @listenTo @list, 'opened', @onDocumentOpened
 
     onShowDocuments: (e) ->
-      @cancel = e.cancel
+      @cancel = if e and _(e.cancel).isFunction() then e.cancel else undefined
       @$el.modal 'show'
 
     onDiaglogShow: ->

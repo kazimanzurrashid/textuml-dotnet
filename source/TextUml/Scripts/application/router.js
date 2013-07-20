@@ -63,11 +63,9 @@ define(function(require) {
       var _this = this;
 
       return this.ensureSignedIn(function() {
-        _this.context.resetCurrentDocument();
-        events.trigger('documentChanged');
         return events.trigger('showDocuments', {
           cancel: function() {
-            return _this.redirectToPrevious();
+            return _this.redirectToPrevious(false);
           }
         });
       });
@@ -93,15 +91,18 @@ define(function(require) {
       return action();
     };
 
-    Router.prototype.redirectToPrevious = function() {
+    Router.prototype.redirectToPrevious = function(replace) {
       var path;
 
+      if (replace == null) {
+        replace = true;
+      }
       if (this.navigationHistory.length > 1) {
         path = this.navigationHistory[this.navigationHistory.length - 2];
       } else {
         path = this.defaultUrl;
       }
-      return this.navigate(path, true);
+      return this.navigate(path, replace);
     };
 
     return Router;

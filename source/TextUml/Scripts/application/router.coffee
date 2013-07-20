@@ -40,9 +40,7 @@ define (require) ->
 
     openDocuments: ->
       @ensureSignedIn =>
-        @context.resetCurrentDocument()
-        events.trigger 'documentChanged'
-        events.trigger 'showDocuments', cancel: => @redirectToPrevious()
+        events.trigger 'showDocuments', cancel: => @redirectToPrevious false
 
     ensureSignedIn: (action) ->
       unless @context.isUserSignedIn()
@@ -56,9 +54,9 @@ define (require) ->
             @redirectToPrevious()
       action()
 
-    redirectToPrevious: ->
+    redirectToPrevious: (replace = true) ->
       if @navigationHistory.length > 1
         path = @navigationHistory[@navigationHistory.length - 2]
       else
         path = @defaultUrl
-      @navigate path, true
+      @navigate path, replace
