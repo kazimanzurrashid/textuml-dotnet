@@ -1,4 +1,6 @@
-﻿@functions {
+﻿@using Glimpse.Mvc.Html
+@using TextUml.Extensions
+@functions {
   string PageTitle() {
     
     var title = ViewBag.Title ?? string.Empty;
@@ -25,5 +27,8 @@
   @RenderBody()
   @Html.Partial("Footer")
   @Html.Partial("GitHubRibbon")
+  @if (Context.CanProfile()) {
+    @Html.GlimpseClient()
+  }
 </body>
 </html>

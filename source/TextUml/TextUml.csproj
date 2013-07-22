@@ -219,6 +219,7 @@
     <Compile Include="Controllers\SessionsController.cs" />
     <Compile Include="Controllers\SupportsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Extensions\HttpContextBaseExtensions.cs" />
     <Compile Include="Infrastructure\GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

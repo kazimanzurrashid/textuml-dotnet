@@ -5,7 +5,7 @@ namespace TextUml.Infrastructure
     using Glimpse.AspNet.Extensions;
     using Glimpse.Core.Extensibility;
 
-    using DomainObjects;
+    using Extensions;
 
     [CLSCompliant(false)]
     public class GlimpseSecurityPolicy : IRuntimePolicy
@@ -17,23 +17,8 @@ namespace TextUml.Infrastructure
 
         public RuntimePolicy Execute(IRuntimePolicyContext policyContext)
         {
-            if (policyContext == null)
-            {
-                return RuntimePolicy.Off;
-            }
-
-            var httpContext = policyContext.GetHttpContext();
-
-            if (httpContext.Request.IsLocal)
-            {
-                return RuntimePolicy.On;
-            }
-
-            var user = httpContext.User;
-
-            return (user != null) &&
-                user.Identity.IsAuthenticated &&
-                user.IsInRole(User.Roles.Administrator) ?
+            return (policyContext != null) &&
+                policyContext.GetHttpContext().CanProfile() ?
                 RuntimePolicy.On :
                 RuntimePolicy.Off;
         }
