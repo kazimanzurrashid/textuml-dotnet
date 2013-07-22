@@ -1,4 +1,4 @@
-﻿namespace TextUml.Infrastructure
+﻿namespace TextUml
 {
     using System;
     using System.Configuration;
@@ -8,6 +8,8 @@
     using System.Web.Mvc;
 
     using Microsoft.AspNet.SignalR;
+
+
     using WebMatrix.WebData;
 
     using Autofac;
@@ -19,6 +21,7 @@
     using Postal;
 
     using DataAccess;
+    using Infrastructure;
     using Properties;
     using Services;
 

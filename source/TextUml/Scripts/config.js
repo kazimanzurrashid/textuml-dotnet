@@ -1,4 +1,3 @@
-﻿
 require.config({
   baseUrl: '/Scripts',
   paths: {
@@ -14,7 +13,7 @@ require.config({
     codemirrormarkselection: './codemirror/addon/selection/active-line',
     codemirroractiveline: './codemirror/addon/selection/mark-selection',
     toastr: './toastr',
-    signalr: './jquery.signalR-1.1.2',
+    signalr: './jquery.signalR-2.0.0-beta2',
     hubsproxies: './hubsproxies',
     confirm: 'application/lib/confirm',
     flashbar: 'application/lib/flashbar',

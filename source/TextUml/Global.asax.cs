@@ -1,15 +1,14 @@
-﻿namespace TextUml.Infrastructure
+﻿namespace TextUml
 {
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
     using System.Web.Routing;
 
-    public class MvcApplication : HttpApplication
+    public class TheApplication : HttpApplication
     {
         protected void Application_Start()
         {
-            RouteTable.Routes.MapHubs();
             AreaRegistration.RegisterAllAreas();
             ElmahConfig.Register();
             MembershipConfig.Register();

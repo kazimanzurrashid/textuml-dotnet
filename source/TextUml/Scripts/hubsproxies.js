@@ -1,5 +1,5 @@
 /*!
- * ASP.NET SignalR JavaScript Library v1.1.2
+ * ASP.NET SignalR JavaScript Library v2.0.0-beta2
  * http://signalr.net/
  *
  * Copyright Microsoft Open Technologies, Inc. All rights reserved.
@@ -15,7 +15,7 @@
     "use strict";
 
     if (typeof ($.signalR) !== "function") {
-        throw new Error("SignalR: SignalR is not loaded. Please ensure jquery.signalR-x.js is referenced before ~/signalr/hubs.");
+        throw new Error("SignalR: SignalR is not loaded. Please ensure jquery.signalR-x.js is referenced before ~/signalr/js.");
     }
 
     var signalR = $.signalR;
@@ -79,20 +79,20 @@
             registerHubProxies(proxies, false);
         });
 
-        proxies.sharingHub = this.createHubProxy('sharingHub'); 
-        proxies.sharingHub.client = { };
+        proxies.sharingHub = this.createHubProxy('sharingHub');
+        proxies.sharingHub.client = {};
         proxies.sharingHub.server = {
             subscribe: function (documentId) {
                 return proxies.sharingHub.invoke.apply(proxies.sharingHub, $.merge(["Subscribe"], $.makeArray(arguments)));
-             },
+            },
 
             unsubscribe: function (documentId) {
                 return proxies.sharingHub.invoke.apply(proxies.sharingHub, $.merge(["Unsubscribe"], $.makeArray(arguments)));
-             },
+            },
 
             update: function (documentId, content) {
                 return proxies.sharingHub.invoke.apply(proxies.sharingHub, $.merge(["Update"], $.makeArray(arguments)));
-             }
+            }
         };
 
         return proxies;

@@ -1,4 +1,4 @@
-﻿namespace TextUml.Infrastructure
+﻿namespace TextUml
 {
     using System;
     using System.Web.Http;

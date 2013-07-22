@@ -74,7 +74,7 @@
             var email = model.Email.ToLower(CultureInfo.CurrentCulture);
             var token = string.Empty;
 
-            var requireConfirmation = !IsDebuggingEnabled;
+            var requireConfirmation = IsDebuggingEnabled;
 
             try
             {
