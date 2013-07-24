@@ -6079,6 +6079,14 @@ body [class*=" icon-"] {
   margin: 0;
   padding: 2px;
 }
+.title-bar span,
+.title-bar a {
+  display: inline-block;
+}
+.title-bar a {
+  font-size: .85em;
+  margin-right: 20px;
+}
 #sidebar {
   max-width: 220px;
 }

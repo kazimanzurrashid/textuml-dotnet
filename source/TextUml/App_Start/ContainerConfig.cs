@@ -9,7 +9,6 @@
 
     using Microsoft.AspNet.SignalR;
 
-
     using WebMatrix.WebData;
 
     using Autofac;

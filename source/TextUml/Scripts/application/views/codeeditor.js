@@ -2,7 +2,8 @@
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, CodeEditorView, CodeMirror, events;
+  var Backbone, CodeEditorView, CodeMirror, events, _;
+  _ = require('underscore');
   Backbone = require('backbone');
   CodeMirror = require('codemirror');
   events = require('../events');
@@ -58,9 +59,9 @@ define(function(require) {
         styleActiveLine: true
       });
       this.oldCode = this.editor.getValue();
-      this.editor.on('change', function() {
+      this.editor.on('change', _(function() {
         return _this.onCodeChanged();
-      });
+      }).debounce(1000 * 0.8));
       this.listenTo(events, 'exampleSelected', this.onExampleSelected);
       return this.listenTo(events, 'documentChanged', this.onDocumentChanged);
     };

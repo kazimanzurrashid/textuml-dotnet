@@ -2,8 +2,8 @@ namespace TextUml.Infrastructure
 {
     using System;
 
-    using Glimpse.AspNet.Extensions;
     using Glimpse.Core.Extensibility;
+    using Glimpse.AspNet.Extensions;
 
     using Extensions;
 

@@ -1,4 +1,5 @@
 define (require) ->
+  _                 = require 'underscore'
   Backbone          = require 'backbone'
   CodeMirror        = require 'codemirror'
   events            = require '../events'
@@ -41,7 +42,7 @@ define (require) ->
         styleActiveLine   : true
 
       @oldCode = @editor.getValue()
-      @editor.on 'change', => @onCodeChanged()
+      @editor.on 'change', _(=> @onCodeChanged()).debounce 1000 * 0.8
 
       @listenTo events, 'exampleSelected', @onExampleSelected
       @listenTo events, 'documentChanged', @onDocumentChanged

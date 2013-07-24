@@ -1,19 +1,20 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, CodeEditorView, EditorView, OutputGeneratorView, Parser, events;
+  var Backbone, CodeEditorView, EditorView, OutputGeneratorView, Parser, events, _ref;
+
   Backbone = require('backbone');
   CodeEditorView = require('./codeeditor');
   OutputGeneratorView = require('./outputgenerator');
   Parser = require('../uml/language/sequence/parser');
   events = require('../events');
   return EditorView = (function(_super) {
-
     __extends(EditorView, _super);
 
     function EditorView() {
-      return EditorView.__super__.constructor.apply(this, arguments);
+      _ref = EditorView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     EditorView.prototype.el = '#editor-container';
@@ -26,6 +27,7 @@ define(function(require) {
 
     EditorView.prototype.initialize = function(options) {
       var callbacks;
+
       this.context = options.context;
       this.code = new this.codeEditorViewType({
         context: this.context
@@ -54,7 +56,7 @@ define(function(require) {
       });
       this.listenTo(events, 'codeChanged', this.onCodeChanged);
       this.listenTo(events, 'documentContentChanged', this.onDocumentContentChanged);
-      this.codeTitlebar = this.$('#code-section').find('.title-bar');
+      this.codeLabel = this.$('#code-section').find('.title-bar').find('span').first();
       return this.listenTo(events, 'documentChanged', this.onDocumentChanged);
     };
 
@@ -68,11 +70,12 @@ define(function(require) {
 
     EditorView.prototype.onDocumentChanged = function() {
       var title;
+
       title = 'Code';
       if (!this.context.isCurrentDocumentEditable()) {
         title += ' (readonly)';
       }
-      return this.codeTitlebar.text(title);
+      return this.codeLabel.text(title);
     };
 
     return EditorView;

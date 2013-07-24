@@ -31,7 +31,11 @@ define (require) ->
       @listenTo events, 'codeChanged', @onCodeChanged
       @listenTo events, 'documentContentChanged', @onDocumentContentChanged
 
-      @codeTitlebar = @$('#code-section').find '.title-bar'
+      @codeLabel = @$('#code-section')
+        .find('.title-bar')
+        .find('span')
+        .first()
+
       @listenTo events, 'documentChanged', @onDocumentChanged
 
     onCodeChanged: (e) -> @parser.parse e.code
@@ -42,4 +46,4 @@ define (require) ->
       title = 'Code'
       unless @context.isCurrentDocumentEditable()
         title += ' (readonly)'
-      @codeTitlebar.text title
+      @codeLabel.text title

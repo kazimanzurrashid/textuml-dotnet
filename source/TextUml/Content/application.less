@@ -75,6 +75,15 @@ html, body {
   font-weight: normal;
   margin: 0;
   padding: 2px;
+
+  span, a {
+    display: inline-block;
+  }
+
+  a {
+    font-size: .85em;
+    margin-right: @baseLineHeight;
+  }
 }
 
 #sidebar {
@@ -84,9 +93,9 @@ html, body {
 #example-list {
   li {
     cursor: pointer;
-    padding: 5px;
+    padding: @baseLineHeight / 4;
     &:hover {
-      .selectable-list-item
+      .selectable-list-item;
     }
   }
 }
@@ -130,6 +139,7 @@ html, body {
     font-family: @monoFontFamily;
     height: 100%;
   }
+
   .CodeMirror-activeline-background {
     background: #e8f2ff !important;
   }

@@ -57,7 +57,9 @@
 
             DocumentEntry entry;
 
-            if (DocumentContents.TryGetValue(id, out entry))
+            if (DocumentContents.TryGetValue(id, out entry) &&
+                (entry != null) &&
+                !userName.Equals(entry.UpdatedBy))
             {
                 Clients.Caller.updated(
                     documentId,
