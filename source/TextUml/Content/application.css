@@ -5518,19 +5518,19 @@ a.thumbnail:hover {
   overflow: auto;
 }
 .splitter-bar-vertical {
-  background-image: url(/content/images/jquery.splitter/vgrabber.gif);
+  background-image: url(/content/images/jquery.splitter/vgrabber.png);
   background-repeat: no-repeat;
   background-position: center;
   width: 6px;
 }
 .splitter-bar-horizontal {
-  background-image: url(/content/images/jquery.splitter/hgrabber.gif);
+  background-image: url(/content/images/jquery.splitter/hgrabber.png);
   background-repeat: no-repeat;
   background-position: center;
   height: 6px;
 }
 .splitter-bar-vertical-docked {
-  background-image: url(/content/images/jquery.splitter/vdockbar-trans.gif);
+  background-image: url(/content/images/jquery.splitter/vdockbar-trans.png);
   background-repeat: no-repeat;
   background-position: center;
   width: 10px;

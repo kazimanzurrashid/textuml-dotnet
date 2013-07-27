@@ -281,9 +281,9 @@
     <Content Include="Content\font\fontawesome-webfont.svg" />
     <Content Include="Content\images\glyphicons-halflings-white.png" />
     <Content Include="Content\images\glyphicons-halflings.png" />
-    <Content Include="Content\images\jquery.splitter\hgrabber.gif" />
-    <Content Include="Content\images\jquery.splitter\vdockbar-trans.gif" />
-    <Content Include="Content\images\jquery.splitter\vgrabber.gif" />
+    <Content Include="Content\images\jquery.splitter\hgrabber.png" />
+    <Content Include="Content\images\jquery.splitter\vdockbar-trans.png" />
+    <Content Include="Content\images\jquery.splitter\vgrabber.png" />
     <Content Include="Content\images\spacer.gif" />
     <Content Include="Content\codemirror.less">
       <Compile>False</Compile>
