@@ -1,0 +1,170 @@
+﻿<div id="syntax-guide-dialog" class="modal hide fade">
+  <div class="modal-header">
+    <a href="javascript:;" rel="nofollow" class="close" data-dismiss="modal" title="close">&times;</a>
+    <h3>Syntax guide</h3>
+  </div>
+  <div class="modal-body">
+    <ul class="media-list">
+      <li class="media">
+        <div class="pull-left">
+          <img class="media-object" style="height:164px;width:256px" src="~/Content/images/syntaxguide/sync.png" alt="Synchronous message" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Synchronous message</h4>
+          <p>
+            Sending a synchronous message to one participant to another 
+            participant is very simple, join the participants with a 
+            single dash and greater than arrow, then specify the message 
+            name after the colon, like:
+          </p>
+          <pre>A -> B: Sync message</pre>
+          <p>
+            To denote the message in reverse direction without swapping the 
+            participants position, use the less than arrow and place the arrow 
+            on the other end, like:
+          </p>
+          <pre>A <- B: Sync message</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-right">
+          <img class="media-object" style="height:179px;width:287px" src="~/Content/images/syntaxguide/async.png" alt="Asynchronous message" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Asynchronous message</h4>
+          <p>
+            Sending an asynchronous message is very much like sending an 
+            synchronous message, the only difference is asynchronous message
+            is denoted with double arrow:
+          </p>
+          <pre>A ->> B: Async message</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-left">
+          <img class="media-object" style="height:224px;width:148px" src="~/Content/images/syntaxguide/self.png" alt="Self message" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Self message</h4>
+          <p>
+            To send a self, you just have to specify the same participant for 
+            both sender and recipient, like:
+          </p>
+          <pre>A -> A: Self message</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-right">
+          <img class="media-object" style="height:181px;width:280px" src="~/Content/images/syntaxguide/reorder.png" alt="Reorder" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Reordering participants</h4>
+          <p>
+            By default it orders the participants in same order as it finds in 
+            the code, in certain cases you may want to customize the ordering,
+            in that cases you have to declare the participants with keyword 
+            <code>participant</code> before using it, 
+            like:
+          </p>
+          <pre>participant B
+
+A -> B: Sync message</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-left">
+          <img class="media-object" style="height:239px;width:326px" src="~/Content/images/syntaxguide/alias.png" alt="Alias" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Aliasing</h4>
+          <p>
+            If a participant has a long name, it becomes cumbersome to repeat 
+            the name, you can create alias for the long name, to create an 
+            alias put the long name in double quotes and use keyword <code>as</code>
+            to create it, like:
+          </p>
+          <pre>participant "Very long name" as A
+
+A -> B: Request
+A <- B: Response</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-right">
+          <img class="media-object" style="height:290px;width:253px" src="~/Content/images/syntaxguide/loop.png" alt="Loop" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Loop</h4>
+          <p>
+            To denote a loop you have to use keyword <code>loop</code> with an
+            optional label and close it with keyword <code>end</code>, like:
+          </p>
+          <pre>loop 3 times
+  A -> B: Request
+end</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-left">
+          <img class="media-object" style="height:294px;width:226px" src="~/Content/images/syntaxguide/opt.png" alt="If"/>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">If</h4>
+          <div class="media-body">
+            <p>
+              To denote a if condition you have to use <code>opt</code> and 
+              <code>end</code> keywords pairs, like:
+            </p>
+            <pre>opt condition
+  A -> B: Request
+end</pre>
+          </div>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-right">
+          <img class="media-object" style="height:382px;width:236px" src="~/Content/images/syntaxguide/alt.png" alt="If/Else" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">If/else</h4>
+          <p>
+            To group multiple conditions use <code>alt</code>, <code>else</code> and 
+            <code>end</code>, like:
+          </p>
+          <pre>alt condition 1
+  A -> B: Request1
+else condition 2
+  A -> B: Request2
+else
+  A -> B: Request3
+end</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="pull-left">
+          <img class="media-object" src="~/Content/images/syntaxguide/title.png" alt="Title" />
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">Title</h4>
+          <p>
+            To show a title of the diagram use keyword the <code>title</code> 
+            followed with value, please note that if title is specified, it
+            must be the first line of the code.
+          </p>
+          <pre>title My diagram
+
+A -> B: Request</pre>
+        </div>
+      </li>
+      <li class="media">
+        <div class="media-body">
+          <h4 class="media-heading">Comments</h4>
+          <p>
+            To comment use <code>'</code>, like:
+          </p>
+          <pre>' A -> B: Request</pre>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

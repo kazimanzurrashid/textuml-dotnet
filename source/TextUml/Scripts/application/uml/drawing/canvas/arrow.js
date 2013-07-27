@@ -20,6 +20,14 @@ define(function(require) {
       Arrow.__super__.constructor.call(this, attributes);
     }
 
+    Arrow.prototype.getX1 = function() {
+      return this.x;
+    };
+
+    Arrow.prototype.getY1 = function() {
+      return this.y;
+    };
+
     Arrow.prototype.draw = function(surface) {
       var data;
       data = this.generatePath();

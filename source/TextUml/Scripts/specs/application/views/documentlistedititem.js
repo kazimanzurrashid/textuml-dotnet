@@ -1,16 +1,17 @@
-﻿
 define(function(require) {
-  var $, DocumentListItem;
+  var $, DocumentListEditItem;
+
   $ = require('jquery');
-  DocumentListItem = require('../../../application/views/documentlistedititem');
+  DocumentListEditItem = require('../../../application/views/documentlistedititem');
   return describe('views/documentlistedititem', function() {
     var model, stubbedListenTo, stubbedTemplate, view;
+
     stubbedListenTo = null;
     stubbedTemplate = null;
     model = null;
     view = null;
     before(function() {
-      stubbedListenTo = sinon.stub(DocumentListItem.prototype, 'listenTo', function() {});
+      stubbedListenTo = sinon.stub(DocumentListEditItem.prototype, 'listenTo', function() {});
       stubbedTemplate = sinon.stub();
       model = {
         toJSON: function() {},
@@ -18,21 +19,14 @@ define(function(require) {
         save: function() {},
         destroy: function() {}
       };
-      return view = new DocumentListItem({
+      return view = new DocumentListEditItem({
         model: model,
         template: stubbedTemplate
       });
     });
-    describe('new', function() {
-      it('subscribes to model change event', function() {
-        return expect(stubbedListenTo).to.have.been.calledWith(model, 'change', view.render);
-      });
-      return it('subscribes to model remove and destroy event', function() {
-        return expect(stubbedListenTo).to.have.been.calledWith(model, 'remove destroy', view.remove);
-      });
-    });
     describe('#render', function() {
       var html, stubbedHtml, stubbedToJSON;
+
       html = '<li>test doc</li>';
       stubbedToJSON = null;
       stubbedHtml = null;
@@ -56,6 +50,7 @@ define(function(require) {
     describe('#remove', function() {
       return describe('with notification', function() {
         var stubbedFadeOut, stubbedTrigger;
+
         stubbedTrigger = null;
         stubbedFadeOut = null;
         before(function() {
@@ -77,11 +72,13 @@ define(function(require) {
     });
     describe('#showDisplay', function() {
       var stubbedDisplay, stubbedEdit, stubbedSelector;
+
       stubbedSelector = null;
       stubbedEdit = null;
       stubbedDisplay = null;
       before(function() {
         var display, edit;
+
         edit = {
           hide: function() {}
         };
@@ -107,6 +104,7 @@ define(function(require) {
     });
     describe('#showEdit', function() {
       var stubbedDisplay, stubbedEdit, stubbedFind, stubbedFocus, stubbedModelGet, stubbedSelect, stubbedSelector, stubbedVal, title;
+
       title = 'test doc';
       stubbedSelector = null;
       stubbedDisplay = null;
@@ -118,6 +116,7 @@ define(function(require) {
       stubbedModelGet = null;
       before(function() {
         var display, edit;
+
         display = {
           hide: function() {}
         };
@@ -173,6 +172,7 @@ define(function(require) {
     });
     describe('#onEdit', function() {
       var stubbedShowEdit;
+
       stubbedShowEdit = null;
       before(function() {
         stubbedShowEdit = sinon.stub(view, 'showEdit', function() {});
@@ -190,6 +190,7 @@ define(function(require) {
     });
     describe('#onCancel', function() {
       var stubbedShowDisplay;
+
       stubbedShowDisplay = null;
       before(function() {
         stubbedShowDisplay = sinon.stub(view, 'showDisplay', function() {});
@@ -207,16 +208,19 @@ define(function(require) {
     });
     describe('#onUpdateOrCancel', function() {
       var stubbedShowDisplay;
+
       stubbedShowDisplay = null;
       before(function() {
         return stubbedShowDisplay = sinon.stub(view, 'showDisplay', function() {});
       });
       describe('enter key', function() {
         var stubbedModelSave, title;
+
         title = 'test doc';
         stubbedModelSave = null;
         before(function() {
           var input, stubbedModelGet;
+
           stubbedModelGet = sinon.stub(view.model, 'get', function() {});
           stubbedModelSave = sinon.stub(view.model, 'save', function() {});
           input = $('<input/>', {
@@ -262,6 +266,7 @@ define(function(require) {
     });
     describe('#onDestroy', function() {
       var stubbedConfirm, stubbedModelDestroy;
+
       stubbedConfirm = null;
       stubbedModelDestroy = null;
       before(function() {

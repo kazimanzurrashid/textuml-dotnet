@@ -1,6 +1,6 @@
 ﻿define (require) ->
-  $                   = require 'jquery'
-  DocumentListItem    = require '../../../application/views/documentlistedititem'
+  $                     = require 'jquery'
+  DocumentListEditItem  = require '../../../application/views/documentlistedititem'
 
   describe 'views/documentlistedititem', ->
     stubbedListenTo       = null
@@ -9,7 +9,7 @@
     view                  = null
 
     before ->
-      stubbedListenTo = sinon.stub DocumentListItem.prototype, 'listenTo', ->
+      stubbedListenTo = sinon.stub DocumentListEditItem.prototype, 'listenTo', ->
 
       stubbedTemplate = sinon.stub()
       model =
@@ -18,16 +18,7 @@
         save      : ->
         destroy   : ->
 
-      view = new DocumentListItem { model, template: stubbedTemplate }
-
-    describe 'new', ->
-      it 'subscribes to model change event', ->
-        expect(stubbedListenTo)
-          .to.have.been.calledWith model, 'change', view.render
-
-      it 'subscribes to model remove and destroy event', ->
-        expect(stubbedListenTo)
-          .to.have.been.calledWith model, 'remove destroy', view.remove
+      view = new DocumentListEditItem { model, template: stubbedTemplate }
 
     describe '#render', ->
       html              = '<li>test doc</li>'

@@ -5,6 +5,7 @@
 @import "less/grid.less";
 @import "less/layouts.less";
 @import 'less/type.less';
+@import 'less/code.less';
 @import 'less/forms.less';
 @import 'less/fontawesome/font-awesome.less';
 @import 'less/component-animations.less';
@@ -16,6 +17,7 @@
 @import 'less/navbar.less';
 @import 'less/modals.less';
 @import "less/labels-badges.less";
+@import "less/media.less";
 @import 'less/utilities.less';
 @import 'less/bootswatch.less';
 
@@ -83,6 +85,7 @@ html, body {
   a {
     font-size: .85em;
     margin-right: @baseLineHeight;
+    outline: 0;
   }
 }
 
@@ -304,6 +307,12 @@ html, body {
   .header {
     font-weight: normal;
     margin-bottom: @baseLineHeight / 2;
+  }
+}
+
+#syntax-guide-dialog {
+  .media-heading{
+    font-weight: bold;
   }
 }
 

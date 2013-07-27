@@ -11,6 +11,8 @@
     events:
       'submit': 'onSubmit'
 
+    handleError: ->
+
     onSubmit: (e) ->
       e.preventDefault()
       @$el.hideSummaryError().hideFieldErrors()

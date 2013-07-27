@@ -12,6 +12,10 @@ define (require) ->
       , @size
       , attributes) -> super attributes
 
+    getX1: -> @x # super
+
+    getY1: -> @y # super
+
     draw: (surface) ->
       data = @generatePath()
       @element = new Kinetic.Path { data }

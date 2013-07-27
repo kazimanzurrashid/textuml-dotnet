@@ -1,9 +1,8 @@
-﻿
 define(function(require) {
   var Composite, _;
+
   _ = require('underscore');
   return Composite = (function() {
-
     function Composite() {
       this.children = [];
     }
@@ -21,6 +20,7 @@ define(function(require) {
 
     Composite.prototype.getX1 = function() {
       var x1;
+
       if (!this.children.length) {
         return 0;
       }
@@ -34,6 +34,7 @@ define(function(require) {
 
     Composite.prototype.getY1 = function() {
       var y1;
+
       if (!this.children.length) {
         return 0;
       }
@@ -47,6 +48,7 @@ define(function(require) {
 
     Composite.prototype.getX2 = function() {
       var x2;
+
       if (!this.children.length) {
         return 0;
       }
@@ -60,6 +62,7 @@ define(function(require) {
 
     Composite.prototype.getY2 = function() {
       var y2;
+
       if (!this.children.length) {
         return 0;
       }
@@ -73,12 +76,14 @@ define(function(require) {
 
     Composite.prototype.getWidth = function() {
       var width;
+
       width = this.getX2() - this.getX1();
       return width;
     };
 
     Composite.prototype.getHeight = function() {
       var height;
+
       height = this.getY2() - this.getY1();
       return height;
     };

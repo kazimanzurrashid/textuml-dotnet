@@ -301,6 +301,15 @@
       <Compile>False</Compile>
       <Minify>False</Minify>
     </None>
+    <Content Include="Content\images\syntaxguide\alias.png" />
+    <Content Include="Content\images\syntaxguide\alt.png" />
+    <Content Include="Content\images\syntaxguide\async.png" />
+    <Content Include="Content\images\syntaxguide\loop.png" />
+    <Content Include="Content\images\syntaxguide\opt.png" />
+    <Content Include="Content\images\syntaxguide\reorder.png" />
+    <Content Include="Content\images\syntaxguide\self.png" />
+    <Content Include="Content\images\syntaxguide\sync.png" />
+    <Content Include="Content\images\syntaxguide\title.png" />
     <Content Include="Content\less\fontawesome\variables.less">
       <Compile>False</Compile>
       <Minify>False</Minify>
@@ -1756,7 +1765,7 @@
     <Content Include="Scripts\underscore.min.map">
       <DependentUpon>underscore.js</DependentUpon>
     </Content>
-    <Content Include="Views\ClientViews\_SyntaxGuide.cshtml" />
+    <Content Include="Views\ClientViews\SyntaxGuide.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

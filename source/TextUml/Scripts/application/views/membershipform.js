@@ -1,18 +1,19 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, MembershipFormView, events, helpers;
+  var Backbone, MembershipFormView, events, helpers, _ref;
+
   Backbone = require('backbone');
   helpers = require('./helpers');
   events = require('../events');
   require('form');
   return MembershipFormView = (function(_super) {
-
     __extends(MembershipFormView, _super);
 
     function MembershipFormView() {
-      return MembershipFormView.__super__.constructor.apply(this, arguments);
+      _ref = MembershipFormView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     MembershipFormView.prototype.modelType = null;
@@ -23,9 +24,12 @@ define(function(require) {
       'submit': 'onSubmit'
     };
 
+    MembershipFormView.prototype.handleError = function() {};
+
     MembershipFormView.prototype.onSubmit = function(e) {
       var model,
         _this = this;
+
       e.preventDefault();
       this.$el.hideSummaryError().hideFieldErrors();
       model = new this.modelType;
