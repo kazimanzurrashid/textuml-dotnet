@@ -42,7 +42,7 @@ define (require) ->
         styleActiveLine   : true
 
       @oldCode = @editor.getValue()
-      @editor.on 'change', _(=> @onCodeChanged()).debounce 1000 * 0.8
+      @editor.on 'change', => @onCodeChanged()
 
       @listenTo events, 'exampleSelected', @onExampleSelected
       @listenTo events, 'documentChanged', @onDocumentChanged

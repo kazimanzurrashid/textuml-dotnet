@@ -1,8 +1,9 @@
-﻿var __hasProp = {}.hasOwnProperty,
+var __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 define(function(require) {
-  var Backbone, CodeEditorView, CodeMirror, events, _;
+  var Backbone, CodeEditorView, CodeMirror, events, _, _ref;
+
   _ = require('underscore');
   Backbone = require('backbone');
   CodeMirror = require('codemirror');
@@ -11,10 +12,12 @@ define(function(require) {
   require('codemirroractiveline');
   CodeMirror.defineMode('uml', function() {
     var Keywords;
+
     Keywords = /^(?:title|participant|as|alt|opt|loop|else|end)$/im;
     return {
       token: function(stream) {
         var chr, value;
+
         if (stream.eatSpace()) {
           return null;
         }
@@ -38,17 +41,18 @@ define(function(require) {
     };
   });
   return CodeEditorView = (function(_super) {
-
     __extends(CodeEditorView, _super);
 
     function CodeEditorView() {
-      return CodeEditorView.__super__.constructor.apply(this, arguments);
+      _ref = CodeEditorView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     CodeEditorView.prototype.el = '#code-text-area';
 
     CodeEditorView.prototype.initialize = function(options) {
       var _this = this;
+
       this.context = options.context;
       this.editor = CodeMirror.fromTextArea(this.$el.get(0), {
         mode: 'uml',
@@ -59,9 +63,9 @@ define(function(require) {
         styleActiveLine: true
       });
       this.oldCode = this.editor.getValue();
-      this.editor.on('change', _(function() {
+      this.editor.on('change', function() {
         return _this.onCodeChanged();
-      }).debounce(1000 * 0.8));
+      });
       this.listenTo(events, 'exampleSelected', this.onExampleSelected);
       return this.listenTo(events, 'documentChanged', this.onDocumentChanged);
     };
@@ -78,6 +82,7 @@ define(function(require) {
 
     CodeEditorView.prototype.onExampleSelected = function(e) {
       var code;
+
       if (!this.context.isCurrentDocumentEditable()) {
         return false;
       }
@@ -92,6 +97,7 @@ define(function(require) {
 
     CodeEditorView.prototype.onDocumentChanged = function() {
       var code;
+
       this.changing = true;
       code = this.context.getCurrentDocumentContent();
       this.editor.setOption('readOnly', !this.context.isCurrentDocumentEditable());
@@ -102,6 +108,7 @@ define(function(require) {
 
     CodeEditorView.prototype.onCodeChanged = function(change) {
       var newCode;
+
       newCode = this.editor.getValue();
       if (newCode === this.oldCode) {
         return false;
