@@ -4,7 +4,7 @@
   !string.IsNullOrWhiteSpace(p.Key) &&
   !string.IsNullOrWhiteSpace(p.Value))) {
   <div class="alert alert-@flashMessage.Key.ToLowerInvariant() fade in flash-bar">
-    <a href="javascript:;" rel="nofollow" class="close" data-dismiss="alert" title="close">&times;</a>
+    <button type="button" class="close" data-dismiss="alert" title="close">&times;</button>
     @{
       var icon = string.Empty;
       switch (flashMessage.Key.ToLowerInvariant())
