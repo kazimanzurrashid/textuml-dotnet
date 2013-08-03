@@ -13,7 +13,12 @@
       <div class="tab-content">
         <div id="sign-in-pane" class="tab-pane active">
           <div class="modal-section">
-            @Html.ClientView("SignIn")
+            <div>
+              @Html.ClientView("OAuth")
+            </div>
+            <div>
+              @Html.ClientView("SignIn")
+            </div>
           </div>
           <div class="modal-section">
             @Html.ClientView("ForgotPassword")

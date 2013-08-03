@@ -3,7 +3,9 @@
     <Recognized>
       <Word>Api</Word>
       <Word>Elmah</Word>
+      <Word>Git</Word>
       <Word>Mvc</Word>
+      <Word>Auth</Word>
       <Word>Uml</Word>
     </Recognized>
     <DiscreteExceptions>
