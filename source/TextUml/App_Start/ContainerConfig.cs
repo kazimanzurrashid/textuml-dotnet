@@ -3,13 +3,12 @@
     using System;
     using System.Configuration;
     using System.Reflection;
+    using System.Threading;
     using System.Web;
     using System.Web.Http;
     using System.Web.Mvc;
 
     using Microsoft.AspNet.SignalR;
-
-    using WebMatrix.WebData;
 
     using Autofac;
     using Autofac.Builder;
@@ -104,12 +103,8 @@
             Register<Mailer>(builder)
                 .WithParameter("sender", Settings.Default.SupportEmailAddress);
 
-            Register<CurrentUserProvider>(builder)
-                .WithParameter(
-                    "getId",
-                    new Func<int>(() => WebSecurity.CurrentUserId));
-
             Register<MembershipService>(builder);
+            Register<CurrentUserProvider>(builder);
             Register<DocumentService>(builder);
             Register<ShareService>(builder);
             Register<NewUserConfirmedHandler>(builder);
@@ -124,7 +119,8 @@
             Register<TService>(ContainerBuilder builder)
         {
             return builder.RegisterType<TService>()
-                .AsImplementedInterfaces();
+                .AsImplementedInterfaces()
+                .AsSelf();
         }
     }
 }

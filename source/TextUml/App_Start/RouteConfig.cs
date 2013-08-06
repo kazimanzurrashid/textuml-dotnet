@@ -10,12 +10,12 @@
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                "user-confirmation",
-                "users/confirm/{token}",
+                "user-activation",
+                "users/activate/{token}",
                 new
                     {
                         controller = "supports",
-                        action = "confirmuser"
+                        action = "activateuser"
                     });
 
             routes.MapRoute(

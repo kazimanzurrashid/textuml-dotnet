@@ -1,9 +1,12 @@
 ﻿namespace TextUml.DomainObjects
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("tu_Shares")]
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    [Table("Shares"), CLSCompliant(false)]
     public class Share
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,7 +17,7 @@
         [ForeignKey("DocumentId")]
         public virtual Document Document { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

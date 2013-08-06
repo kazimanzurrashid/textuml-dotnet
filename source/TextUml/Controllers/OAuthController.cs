@@ -1,28 +1,26 @@
 ﻿namespace TextUml.Controllers
 {
-    using System.Data.Entity;
-    using System.Globalization;
+    using System;
     using System.Threading.Tasks;
     using System.Web.Mvc;
-    using System.Web.Security;
 
-    using Microsoft.Web.WebPages.OAuth;
+    using Microsoft.AspNet.Identity.EntityFramework;
 
-    using DataAccess;
     using DomainObjects;
     using Infrastructure;
 
-    using UserRoles = DomainObjects.User.Roles;
+    using Services;
 
+    [CLSCompliant(false)]
     public class OAuthController : Controller
     {
-        private readonly IDataContext dataContext;
+        private readonly IMembershipService membershipService;
 
         private FlashMessageCollection flash;
 
-        public OAuthController(IDataContext dataContext)
+        public OAuthController(IMembershipService membershipService)
         {
-            this.dataContext = dataContext;
+            this.membershipService = membershipService;
         }
 
         public FlashMessageCollection Flash
@@ -43,48 +41,39 @@
         {
             return string.IsNullOrWhiteSpace(provider) ?
                 RedirectToHome() :
-                new OAuthSignInResult(provider, Url.Action("callback"));
+                new ChallengeResult(
+                    provider,
+                    Url.Action("callback", new { provider }),
+                    membershipService.AuthenticationManager);
         }
 
         [HttpGet]
-        public async Task<ActionResult> Callback()
+        public async Task<ActionResult> Callback(string provider)
         {
-            var result = OAuthWebSecurity.VerifyAuthentication(
-                Url.Action("callback"));
+            var authentication = membershipService.AuthenticationManager;
+            var claim = await authentication.GetExternalIdentity(HttpContext);
 
-            if (!result.IsSuccessful)
+            if (!authentication.VerifyExternalIdentity(claim, provider))
             {
                 Flash[FlashMessageType.Error] = "Failed to sign in.";
                 return RedirectToHome();
             }
 
-            var email = (result.UserName +
-                "@oauth-" +
-                result.Provider +
-                ".com").ToLower(CultureInfo.CurrentCulture);
-
-            var userExists = await dataContext.Users
-                .AnyAsync(u => u.Email == email);
-
-            if (!userExists)
+            if (await authentication.SignInExternalIdentity(HttpContext, claim, provider))
             {
-                var user = new User { Email = email };
-                dataContext.Users.Add(user);
-                await dataContext.SaveChangesAsync();
-                Roles.AddUserToRole(email, UserRoles.User);
+                Flash[FlashMessageType.Success] = "You are now signed in.";
             }
-
-            OAuthWebSecurity.CreateOrUpdateAccount(
-                result.Provider,
-                result.ProviderUserId,
-                email);
-
-            OAuthWebSecurity.Login(
-                result.Provider,
-                result.ProviderUserId,
-                false);
-
-            Flash[FlashMessageType.Success] = "You are now signed in.";
+            else if (await membershipService.ExternalSignup(
+                    provider,
+                    claim.Name,
+                    UserRoles.User))
+                {
+                    Flash[FlashMessageType.Success] = "You are now signed in.";
+                }
+            else
+            {
+                Flash[FlashMessageType.Error] = "Failed to sign in.";
+            }
 
             return RedirectToHome();
         }
@@ -92,6 +81,31 @@
         private ActionResult RedirectToHome()
         {
             return RedirectToAction("index", "home");
+        }
+
+        private class ChallengeResult : HttpUnauthorizedResult
+        {
+            private readonly string provider;
+            private readonly string redirectUrl;
+            private readonly IdentityAuthenticationManager authentication;
+
+            public ChallengeResult(
+                string provider, 
+                string redirectUrl, 
+                IdentityAuthenticationManager authentication)
+            {
+                this.provider = provider;
+                this.redirectUrl = redirectUrl;
+                this.authentication = authentication;
+            }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                authentication.Challenge(
+                    context.HttpContext,
+                    provider,
+                    redirectUrl);
+            }
         }
     }
 }

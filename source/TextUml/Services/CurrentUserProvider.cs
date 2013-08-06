@@ -1,24 +1,32 @@
 ﻿namespace TextUml.Services
 {
     using System;
+    using System.Web;
+
+    using Microsoft.AspNet.Identity;
 
     public interface ICurrentUserProvider
     {
-        int UserId { get; }
+        string GetUserId();
     }
 
     public class CurrentUserProvider : ICurrentUserProvider
     {
-        private readonly Func<int> getId;
+        private readonly Func<HttpContextBase> lazyHttpContext;
 
-        public CurrentUserProvider(Func<int> getId)
+        public CurrentUserProvider(
+            Func<HttpContextBase> lazyHttpContext)
         {
-            this.getId = getId;
+            this.lazyHttpContext = lazyHttpContext;
         }
 
-        public int UserId
+        public string GetUserId()
         {
-            get { return getId(); }
+            var httpContext = lazyHttpContext();
+            var user = httpContext.User.Identity;
+
+
+            return user.IsAuthenticated ? user.GetUserId() : null;
         }
     }
 }

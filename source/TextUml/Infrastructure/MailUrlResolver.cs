@@ -23,7 +23,7 @@
 
         public string UserConfirmation(string token)
         {
-            return GenerateUrl("user-confirmation", token);
+            return GenerateUrl("user-activation", token);
         }
 
         public string ForgotPassword(string token)

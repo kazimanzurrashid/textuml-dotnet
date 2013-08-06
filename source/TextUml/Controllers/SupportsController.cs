@@ -8,6 +8,7 @@
     using Models;
     using Services;
 
+    [CLSCompliant(false)]
     public class SupportsController : Controller
     {
         private readonly IMembershipService membershipService;
@@ -42,7 +43,7 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult> ConfirmUser(string token)
+        public async Task<ActionResult> ActivateUser(string token)
         {
             if (string.IsNullOrWhiteSpace(token))
             {
@@ -52,7 +53,7 @@
             var userConfirmationToken = urlSafeSecureDataSerializer
                 .Deserialize<UserConfirmationToken>(token);
 
-            if (membershipService.Confirm(
+            if (await membershipService.Activate(
                 userConfirmationToken.Email,
                 userConfirmationToken.Token))
             {
@@ -77,7 +78,7 @@
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(ResetPassword model)
+        public async Task<ActionResult> ResetPassword(ResetPassword model)
         {
             if (model == null)
             {
@@ -89,7 +90,9 @@
                 return View(model);
             }
 
-            if (membershipService.ResetPassword(model.Token, model.Password))
+            if (await membershipService.ResetPassword(
+                model.Token,
+                model.Password))
             {
                 Flash[FlashMessageType.Success] = "Your password is " +
                     "successfully changed.";

@@ -24,6 +24,7 @@
         Task<bool> CanEdit(int documentId);
     }
 
+    [CLSCompliant(false)]
     public class ShareService : IShareService
     {
         private readonly IDataContext dataContext;
@@ -39,10 +40,12 @@
 
         public async Task<IEnumerable<ShareRead>> Query(int documentId)
         {
+            var userId = currentUserProvider.GetUserId();
+
             var result = await dataContext.Invitations
                 .Where(i =>
                     i.DocumentId == documentId &&
-                    i.Document.UserId == currentUserProvider.UserId)
+                    i.Document.UserId == userId)
                 .Select(i => new ShareRead
                                  {
                                      Id = i.Id,
@@ -70,10 +73,12 @@
                 throw new ArgumentNullException("notFound");
             }
 
+            var userId = currentUserProvider.GetUserId();
+
             var document = await dataContext.Documents
                 .FirstOrDefaultAsync(d =>
                     d.Id == documentId &&
-                    d.UserId == currentUserProvider.UserId);
+                    d.UserId == userId);
 
             if (document == null)
             {
@@ -97,7 +102,7 @@
 
         public async Task<bool> CanView(int documentId)
         {
-            var userId = currentUserProvider.UserId;
+            var userId = currentUserProvider.GetUserId();
 
             var result = await dataContext.Shares.AnyAsync(s =>
                 (s.DocumentId == documentId &&
@@ -110,7 +115,7 @@
 
         public async Task<bool> CanEdit(int documentId)
         {
-            var userId = currentUserProvider.UserId;
+            var userId = currentUserProvider.GetUserId();
 
             var result = await dataContext.Shares.AnyAsync(s =>
                 (s.DocumentId == documentId &&
@@ -175,7 +180,7 @@
         {
             var existingShares = await dataContext.Shares
                 .Where(s => s.DocumentId == documentId)
-                .Select(s => new { share = s, userEmail = s.User.Email })
+                .Select(s => new { share = s, userEmail = s.User.UserName })
                 .ToListAsync();
 
             var sharesToDelete = existingShares.Where(es => 
@@ -203,7 +208,7 @@
                     var invitationEmail = invitation.Email;
 
                     var user = await dataContext.Users
-                        .FirstOrDefaultAsync(u => u.Email == invitationEmail);
+                        .FirstOrDefaultAsync(u => u.UserName == invitationEmail);
 
                     if (user == null)
                     {

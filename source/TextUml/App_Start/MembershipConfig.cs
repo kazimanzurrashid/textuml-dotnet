@@ -1,69 +1,56 @@
 ﻿namespace TextUml
 {
     using System.Linq;
-    using System.Web.Security;
-
-    using WebMatrix.WebData;
+    using System.Web.Mvc;
 
     using DomainObjects;
     using Properties;
+    using Services;
 
     public static class MembershipConfig
     {
         public static void Register()
         {
-            Configure();
             CreateDefaults();
-        }
-
-        private static void Configure()
-        {
-            WebSecurity.InitializeDatabaseConnection(
-                "DefaultConnection",
-                "tu_Users",
-                "Id",
-                "Email",
-                true);
         }
 
         private static void CreateDefaults()
         {
-            CreateRoles();
+            var membership = DependencyResolver.Current
+                .GetService<IMembershipService>();
+
+            CreateRoles(membership);
 
             CreateUser(
-                Settings.Default.DefaultAdminUserName,
+                membership,
+                Settings.Default.DefaultAdminUserName, 
                 Settings.Default.DefaultAdminUserPassword,
-                User.Roles.Administrator);
+                UserRoles.Administrator);
 
             CreateUser(
-                Settings.Default.DefaultDemoUserName,
+                membership,
+                Settings.Default.DefaultDemoUserName, 
                 Settings.Default.DefaultDemoUserPassword,
-                User.Roles.User);
+                UserRoles.User);
         }
 
-        private static void CreateRoles()
+        private static void CreateRoles(IMembershipService membership)
         {
-            foreach (var role in User.Roles
-                .All.Where(role => !Roles.RoleExists(role)))
-            {
-                Roles.CreateRole(role);
-            }
+            membership.CreateRoles(UserRoles.All.ToArray()).Wait();
         }
 
         private static void CreateUser(
-            string userName,
+            IMembershipService membership, 
+            string email, 
             string password,
             string role)
         {
-            if (!WebSecurity.UserExists(userName))
+            if (membership.InternalUserExists(email).Result)
             {
-                WebSecurity.CreateUserAndAccount(userName, password);
+                return;
             }
 
-            if (!Roles.IsUserInRole(userName, role))
-            {
-                Roles.AddUserToRole(userName, role);
-            }
+            membership.InternalSignup(email, password, role, false).Wait();
         }
     }
 }

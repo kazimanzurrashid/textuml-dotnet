@@ -1,13 +1,14 @@
 ﻿@using (Html.BeginForm("signin", "oauth", FormMethod.Post)) {
   <ul class="inline">
-    @foreach (var client in OAuthWebSecurity.RegisteredClientData){
+    @foreach (var client in new []{ "GitHub", "Twitter", "Facebook", "Google" }) {
       <li>
         <button
           type="submit"
           name="provider"
-          class="btn-auth btn-@client.AuthenticationClient.ProviderName"
-          value="@client.AuthenticationClient.ProviderName">
-          Sign in with <b>@client.DisplayName</b>
+          class="btn-auth btn-@client.ToLowerInvariant()"
+          value="@client"
+          title="Sign in">
+          <b>@client</b>
         </button>
       </li>
     }

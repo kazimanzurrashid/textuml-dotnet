@@ -11,6 +11,7 @@
     using Models;
     using Services;
 
+    [CLSCompliant(false)]
     public class PasswordsController : ApiController
     {
         private readonly IMembershipService membershipService;
@@ -34,7 +35,7 @@
             }
 
             var email = model.Email.ToLower(CultureInfo.CurrentCulture);
-            var token = membershipService.ForgotPassword(email);
+            var token = await membershipService.ForgotPassword(email);
 
             if (!string.IsNullOrWhiteSpace(token))
             {
@@ -45,7 +46,7 @@
         }
 
         [Authorize]
-        public HttpResponseMessage Change(ChangePassword model)
+        public async Task<HttpResponseMessage> Change(ChangePassword model)
         {
             if (model == null)
             {
@@ -61,7 +62,7 @@
 
             try
             {
-                if (membershipService.ChangePassword(
+                if (await membershipService.ChangePassword(
                     User.Identity.Name,
                     model.OldPassword,
                     model.NewPassword))

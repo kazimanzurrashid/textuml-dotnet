@@ -11,11 +11,10 @@
         {
             AreaRegistration.RegisterAllAreas();
             ElmahConfig.Register();
-            MembershipConfig.Register();
-            OAuthConfig.Register();
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             ContainerConfig.Register();
+            MembershipConfig.Register();
         }
     }
 }

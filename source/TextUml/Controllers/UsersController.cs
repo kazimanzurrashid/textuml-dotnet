@@ -1,17 +1,21 @@
 ﻿namespace TextUml.Controllers
 {
+    using System;
     using System.Globalization;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
-    using System.Web.Security;
 
-    using Infrastructure;
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    using DomainObjects;
     using Models;
+    using Infrastructure;
     using Services;
 
+    [CLSCompliant(false)]
     public class UsersController : ApiController
     {
         private readonly IMembershipService membershipService;
@@ -70,27 +74,18 @@
                     HttpStatusCode.BadRequest, ModelState);
             }
 
-            var statusCode = MembershipCreateStatus.Success;
             var email = model.Email.ToLower(CultureInfo.CurrentCulture);
-            var token = string.Empty;
-
-            var requireConfirmation = !IsDebuggingEnabled;
+            var requireActivation = !IsDebuggingEnabled;
 
             try
             {
-                token = membershipService.Signup(
+                var token = await membershipService.InternalSignup(
                     email,
                     model.Password,
-                    requireConfirmation);
-            }
-            catch (MembershipCreateUserException e)
-            {
-                statusCode = e.StatusCode;
-            }
+                    UserRoles.User,
+                    requireActivation);
 
-            if (statusCode == MembershipCreateStatus.Success)
-            {
-                if (requireConfirmation)
+                if (requireActivation)
                 {
                     var userConfirmationToken = new UserConfirmationToken
                                                     {
@@ -110,34 +105,13 @@
 
                 return Request.CreateResponse(HttpStatusCode.NoContent);
             }
-
-            switch (statusCode)
+            catch (IdentityException e)
             {
-                case MembershipCreateStatus.DuplicateUserName:
-                case MembershipCreateStatus.DuplicateEmail:
-                case MembershipCreateStatus.DuplicateProviderUserKey:
-                    ModelState.AddModelError(
-                        "email",
-                        "User with same email already exits.");
-                    break;
-                case MembershipCreateStatus.InvalidUserName:
-                case MembershipCreateStatus.InvalidEmail:
-                    ModelState.AddModelError(
-                        "email",
-                        "Invalid email address.");
-                    break;
-                case MembershipCreateStatus.InvalidPassword:
-                    ModelState.AddModelError("password", "Invalid password.");
-                    break;
-                default:
-                    ModelState.AddModelError(
-                        string.Empty,
-                        "Unexpected error.");
-                    break;
-            }
+                ModelState.AddModelError(string.Empty, e);
 
-            return Request.CreateErrorResponse(
-                HttpStatusCode.BadRequest, ModelState);
+                return Request.CreateErrorResponse(
+                    HttpStatusCode.BadRequest, ModelState);
+            }
         }
     }
 }

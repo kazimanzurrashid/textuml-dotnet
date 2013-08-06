@@ -5,7 +5,9 @@ namespace TextUml.DomainObjects
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("tu_Documents")]
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    [Table("Documents"), CLSCompliant(false)]
     public class Document
     {
         private ICollection<Invitation> invitations;
@@ -23,7 +25,7 @@ namespace TextUml.DomainObjects
 
         public DateTime UpdatedAt { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User User { get; set; }

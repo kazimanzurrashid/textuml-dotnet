@@ -7,7 +7,7 @@ namespace TextUml.DataAccess.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.tu_Documents",
+                "dbo.Documents",
                 c => new
                 {
                     Id = c.Int(false, true),
@@ -15,19 +15,19 @@ namespace TextUml.DataAccess.Migrations
                     Content = c.String(),
                     CreatedAt = c.DateTime(false),
                     UpdatedAt = c.DateTime(false),
-                    UserId = c.Int(false)
+                    UserId = c.String(maxLength: 128),
                 })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.tu_Users", t => t.UserId);
+                .ForeignKey("dbo.Users", t => t.UserId);
 
-            CreateIndex("dbo.tu_Documents", new[] { "UserId", "Title", "UpdatedAt", "CreatedAt" });
+            CreateIndex("dbo.Documents", new[] { "UserId", "Title", "UpdatedAt", "CreatedAt" });
         }
 
         public override void Down()
         {
-            DropIndex("dbo.tu_Documents", new[] { "UserId", "Title", "UpdatedAt", "CreatedAt" });
-            DropForeignKey("dbo.tu_Documents", "UserId", "dbo.tu_Users");
-            DropTable("dbo.tu_Documents");
+            DropIndex("dbo.Documents", new[] { "UserId", "Title", "UpdatedAt", "CreatedAt" });
+            DropForeignKey("dbo.Documents", "UserId", "dbo.Users");
+            DropTable("dbo.Documents");
         }
     }
 }

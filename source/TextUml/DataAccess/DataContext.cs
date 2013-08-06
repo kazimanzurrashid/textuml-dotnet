@@ -1,60 +1,40 @@
 ﻿namespace TextUml.DataAccess
 {
+    using System;
     using System.Data.Entity;
     using System.Threading.Tasks;
 
     using DomainObjects;
 
+    using Microsoft.AspNet.Identity.EntityFramework;
+
+    [CLSCompliant(false)]
     public interface IDataContext
     {
-        IDbSet<User> Users { get; }
+        DbSet<User> Users { get; }
 
-        IDbSet<Document> Documents { get; }
+        DbSet<Token> Tokens { get; }
 
-        IDbSet<Invitation> Invitations { get; }
+        DbSet<Document> Documents { get; }
 
-        IDbSet<Share> Shares { get; }
+        DbSet<Invitation> Invitations { get; }
+
+        DbSet<Share> Shares { get; }
 
         Task<int> SaveChangesAsync();
     }
 
-    public class DataContext : DbContext, IDataContext
+    [CLSCompliant(false)]
+    public class DataContext :
+        IdentityDbContext<User, UserClaim, UserSecret, UserLogin, Role, UserRole>,
+        IDataContext
     {
-        private IDbSet<User> users;
-        private IDbSet<Document> documents;
-        private IDbSet<Invitation> invitations;
-        private IDbSet<Share> shares;
- 
-        public DataContext() : base("DefaultConnection")
-        {
-        }
+        public DbSet<Token> Tokens { get; set; }
 
-        public IDbSet<User> Users
-        {
-            get { return users ?? (users = CreateSet<User>()); }
-        } 
+        public DbSet<Document> Documents { get; set; }
 
-        public IDbSet<Document> Documents
-        {
-            get { return documents ?? (documents = CreateSet<Document>()); }
-        }
+        public DbSet<Invitation> Invitations { get; set; }
 
-        public IDbSet<Invitation> Invitations
-        {
-            get
-            {
-                return invitations ?? (invitations = CreateSet<Invitation>());
-            }
-        }
-
-        public IDbSet<Share> Shares
-        {
-            get { return shares ?? (shares = CreateSet<Share>()); }
-        }
-
-        protected virtual IDbSet<T> CreateSet<T>() where T : class
-        {
-            return Set<T>();
-        }
+        public DbSet<Share> Shares { get; set; }
     }
 }

@@ -7,13 +7,13 @@ namespace TextUml.DataAccess.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.0.0-beta1-20501")]
-    public sealed partial class InvitationMigration : IMigrationMetadata
+    public sealed partial class DocumentMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InvitationMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(DocumentMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201307181952163_InvitationMigration"; }
+            get { return "201308051421520_DocumentMigration"; }
         }
         
         string IMigrationMetadata.Source

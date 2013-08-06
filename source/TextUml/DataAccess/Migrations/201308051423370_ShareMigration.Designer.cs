@@ -13,7 +13,7 @@ namespace TextUml.DataAccess.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201307181953265_ShareMigration"; }
+            get { return "201308051423370_ShareMigration"; }
         }
         
         string IMigrationMetadata.Source

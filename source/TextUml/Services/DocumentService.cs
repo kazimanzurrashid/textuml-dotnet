@@ -25,6 +25,7 @@
         Task Delete(int id, Action notFound);
     }
 
+    [CLSCompliant(false)]
     public class DocumentService : IDocumentService
     { 
         private readonly IDataContext dataContext;
@@ -45,7 +46,7 @@
                 throw new ArgumentNullException("model");
             }
 
-            var userId = currentUserProvider.UserId;
+            var userId = currentUserProvider.GetUserId();
             var documents = Query(userId);
 
             if (!string.IsNullOrWhiteSpace(model.Filter))
@@ -86,7 +87,9 @@
                 throw new ArgumentNullException("notFound");
             }
 
-            var document = await Query(currentUserProvider.UserId)
+            var userId = currentUserProvider.GetUserId();
+
+            var document = await Query(userId)
                 .FirstOrDefaultAsync(d => d.Id == id);
 
             if (document == null)
@@ -104,8 +107,9 @@
                 throw new ArgumentNullException("model");
             }
 
+            var userId = currentUserProvider.GetUserId();
             var document = new Document().Merge(model);
-            document.UserId = currentUserProvider.UserId;
+            document.UserId = userId;
             document.CreatedAt = document.UpdatedAt = Clock.UtcNow();
 
             dataContext.Documents.Add(document);
@@ -136,7 +140,7 @@
                 throw new ArgumentNullException("notFound");
             }
 
-            var userId = currentUserProvider.UserId;
+            var userId = currentUserProvider.GetUserId();
 
             var ownedDocumentsQuery = dataContext.Documents
                 .Where(d => d.Id == id && d.UserId == userId)
@@ -193,9 +197,11 @@
                 throw new ArgumentNullException("notFound");
             }
 
+            var userId = currentUserProvider.GetUserId();
+
             var document = await dataContext.Documents
                 .FirstOrDefaultAsync(d =>
-                    d.Id == id && d.UserId == currentUserProvider.UserId);
+                    d.Id == id && d.UserId == userId);
 
             if (document == null)
             {
@@ -207,7 +213,7 @@
             await dataContext.SaveChangesAsync();
         }
 
-        private IQueryable<DocumentRead> Query(int userId)
+        private IQueryable<DocumentRead> Query(string userId)
         {
             var ownedDocumentsQuery = dataContext.Documents
                 .Where(d => d.UserId == userId)
