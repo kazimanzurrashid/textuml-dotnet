@@ -32,6 +32,11 @@
             ValidateUser(user);
             ValidatePassword(password);
 
+            if (await GetUserIdForLocalLogin(user.UserName) != null)
+            {
+                throw new IdentityException("User name already exists.");
+            }
+
             if (!(await context.Users.Create(user)))
             {
                 return null;
