@@ -6,7 +6,7 @@
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuthtication(app);
+            ConfigureAuthentication(app);
             ConfigureSignalr(app);
         }
     }

@@ -101,6 +101,11 @@
 
             public override void ExecuteResult(ControllerContext context)
             {
+                if (context == null)
+                {
+                    throw new ArgumentNullException("context");
+                }
+
                 authentication.Challenge(
                     context.HttpContext,
                     provider,

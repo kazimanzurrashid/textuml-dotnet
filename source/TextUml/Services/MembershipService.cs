@@ -55,8 +55,8 @@
             this.dataContext = dataContext;
             LazyHttpContext = lazyHttpContext;
 
-            IdentityManager = new AppIdentityStoreManager(
-                new AppIdentityStoreContext(dataContext));
+            var identityContext = new AppIdentityStoreContext(dataContext);
+            IdentityManager = new AppIdentityStoreManager(identityContext);
             AuthenticationManager = new IdentityAuthenticationManager(
                 IdentityManager);
         }

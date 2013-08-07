@@ -6,7 +6,7 @@
 
     public partial class Startup
     {
-        public void ConfigureAuthtication(IAppBuilder app)
+        public static void ConfigureAuthentication(IAppBuilder app)
         {
             app.UseSignInCookies();
 
