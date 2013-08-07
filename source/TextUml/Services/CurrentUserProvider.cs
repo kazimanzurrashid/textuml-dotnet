@@ -25,7 +25,6 @@
             var httpContext = lazyHttpContext();
             var user = httpContext.User.Identity;
 
-
             return user.IsAuthenticated ? user.GetUserId() : null;
         }
     }

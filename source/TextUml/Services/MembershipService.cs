@@ -2,15 +2,12 @@
 {
     using System;
     using System.Data.Entity;
-    using System.Security.Cryptography;
     using System.Threading.Tasks;
     using System.Web;
 
-    using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
 
     using DataAccess;
-    using DomainObjects;
     using Infrastructure;
 
     [CLSCompliant(false)]
@@ -47,192 +44,6 @@
     }
 
     [CLSCompliant(false)]
-    public class MyUserSecretStore : IUserSecretStore
-    {
-        private readonly DataContext dataContext;
-        private readonly UserSecretStore<UserSecret> store;
-
-        public MyUserSecretStore(DataContext db)
-        {
-            dataContext = db;
-            store = new UserSecretStore<UserSecret>(db);
-        }
-
-        public Task<bool> Delete(string userName)
-        {
-            return store.Delete(userName);
-        }
-
-        public Task<bool> Create(IUserSecret userSecret)
-        {
-            return store.Create(userSecret);
-        }
-
-        public Task<bool> Update(string userName, string newSecret)
-        {
-            return store.Update(userName, newSecret);
-        }
-
-        public async Task<bool> Validate(string userName, string loginSecret)
-        {
-            var activated = await dataContext.Tokens
-                .AnyAsync(m =>
-                    m.ActivatedAt != null && m.User.UserName == userName);
-
-            if (!activated)
-            {
-                return false;
-            }
-
-            return await store.Validate(userName, loginSecret);
-        }
-
-        public Task<IUserSecret> Find(string userName)
-        {
-            return store.Find(userName);
-        }
-    }
-
-    [CLSCompliant(false)]
-    public class MyIdentityStoreContext : IdentityStoreContext
-    {
-        public MyIdentityStoreContext(DataContext dataContext) :
-            base(dataContext)
-        {
-            this.Secrets = new MyUserSecretStore(dataContext);
-        }
-    }
-
-    [CLSCompliant(false)]
-    public class MyIdentityStoreManager : IdentityStoreManager
-    {
-        private readonly MyIdentityStoreContext context;
-
-        public MyIdentityStoreManager(MyIdentityStoreContext storeContext) :
-            base(storeContext)
-        {
-            this.context = storeContext;
-        }
-
-        public async Task<string> CreateLocalUser(
-            IUser user,
-            string password,
-            bool requireActivation)
-        {
-            ValidateUser(user);
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("password");
-            }
-
-            string passwordError;
-
-            if (!PasswordValidator.Validate(password, out passwordError))
-            {
-                throw new IdentityException(passwordError);
-            }
-
-            if (!(await context.Users.Create(user)))
-            {
-                return null;
-            }
-
-            if (!(await context.Secrets.Create(
-                new UserSecret(user.UserName, password))))
-            {
-                return null;
-            }
-
-            if (!(await context.Logins.Add(
-                new UserLogin(user.Id, LocalLoginProvider, user.UserName))))
-            {
-                return null;
-            }
-
-            var token = new Token { UserId = user.Id };
-
-            if (requireActivation)
-            {
-                token.ActivationToken = GenerateToken();
-            }
-            else
-            {
-                token.ActivatedAt = Clock.UtcNow();
-            }
-
-            var dataContext = (DataContext)context.DbContext;
-            dataContext.Tokens.Add(token);
-            await dataContext.SaveChangesAsync();
-
-            return token.ActivationToken;
-        }
-
-        public async override Task<bool> CreateExternalUser(
-            IUser user,
-            string loginProvider,
-            string providerKey)
-        {
-            ValidateUser(user);
-
-            if (!(await context.Users.Create(user)))
-            {
-                return false;
-            }
-
-            if (!(await context.Logins.Add(
-                new UserLogin(user.Id, loginProvider, providerKey))))
-            {
-                return false;
-            }
-
-            var token = new Token
-                            {
-                                UserId = user.Id,
-                                ActivatedAt = Clock.UtcNow()
-                            };
-
-            var dataContext = (DataContext)context.DbContext;
-            dataContext.Tokens.Add(token);
-            await dataContext.SaveChangesAsync();
-
-            return true;
-        }
-
-        internal static string GenerateToken()
-        {
-            var buffer = new byte[16];
-
-            using (var crypto = new RNGCryptoServiceProvider())
-            {
-                crypto.GetBytes(buffer);
-            }
-
-            return HttpServerUtility.UrlTokenEncode(buffer);
-        }
-
-        private void ValidateUser(IUser user)
-        {
-            if (user == null)
-            {
-                throw new ArgumentNullException("user");
-            }
-
-            if (string.IsNullOrWhiteSpace(user.UserName))
-            {
-                throw new ArgumentException("user.UserName");
-            }
-
-            string userNameError;
-
-            if (!UserNameValidator.Validate(user.UserName, out userNameError))
-            {
-                throw new IdentityException(userNameError);
-            }
-        }
-    }
-
-    [CLSCompliant(false)]
     public class MembershipService : IMembershipService
     {
         private readonly DataContext dataContext;
@@ -244,8 +55,8 @@
             this.dataContext = dataContext;
             LazyHttpContext = lazyHttpContext;
 
-            IdentityManager = new MyIdentityStoreManager(
-                new MyIdentityStoreContext(dataContext));
+            IdentityManager = new AppIdentityStoreManager(
+                new AppIdentityStoreContext(dataContext));
             AuthenticationManager = new IdentityAuthenticationManager(
                 IdentityManager);
         }
@@ -257,7 +68,7 @@
 
         protected Func<HttpContextBase> LazyHttpContext { get; private set; }
 
-        protected MyIdentityStoreManager IdentityManager { get; set; }
+        protected AppIdentityStoreManager IdentityManager { get; set; }
 
         public async Task CreateRoles(params string[] role)
         {
@@ -364,7 +175,7 @@
                 t.UserId == userId && 
                 t.ActivatedAt != null);
 
-            reset.ResetPasswordToken = MyIdentityStoreManager.GenerateToken();
+            reset.ResetPasswordToken = AppIdentityStoreManager.GenerateToken();
             reset.ResetPasswordTokenExpiredAt = Clock.UtcNow().AddMinutes(1440);
             await dataContext.SaveChangesAsync();
 

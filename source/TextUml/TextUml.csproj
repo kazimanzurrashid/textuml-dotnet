@@ -249,11 +249,11 @@
     <Compile Include="Hubs\SharingHub.cs" />
     <Compile Include="Infrastructure\Clock.cs" />
     <Compile Include="Infrastructure\CookieTempDataProvider.cs" />
-    <Compile Include="Infrastructure\FlashMessageCollection.cs" />
-    <Compile Include="Infrastructure\FlashMessageType.cs" />
-    <Compile Include="Infrastructure\Mailer.cs" />
-    <Compile Include="Infrastructure\MailUrlResolver.cs" />
-    <Compile Include="Infrastructure\UrlSafeSecureDataSerializer.cs" />
+    <Compile Include="Infrastructure\FlashMessage\FlashMessageCollection.cs" />
+    <Compile Include="Infrastructure\FlashMessage\FlashMessageType.cs" />
+    <Compile Include="Infrastructure\Mail\Mailer.cs" />
+    <Compile Include="Infrastructure\Mail\MailUrlResolver.cs" />
+    <Compile Include="Infrastructure\Mail\UrlSafeSecureDataSerializer.cs" />
     <Compile Include="DataAccess\Migrations\201308051418525_AspNetIdentityMigration.cs" />
     <Compile Include="DataAccess\Migrations\201308051418525_AspNetIdentityMigration.Designer.cs">
       <DependentUpon>201308051418525_AspNetIdentityMigration.cs</DependentUpon>
@@ -285,6 +285,9 @@
     <Compile Include="Models\ShareRead.cs" />
     <Compile Include="Services\CurrentUserProvider.cs" />
     <Compile Include="Services\MembershipService.cs" />
+    <Compile Include="Infrastructure\Membership\AppIdentityStoreContext.cs" />
+    <Compile Include="Infrastructure\Membership\AppIdentityStoreManager.cs" />
+    <Compile Include="Infrastructure\Membership\AppUserSecretStore.cs" />
     <Compile Include="Services\NewUserConfirmedHandler.cs" />
     <Compile Include="Models\PagedQueryResult.cs" />
     <Compile Include="Models\ResetPassword.cs" />
