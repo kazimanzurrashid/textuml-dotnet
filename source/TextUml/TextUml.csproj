@@ -251,7 +251,6 @@
     <Compile Include="Infrastructure\CookieTempDataProvider.cs" />
     <Compile Include="Infrastructure\FlashMessageCollection.cs" />
     <Compile Include="Infrastructure\FlashMessageType.cs" />
-    <Compile Include="Infrastructure\GuidComb.cs" />
     <Compile Include="Infrastructure\Mailer.cs" />
     <Compile Include="Infrastructure\MailUrlResolver.cs" />
     <Compile Include="Infrastructure\UrlSafeSecureDataSerializer.cs" />

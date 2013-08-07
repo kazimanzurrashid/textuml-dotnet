@@ -1,7 +1,10 @@
 ﻿namespace TextUml.DataAccess
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Validation;
     using System.Threading.Tasks;
 
     using DomainObjects;
@@ -36,5 +39,12 @@
         public DbSet<Invitation> Invitations { get; set; }
 
         public DbSet<Share> Shares { get; set; }
+
+        protected override DbEntityValidationResult ValidateEntity(
+            DbEntityEntry entityEntry,
+            IDictionary<object, object> items)
+        {
+            return new DbEntityValidationResult(entityEntry, new DbValidationError[0]);
+        }
     }
 }
