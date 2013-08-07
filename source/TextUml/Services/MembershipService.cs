@@ -340,7 +340,7 @@
                 t.ActivatedAt == null);
 
             if ((activation == null) ||
-                (activation.ActivationToken == token))
+                (activation.ActivationToken != token))
             {
                 return false;
             }
