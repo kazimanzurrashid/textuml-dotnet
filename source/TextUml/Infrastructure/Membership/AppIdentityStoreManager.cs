@@ -76,37 +76,6 @@
             return token.ActivationToken;
         }
 
-        public async override Task<bool> CreateExternalUser(
-            IUser user,
-            string loginProvider,
-            string providerKey)
-        {
-            ValidateUser(user);
-
-            if (!(await context.Users.Create(user)))
-            {
-                return false;
-            }
-
-            if (!(await context.Logins.Add(
-                new UserLogin(user.Id, loginProvider, providerKey))))
-            {
-                return false;
-            }
-
-            var token = new Token
-                            {
-                                UserId = user.Id,
-                                ActivatedAt = Clock.UtcNow()
-                            };
-
-            var dataContext = (DataContext)context.DbContext;
-            dataContext.Tokens.Add(token);
-            await dataContext.SaveChangesAsync();
-
-            return true;
-        }
-
         internal static string GenerateToken()
         {
             var buffer = new byte[16];
