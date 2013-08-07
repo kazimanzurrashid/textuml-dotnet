@@ -75,17 +75,17 @@
             }
 
             var email = model.Email.ToLower(CultureInfo.CurrentCulture);
-            var requireActivation = !IsDebuggingEnabled;
+            var requiresActivation = !IsDebuggingEnabled;
 
             try
             {
-                var token = await membershipService.InternalSignup(
+                var token = await membershipService.Signup(
                     email,
                     model.Password,
                     UserRoles.User,
-                    requireActivation);
+                    requiresActivation);
 
-                if (requireActivation)
+                if (requiresActivation)
                 {
                     var userConfirmationToken = new UserConfirmationToken
                                                     {

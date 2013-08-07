@@ -1,9 +1,10 @@
 ﻿namespace TextUml.Infrastructure
 {
     using System;
-    using System.Security.Cryptography;
+    using System.Data.Entity.Validation;
+    using System.Globalization;
+    using System.Text;
     using System.Threading.Tasks;
-    using System.Web;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -25,21 +26,11 @@
         public async Task<string> CreateLocalUser(
             IUser user,
             string password,
-            bool requireActivation)
+            string role,
+            bool requiresActivation)
         {
             ValidateUser(user);
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                throw new ArgumentException("password");
-            }
-
-            string passwordError;
-
-            if (!PasswordValidator.Validate(password, out passwordError))
-            {
-                throw new IdentityException(passwordError);
-            }
+            ValidatePassword(password);
 
             if (!(await context.Users.Create(user)))
             {
@@ -58,34 +49,93 @@
                 return null;
             }
 
-            var token = new Token { UserId = user.Id };
+            await context.Roles.AddUserToRole(role, user.Id);
 
-            if (requireActivation)
-            {
-                token.ActivationToken = GenerateToken();
-            }
-            else
-            {
-                token.ActivatedAt = Clock.UtcNow();
-            }
+            var token = new Token(user.Id, requiresActivation);
 
-            var dataContext = (DataContext)context.DbContext;
-            dataContext.Tokens.Add(token);
-            await dataContext.SaveChangesAsync();
+            ((DataContext)context.DbContext).Tokens.Add(token);
+
+            await PersistChanges();
 
             return token.ActivationToken;
         }
 
-        internal static string GenerateToken()
+        public async Task<bool> CreateExternalUser(
+            IUser user,
+            string logOnProvider,
+            string providerKey,
+            string role)
         {
-            var buffer = new byte[16];
+            ValidateUser(user);
 
-            using (var crypto = new RNGCryptoServiceProvider())
+            if (!(await context.Users.Create(user)))
             {
-                crypto.GetBytes(buffer);
+                return false;
             }
 
-            return HttpServerUtility.UrlTokenEncode(buffer);
+            if (!(await context.Logins.Add(
+                new UserLogin(user.Id, logOnProvider, providerKey))))
+            {
+                return false;
+            }
+
+            await context.Roles.AddUserToRole(role, user.Id);
+            await PersistChanges();
+
+            return true;
+        }
+
+        private static IdentityException GenerateIdentityException(
+            DbEntityValidationException e)
+        {
+            var errorBuilder = new StringBuilder("Database Validation failed.");
+
+            errorBuilder.AppendLine();
+
+            foreach (var error in e.EntityValidationErrors)
+            {
+                errorBuilder.AppendFormat(
+                    CultureInfo.CurrentUICulture,
+                    "Entity Type {0} failed validation.",
+                    error.Entry.Entity.GetType());
+
+                errorBuilder.AppendLine();
+
+                foreach (var validationError in error.ValidationErrors)
+                {
+                    errorBuilder.Append(validationError.ErrorMessage);
+                    errorBuilder.AppendLine();
+                }
+            }
+
+            return new IdentityException(errorBuilder.ToString());
+        }
+
+        private async Task PersistChanges()
+        {
+            try
+            {
+                await context.DbContext.SaveChangesAsync();
+            }
+            catch (DbEntityValidationException e)
+            {
+                throw GenerateIdentityException(e);
+            }
+        }
+
+        private void ValidatePassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Password is required.", "password");
+            }
+
+            string error;
+
+            if (!PasswordValidator.Validate(password, out error))
+            {
+                throw new IdentityException(error);
+            }
         }
 
         private void ValidateUser(IUser user)
@@ -97,12 +147,12 @@
 
             if (string.IsNullOrWhiteSpace(user.UserName))
             {
-                throw new ArgumentException("user.UserName");
+                throw new ArgumentException("User name is required.", "user");
             }
 
             string error;
 
-            if (!this.UserNameValidator.Validate(user.UserName, out error))
+            if (!UserNameValidator.Validate(user.UserName, out error))
             {
                 throw new IdentityException(error);
             }

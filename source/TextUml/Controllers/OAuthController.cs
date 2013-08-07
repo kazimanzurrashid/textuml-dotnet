@@ -63,10 +63,11 @@
             {
                 Flash[FlashMessageType.Success] = "You are now signed in.";
             }
-            else if (await membershipService.ExternalSignup(
+            else if (await membershipService.ExternalSignIn(
                     provider,
                     claim.Name,
-                    UserRoles.User))
+                    UserRoles.User,
+                    false))
                 {
                     Flash[FlashMessageType.Success] = "You are now signed in.";
                 }

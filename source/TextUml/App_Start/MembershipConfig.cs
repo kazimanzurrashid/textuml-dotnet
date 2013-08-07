@@ -50,7 +50,7 @@
                 return;
             }
 
-            membership.InternalSignup(email, password, role, false).Wait();
+            membership.Signup(email, password, role, false).Wait();
         }
     }
 }

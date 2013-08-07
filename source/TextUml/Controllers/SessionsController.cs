@@ -33,7 +33,7 @@
                     HttpStatusCode.BadRequest, ModelState);
             }
 
-            var success = await membershipService.SignIn(
+            var success = await membershipService.InternalSignIn(
                 model.Email.ToLower(CultureInfo.CurrentCulture),
                 model.Password,
                 model.RememberMe.GetValueOrDefault());

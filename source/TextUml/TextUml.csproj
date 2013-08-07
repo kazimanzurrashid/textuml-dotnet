@@ -274,6 +274,7 @@
     <Compile Include="DataAccess\Migrations\201308051423370_ShareMigration.Designer.cs">
       <DependentUpon>201308051423370_ShareMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Membership\AppIdentityAuthenticationManager.cs" />
     <Compile Include="Models\ChangePassword.cs" />
     <Compile Include="Models\CreateSession.cs" />
     <Compile Include="Models\CreateUser.cs" />

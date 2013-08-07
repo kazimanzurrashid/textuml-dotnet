@@ -13,22 +13,26 @@
     [CLSCompliant(false)]
     public interface IMembershipService
     {
-        IdentityAuthenticationManager AuthenticationManager { get; }
+        AppIdentityAuthenticationManager AuthenticationManager { get; }
 
         Task CreateRoles(params string[] role);
 
-        Task<bool> SignIn(string email, string password, bool persist);
+        Task<bool> InternalSignIn(string email, string password, bool persist);
+
+        Task<bool> ExternalSignIn(
+            string provider,
+            string userName,
+            string role,
+            bool persist);
 
         void SignOut();
 
-        Task<string> InternalSignup(
+        Task<string> Signup(
             string email,
             string password,
             string role,
-            bool requireActivation);
+            bool requiresActivation);
 
-        Task<bool> ExternalSignup(string provider, string userName, string role);
- 
         Task<bool> Activate(string email, string token);
 
         Task<string> ForgotPassword(string email);
@@ -57,11 +61,11 @@
 
             var identityContext = new AppIdentityStoreContext(dataContext);
             IdentityManager = new AppIdentityStoreManager(identityContext);
-            AuthenticationManager = new IdentityAuthenticationManager(
+            AuthenticationManager = new AppIdentityAuthenticationManager(
                 IdentityManager);
         }
 
-        public IdentityAuthenticationManager AuthenticationManager
+        public AppIdentityAuthenticationManager AuthenticationManager
         {
             get; protected set;
         }
@@ -80,7 +84,7 @@
             await IdentityManager.Context.SaveChanges();
         }
 
-        public async Task<bool> SignIn(
+        public async Task<bool> InternalSignIn(
             string email,
             string password,
             bool persist)
@@ -92,49 +96,43 @@
                 persist);
         }
 
+        public async Task<bool> ExternalSignIn(
+            string provider,
+            string userName,
+            string role,
+            bool persist)
+        {
+            var user = new User(userName);
+
+            return await AuthenticationManager
+                .CreateAndSignInExternalUser(
+                    LazyHttpContext(),
+                    provider,
+                    user,
+                    role,
+                    persist);
+        }
+
         public void SignOut()
         {
             AuthenticationManager.SignOut(LazyHttpContext());
         }
 
-        public async Task<string> InternalSignup(
+        public async Task<string> Signup(
             string email,
             string password,
             string role,
-            bool requireActivation)
+            bool requiresActivation)
         {
             var user = new User(email);
 
             var token = await IdentityManager.CreateLocalUser(
                 user,
                 password,
-                requireActivation);
-
-            await IdentityManager.Context.Roles.AddUserToRole(role, user.Id);
-            await IdentityManager.Context.SaveChanges();
+                role,
+                requiresActivation);
 
             return token;
-        }
-
-        public async Task<bool> ExternalSignup(
-            string provider,
-            string userName,
-            string role)
-        {
-            var user = new User(userName);
-
-            var result = await AuthenticationManager.CreateAndSignInExternalUser(
-                LazyHttpContext(),
-                provider,
-                user);
-
-            if (result)
-            {
-                await IdentityManager.Context.Roles.AddUserToRole(role, user.Id);
-                await IdentityManager.Context.SaveChanges();
-            }
-
-            return result;
         }
 
         public async Task<bool> Activate(string email, string token)
@@ -146,17 +144,15 @@
                 return false;
             }
 
-            var activation = await dataContext.Tokens.FirstOrDefaultAsync(t =>
-                t.UserId == userId && 
-                t.ActivatedAt == null);
+            var activation = await dataContext.Tokens.FindAsync(userId);
 
-            if ((activation == null) ||
-                (activation.ActivationToken != token))
+            if ((activation == null) || !activation.CanActivate(token))
             {
                 return false;
             }
 
-            activation.ActivatedAt = Clock.UtcNow();
+            activation.MarkActivated();
+
             await dataContext.SaveChangesAsync();
 
             return true;
@@ -171,25 +167,21 @@
                 return null;
             }
 
-            var reset = await dataContext.Tokens.FirstOrDefaultAsync(t =>
-                t.UserId == userId && 
-                t.ActivatedAt != null);
+            var token = await dataContext.Tokens.FindAsync(userId);
 
-            reset.ResetPasswordToken = AppIdentityStoreManager.GenerateToken();
-            reset.ResetPasswordTokenExpiredAt = Clock.UtcNow().AddMinutes(1440);
+            token.GenerateResetPasswordToken();
+
             await dataContext.SaveChangesAsync();
 
-            return reset.ResetPasswordToken;
+            return token.ResetPasswordToken;
         }
 
         public async Task<bool> ResetPassword(string token, string password)
         {
-            var reset = await dataContext.Tokens.FirstOrDefaultAsync(t => 
-                t.ActivatedAt != null &&
-                t.ResetPasswordToken == token);
+            var reset = await dataContext.Tokens
+                .FirstOrDefaultAsync(t => t.ResetPasswordToken == token);
 
-            if ((reset == null) ||
-                (reset.ResetPasswordTokenExpiredAt > Clock.UtcNow()))
+            if (reset == null || reset.HasResetPasswordTokenExpired)
             {
                 return false;
             }
@@ -201,18 +193,18 @@
                 return false;
             }
 
-            var result = await IdentityManager.ChangePassword(
+            var hasChanged = await IdentityManager.ChangePassword(
                 user.UserName,
                 password,
                 password);
 
-            if (result)
+            if (hasChanged)
             {
-                reset.ResetPasswordTokenExpiredAt = Clock.UtcNow();
+                reset.ExpireResetPasswordToken();
                 await dataContext.SaveChangesAsync();
             }
 
-            return result;
+            return hasChanged;
         }
 
         public async Task<bool> ChangePassword(
@@ -228,7 +220,9 @@
 
         public async Task<bool> InternalUserExists(string email)
         {
-            return (await IdentityManager.GetUserIdForLocalLogin(email)) != null;
+            var id = await IdentityManager.GetUserIdForLocalLogin(email);
+
+            return id != null;
         }
     }
 }
