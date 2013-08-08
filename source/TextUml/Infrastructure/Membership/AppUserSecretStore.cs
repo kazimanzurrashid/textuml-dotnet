@@ -43,12 +43,8 @@
                     t.ActivatedAt != null &&
                     t.User.UserName == userName);
 
-            if (!activated)
-            {
-                return false;
-            }
-
-            return await store.Validate(userName, loginSecret);
+            return activated &&
+                await store.Validate(userName, loginSecret);
         }
 
         public Task<IUserSecret> Find(string userName)

@@ -70,7 +70,7 @@
 
         public void MarkActivated()
         {
-            if (ActivatedAt == null)
+            if (ActivatedAt != null)
             {
                 return;
             }
